@@ -52,7 +52,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.extensions)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.common.ktx)
-    implementation(libs.androidx.androidx.navigation.safeargs.kotlin.gradle.plugin)
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
