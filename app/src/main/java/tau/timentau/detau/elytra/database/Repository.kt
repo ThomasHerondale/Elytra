@@ -52,7 +52,6 @@ object Repository {
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
     suspend fun createUser(
         email: String,
         fullName: String,
