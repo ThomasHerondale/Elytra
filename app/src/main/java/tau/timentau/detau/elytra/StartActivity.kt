@@ -1,13 +1,11 @@
 package tau.timentau.detau.elytra
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import tau.timentau.detau.elytra.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
+import tau.timentau.detau.elytra.databinding.ActivityStartBinding
 
-class StartActivity : AppCompatActivity() {
+class StartActivity : AppCompatActivity(), EntryActivity {
 
     private lateinit var binding : ActivityStartBinding
 
