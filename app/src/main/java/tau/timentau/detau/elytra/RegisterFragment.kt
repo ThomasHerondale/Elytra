@@ -19,4 +19,8 @@ class RegisterFragment : Fragment() {
 
         return binding.root
     }
+
+    private fun showOrHideProgressBar(hide: Boolean) {
+        binding.registerProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
 }
