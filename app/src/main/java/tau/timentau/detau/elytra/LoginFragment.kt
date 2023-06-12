@@ -21,6 +21,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding : FragmentLoginBinding
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        showOrHideProgressBar(true)
         networkError()
         Log.e(TAG, e.stackTraceToString())
     }
@@ -49,10 +50,12 @@ class LoginFragment : Fragment() {
         if (email.isBlank() || password.isBlank())
             return
 
+        showOrHideProgressBar(false)
         Log.v(TAG, "Checking existence for ($email, $password)")
 
         coroutineScope.launch {
             val userExists = Repository.userExists(email, password).await()
+            showOrHideProgressBar(true)
             if (userExists)
                     (requireActivity() as EntryActivity).login(email)
             else
@@ -83,5 +86,9 @@ class LoginFragment : Fragment() {
             .setIcon(R.drawable.ic_link_off_24)
             .setPositiveButton(R.string.okay) { _, _ -> }
             .show()
+    }
+
+    private fun showOrHideProgressBar(hide: Boolean) {
+        binding.loginProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
     }
 }
