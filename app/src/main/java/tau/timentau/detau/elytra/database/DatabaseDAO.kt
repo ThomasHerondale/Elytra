@@ -10,7 +10,7 @@ import kotlin.reflect.javaType
 import kotlin.reflect.typeOf
 
 private val valueTypeKeys = mapOf(
-    "%bool%" to "boolean"
+    "%boolean%" to "boolean"
 )
 
 object DatabaseDAO {
