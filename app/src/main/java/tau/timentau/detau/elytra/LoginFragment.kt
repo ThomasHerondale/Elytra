@@ -78,8 +78,8 @@ class LoginFragment : Fragment() {
             requireActivity(),
             ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
-            .setTitle("Errore di connessione")
-            .setMessage("Impossibile connettersi al server di Elytra, riprova più tardi.")
+            .setTitle(R.string.errore_connessione)
+            .setMessage(R.string.imposs_connettersi_al_server)
             .setIcon(R.drawable.ic_link_off_24)
             .setPositiveButton(R.string.okay) { _, _ -> }
             .show()

@@ -3,4 +3,8 @@
     <string name="login_fallito">Login fallito</string>
     <string name="dati_inseriti_ncorretti">I dati inseriti non sono corretti.</string>
     <string name="okay">Okay</string>
+    <string name="errore_connessione">Errore di connessione</string>
+    <string name="imposs_connettersi_al_server">
+        Impossibile connettersi al server di Elytra, riprova più tardi.
+    </string>
 </resources>

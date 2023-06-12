@@ -10,7 +10,6 @@ import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(), EntryActivity {
 
     private lateinit var binding : ActivityMainBinding
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +20,5 @@ class MainActivity : AppCompatActivity(), EntryActivity {
 
     override fun login(email: String) {
         Log.v("LOGIN", "Logging user $email")
-        TODO("Not yet implemented")
     }
 }
