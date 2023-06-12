@@ -30,9 +30,9 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.loginBttn.setOnClickListener { attemptLogin(
-            binding.emailText.editText.toString()
-        ) }
+        binding.loginBttn.setOnClickListener {
+            attemptLogin(binding.emailText.text, binding.pwdText.text)
+        }
     }
 
     private fun attemptLogin(email: String, password: String) {
