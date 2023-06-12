@@ -4,8 +4,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.datetime.LocalDate
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
+import java.text.DateFormat
 import java.util.Date
 
 object Repository {
@@ -53,14 +55,16 @@ object Repository {
     suspend fun createUser(
         email: String,
         fullName: String,
-        birthDate: Date,
+        birthDate: LocalDate,
         sex: Sex,
         password: String
     ) {
+        val date = DateFormat.getDateInstance().parse("$birthDate")
+
         DatabaseDAO.insert("""
             INSERT
             INTO users(email, fullName, birthDate, sex, password)
-            VALUE ('$email', '$fullName', '$birthDate', '$sex', '$password')
+            VALUE ('$email', '$fullName', '$date', '$sex', '$password')
         """)
     }
 
