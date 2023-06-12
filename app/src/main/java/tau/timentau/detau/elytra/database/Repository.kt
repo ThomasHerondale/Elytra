@@ -16,7 +16,7 @@ object Repository {
                     SELECT *
                     FROM users
                     WHERE users.email = $email AND users.password = $password
-                ) as %boolean%
+                ) as boolean
             """) ?: false
         }
     }
