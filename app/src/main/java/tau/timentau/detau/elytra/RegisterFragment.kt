@@ -1,10 +1,14 @@
 package tau.timentau.detau.elytra
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +20,8 @@ import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.FragmentRegisterBinding
 
+private const val TAG = "REGISTRATION"
+
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
@@ -26,16 +32,57 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentRegisterBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.mailText.editText?.setOnFocusChangeListener { _, _ -> validateMailField() }
         binding.passText.editText?.setOnFocusChangeListener { _, _ -> validatePasswordField() }
         binding.confirmText.editText?.setOnFocusChangeListener { _, _ -> validateConfirmField() }
         binding.dateText.editText?.setOnFocusChangeListener { _, _ -> validateBirthDateField() }
 
-        binding.registerBttn.setOnClickListener { validateSexSelection() }
+        binding.registerBttn.setOnClickListener {
+            showOrHideProgressBar(false)
 
-        return binding.root
+            coroutineScope.launch { checkMailField() }.invokeOnCompletion {
+                showOrHideProgressBar(true)
+
+                val isEmailOkay = binding.mailText.error == null
+                if (isEmailOkay and validateForm()) {
+                    TODO()
+                }
+            }
+        }
     }
+
+    private suspend fun checkMailField() {
+        try {
+            val isEmailUsed = Repository.isMailUsed(binding.mailText.text).await()
+
+            var errorTextRes: Int? = null
+
+            if (binding.mailText.text.isNotEmail())
+                errorTextRes = R.string.mail_invalida
+
+            if (errorTextRes != null)
+                binding.mailText.error = getString(errorTextRes)
+            else
+                binding.mailText.error = null
+
+            if (isEmailUsed)
+                binding.mailText.error = getString(R.string.mail_in_uso)
+        } catch (e: Exception) {
+            Log.e(TAG, e.stackTraceToString())
+            networkError()
+            showOrHideProgressBar(true)
+        }
+    }
+
+    private fun validateForm() =
+        validatePasswordField() and validateConfirmField() and validateBirthDateField() and
+                validateSexSelection()
 
     private fun validateMailField(): Boolean {
         var errorTextRes: Int? = null
@@ -125,5 +172,17 @@ class RegisterFragment : Fragment() {
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.registerProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun networkError() {
+        MaterialAlertDialogBuilder(
+            requireActivity(),
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(R.string.errore_connessione)
+            .setMessage(R.string.imposs_connettersi_al_server)
+            .setIcon(R.drawable.ic_link_off_24)
+            .setPositiveButton(R.string.okay) { _, _ -> }
+            .show()
     }
 }
