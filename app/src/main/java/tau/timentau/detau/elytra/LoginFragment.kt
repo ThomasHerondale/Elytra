@@ -37,6 +37,9 @@ class LoginFragment : Fragment() {
     }
 
     private fun attemptLogin(email: String, password: String) {
+        if (email.isBlank() || password.isBlank())
+            return
+
         Log.v("LOGIN", "Checking existence for ($email, $password)")
 
         coroutineScope.launch {
