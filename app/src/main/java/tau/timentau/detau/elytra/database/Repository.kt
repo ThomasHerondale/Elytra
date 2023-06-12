@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra.database
 
+import android.annotation.SuppressLint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -8,6 +9,7 @@ import kotlinx.datetime.LocalDate
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.Date
 
 object Repository {
@@ -52,6 +54,7 @@ object Repository {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     suspend fun createUser(
         email: String,
         fullName: String,
@@ -59,7 +62,8 @@ object Repository {
         sex: Sex,
         password: String
     ) {
-        val date = DateFormat.getDateInstance().parse("$birthDate")
+        val date = SimpleDateFormat("yyyy-MM-dd").parse("$birthDate")
+
 
         DatabaseDAO.insert("""
             INSERT
