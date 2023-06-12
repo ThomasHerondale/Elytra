@@ -1,11 +1,11 @@
 package tau.timentau.detau.elytra.model
 
-import kotlinx.datetime.LocalDate
+import java.util.Date
 
 data class User(
     val email: String,
     val fullName: String,
-    val birthDate: LocalDate,
+    val birthDate: Date,
     val sex: Sex,
     // todo avatar
 )

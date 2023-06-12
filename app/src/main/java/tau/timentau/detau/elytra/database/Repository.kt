@@ -4,9 +4,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.datetime.LocalDate
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
+import java.util.Date
 
 object Repository {
 
@@ -26,22 +26,23 @@ object Repository {
 
     suspend fun fetchUserData(email: String): Deferred<User> {
         return coroutineScope.async {
-            val userDTO: UserDTO = DatabaseDAO.selectValue("""
-                SELECT *
-                FROM users
-                WHERE users.email ='$email'
-            """) ?: throw NotImplementedError()
+            val userDTO = DatabaseDAO.selectList<UserDTO>("""
+                SELECT email, fullName, birthDate, sex, avatar_images.path as avatar, password, security_questions.question as question, answer
+                FROM users JOIN avatar_images on users.avatar = avatar_images.id
+                    JOIN security_questions on users.question = security_questions.id
+                WHERE email = '$email';
+            """)[0] ?: throw NotImplementedError()
 
             userDTO.toUser()
         }
     }
 
-    private class UserDTO(
+    class UserDTO(
         val email: String,
         val fullName: String,
-        val birthDate: LocalDate,
+        val birthDate: Date,
         val sex: Sex,
-        // todo avatar
+        val avatar: String,
         val password: String,
         val question: String,
         val answer: String
