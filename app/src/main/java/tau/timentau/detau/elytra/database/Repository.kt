@@ -18,9 +18,21 @@ object Repository {
                 SELECT EXISTS(
                     SELECT *
                     FROM users
-                    WHERE users.email = $email AND users.password = $password
+                    WHERE users.email = '$email' AND users.password = '$password'
                 ) as boolean
             """) ?: false
+        }
+    }
+
+    suspend fun fetchUserData(email: String): Deferred<User> {
+        return coroutineScope.async {
+            val userDTO: UserDTO = DatabaseDAO.selectValue("""
+                SELECT *
+                FROM users
+                WHERE users.email ='$email'
+            """) ?: throw NotImplementedError()
+
+            userDTO.toUser()
         }
     }
 
@@ -34,6 +46,6 @@ object Repository {
         val question: String,
         val answer: String
     ) {
-            fun toUser() = User(email, fullName, birthDate, sex)
+        fun toUser() = User(email, fullName, birthDate, sex)
     }
 }
