@@ -35,8 +35,14 @@ object DatabaseDAO {
     suspend inline fun <reified T> selectValue(query: String): T? {
         val response = dbInterface.select(formatQuery(query))
         val body = response.body() ?: return null
+        val jsonArray = body["queryset"].asJsonArray
+
+        // l'oggetto json dovrebbe contenere un solo valore
+        if (jsonArray.size() != 1)
+            throw IllegalStateException("Query didn't return single value")
+
         val typeToken = typeOf<T>().javaType
-        return parser.fromJson(body["queryset"].asJsonArray[0], typeToken)
+        return parser.fromJson(jsonArray[0], typeToken)
     }
 
     fun formatQuery(query: String): String {

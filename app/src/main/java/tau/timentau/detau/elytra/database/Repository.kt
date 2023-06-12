@@ -20,7 +20,7 @@ object Repository {
                     FROM users
                     WHERE users.email = '$email' AND users.password = '$password'
                 ) as boolean
-            """) ?: throw IllegalStateException("Could not retrieve data.")
+            """) ?: throw IllegalStateException("Could not retrieve data")
         }
     }
 
@@ -32,7 +32,7 @@ object Repository {
                 FROM users JOIN avatar_images on users.avatar = avatar_images.id
                     JOIN security_questions on users.question = security_questions.id
                 WHERE email = '$email';
-            """) ?: throw IllegalStateException("Could not retrieve data.")
+            """) ?: throw IllegalStateException("Could not retrieve data")
 
             userDTO.toUser()
         }
