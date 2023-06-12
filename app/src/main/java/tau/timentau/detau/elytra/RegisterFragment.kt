@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,7 +29,12 @@ private const val TAG = "REGISTRATION"
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        showOrHideProgressBar(true)
+        networkError()
+        Log.e(TAG, e.stackTraceToString())
+    }
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,11 +56,12 @@ class RegisterFragment : Fragment() {
             showOrHideProgressBar(false)
 
             coroutineScope.launch { checkMailField() }.invokeOnCompletion {
-
+                showOrHideProgressBar(true)
                 val isEmailOkay = binding.mailText.error == null
+
                 if (isEmailOkay and validateForm()) {
+                    showOrHideProgressBar(false)
                     coroutineScope.launch { registerUser() }.invokeOnCompletion {
-                        showOrHideProgressBar(true)
                     }
                 }
             }
@@ -112,7 +119,8 @@ class RegisterFragment : Fragment() {
         else
             binding.mailText.error = null
 
-        coroutineScope.launch {
+        // nuovo perché non gestirà le eccezioni allo stesso modo di quello d'istanza
+        CoroutineScope(Dispatchers.Main).launch {
             try {
                 val isEmailUsed = Repository.isMailUsed(binding.mailText.text).await()
                 if (isEmailUsed)
