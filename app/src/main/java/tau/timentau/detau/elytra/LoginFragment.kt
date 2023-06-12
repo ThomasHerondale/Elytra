@@ -8,16 +8,25 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.FragmentLoginBinding
 
+private const val TAG = "LOGIN"
+
 class LoginFragment : Fragment() {
 
     private lateinit var binding : FragmentLoginBinding
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        networkError()
+        Log.e(TAG, e.stackTraceToString())
+    }
+    private val coroutineScope = CoroutineScope(
+        Dispatchers.Main + coroutineExceptionHandler
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +49,7 @@ class LoginFragment : Fragment() {
         if (email.isBlank() || password.isBlank())
             return
 
-        Log.v("LOGIN", "Checking existence for ($email, $password)")
+        Log.v(TAG, "Checking existence for ($email, $password)")
 
         coroutineScope.launch {
             val userExists = Repository.userExists(email, password).await()
@@ -58,8 +67,21 @@ class LoginFragment : Fragment() {
         )
             .setTitle(getString(R.string.login_fallito))
             .setMessage(R.string.dati_inseriti_ncorretti)
-            .setIcon(R.drawable.ic_problem_48dp)
+            .setIcon(R.drawable.ic_problem_48)
             .setPositiveButton(R.string.okay) { _, _ -> } // non fare nulla, il dismiss è automatico
+            .show()
+    }
+
+
+    private fun networkError() {
+        MaterialAlertDialogBuilder(
+            requireActivity(),
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle("Errore di connessione")
+            .setMessage("Impossibile connettersi al server di Elytra, riprova più tardi.")
+            .setIcon(R.drawable.ic_link_off_24)
+            .setPositiveButton(R.string.okay) { _, _ -> }
             .show()
     }
 }
