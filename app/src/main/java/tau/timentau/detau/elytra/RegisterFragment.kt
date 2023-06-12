@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +18,10 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.FragmentRegisterBinding
+import tau.timentau.detau.elytra.model.Sex
+import tau.timentau.detau.elytra.model.Sex.FEMALE
+import tau.timentau.detau.elytra.model.Sex.MALE
+import tau.timentau.detau.elytra.model.Sex.OTHER
 
 private const val TAG = "REGISTRATION"
 
@@ -47,14 +50,25 @@ class RegisterFragment : Fragment() {
             showOrHideProgressBar(false)
 
             coroutineScope.launch { checkMailField() }.invokeOnCompletion {
-                showOrHideProgressBar(true)
 
                 val isEmailOkay = binding.mailText.error == null
                 if (isEmailOkay and validateForm()) {
-                    TODO()
+                    coroutineScope.launch { registerUser() }.invokeOnCompletion {
+                        showOrHideProgressBar(true)
+                    }
                 }
             }
         }
+    }
+
+    private suspend fun registerUser() {
+        val fullName = binding.nameText.text
+        val email = binding.mailText.text
+        val password = binding.passText.text
+        val birthDate = binding.dateText.text.parseToDate()
+        val sex = selectedSex()
+
+        Repository.createUser(fullName, email, password, birthDate, sex)
     }
 
     private suspend fun checkMailField() {
@@ -172,6 +186,15 @@ class RegisterFragment : Fragment() {
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.registerProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun selectedSex(): Sex {
+        return when(binding.sexChips.checkedChipId) {
+            R.id.maleChip -> MALE
+            R.id.femaleChip -> FEMALE
+            R.id.otherChip -> OTHER
+            else -> throw IllegalStateException("No sex selected")
+        }
     }
 
     private fun networkError() {
