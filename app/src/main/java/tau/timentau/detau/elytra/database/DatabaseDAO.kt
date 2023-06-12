@@ -1,6 +1,5 @@
 package tau.timentau.detau.elytra.database
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -37,8 +36,7 @@ object DatabaseDAO {
         val response = dbInterface.select(formatQuery(query))
         val body = response.body() ?: return null
         val typeToken = typeOf<T>().javaType
-
-        return parser.fromJson(body["queryset"], typeToken)
+        return parser.fromJson(body["queryset"].asJsonArray[0], typeToken)
     }
 
     fun formatQuery(query: String): String {
