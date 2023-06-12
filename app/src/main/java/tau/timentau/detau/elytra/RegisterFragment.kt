@@ -1,13 +1,19 @@
 package tau.timentau.detau.elytra
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.FragmentRegisterBinding
 
@@ -25,6 +31,7 @@ class RegisterFragment : Fragment() {
         binding.mailText.editText?.setOnFocusChangeListener { _, _ -> validateMailField() }
         binding.passText.editText?.setOnFocusChangeListener { _, _ -> validatePasswordField() }
         binding.confirmText.editText?.setOnFocusChangeListener { _, _ -> validateConfirmField() }
+        binding.dateText.editText?.setOnFocusChangeListener { _, _ -> validateBirthDateField() }
 
         return binding.root
     }
@@ -35,10 +42,10 @@ class RegisterFragment : Fragment() {
         if (binding.mailText.text.isNotEmail())
             errorTextRes = R.string.mail_invalida
 
-            if (errorTextRes != null)
-                binding.mailText.error = getString(errorTextRes)
-            else
-                binding.mailText.error = null
+        if (errorTextRes != null)
+            binding.mailText.error = getString(errorTextRes)
+        else
+            binding.mailText.error = null
 
         coroutineScope.launch {
             try {
@@ -80,6 +87,23 @@ class RegisterFragment : Fragment() {
             binding.confirmText.error = null
 
         return binding.confirmText.error == null
+    }
+
+    private fun validateBirthDateField(): Boolean {
+        try {
+            val date = binding.dateText.text.parseToDate()
+            val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+
+            if (date > today.minus(18, DateTimeUnit.YEAR))
+                binding.dateText.error = getString(R.string.data_non_maggiorenne)
+            else
+                binding.dateText.error = null
+
+        } catch (e: IllegalArgumentException) {
+            binding.dateText.error = getString(R.string.data_invalida)
+        }
+
+        return binding.dateText.error == null
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {

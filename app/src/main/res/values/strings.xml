@@ -15,4 +15,6 @@
         una lettera minuscola e un numero
     </string>
     <string name="conferma_invalida">Le due password non coincidono</string>
+    <string name="data_invalida">Inserisci una data valida</string>
+    <string name="data_non_maggiorenne">Devi avere compiuto 18 anni</string>
 </resources>
