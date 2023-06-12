@@ -38,6 +38,18 @@ object Repository {
         }
     }
 
+    suspend fun isMailUsed(email: String): Deferred<Boolean> {
+        return coroutineScope.async {
+            DatabaseDAO.selectValue<Boolean>("""
+                SELECT EXISTS(
+                    SELECT *
+                    FROM users
+                    WHERE users.email= '$email'
+                ) as boolean
+            """) ?: throw IllegalStateException("Could not retrieve data")
+        }
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
