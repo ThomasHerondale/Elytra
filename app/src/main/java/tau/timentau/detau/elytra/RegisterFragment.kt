@@ -108,11 +108,14 @@ class RegisterFragment : Fragment() {
     }
 
     private fun validateSexSelection(): Boolean {
-        val resId =
-            if (binding.sexChips.noChipSelected())
-                R.drawable.sex_chipgroup_error_bground
-            else
-                0
+        var resId = 0
+
+        if (binding.sexChips.noChipSelected()) {
+            resId = R.drawable.sex_chipgroup_error_bground
+            binding.sexError.text = getString(R.string.seleziona_sesso)
+        } else {
+            binding.sexError.text = null
+        }
 
         binding.sexChips.setBackgroundResource(resId)
 
