@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Elytra</string>
     <string name="login_fallito">Login fallito</string>
-    <string name="dati_inseriti_ncorretti">I dati inseriti non sono corretti.</string>
+    <string name="dati_inseriti_incorretti">I dati inseriti non sono corretti.</string>
     <string name="okay">Okay</string>
     <string name="errore_connessione">Errore di connessione</string>
     <string name="imposs_connettersi_al_server">
         Impossibile connettersi al server di Elytra, riprova più tardi.
     </string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mail_invalida">Inserisci un indirizzo email valido</string>
+    <string name="mail_in_uso">Questo indirizzo email è già in uso</string>
 </resources>
