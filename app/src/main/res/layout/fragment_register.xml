@@ -94,7 +94,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/dateText"
-        app:layout_constraintTop_toBottomOf="@+id/confirmText">
+        app:layout_constraintTop_toBottomOf="@+id/confirmText"
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/maleChip"
