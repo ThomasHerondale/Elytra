@@ -7,13 +7,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), EntryActivity {
+class StartActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding : ActivityStartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityStartBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
     }
