@@ -4,6 +4,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.datetime.LocalDate
+import tau.timentau.detau.elytra.model.Sex
+import tau.timentau.detau.elytra.model.User
 
 object Repository {
 
@@ -15,9 +18,34 @@ object Repository {
                 SELECT EXISTS(
                     SELECT *
                     FROM users
-                    WHERE users.email = $email AND users.password = $password
+                    WHERE users.email = '$email' AND users.password = '$password'
                 ) as boolean
             """) ?: false
         }
+    }
+
+    suspend fun fetchUserData(email: String): Deferred<User> {
+        return coroutineScope.async {
+            val userDTO: UserDTO = DatabaseDAO.selectValue("""
+                SELECT *
+                FROM users
+                WHERE users.email ='$email'
+            """) ?: throw NotImplementedError()
+
+            userDTO.toUser()
+        }
+    }
+
+    private class UserDTO(
+        val email: String,
+        val fullName: String,
+        val birthDate: LocalDate,
+        val sex: Sex,
+        // todo avatar
+        val password: String,
+        val question: String,
+        val answer: String
+    ) {
+        fun toUser() = User(email, fullName, birthDate, sex)
     }
 }
