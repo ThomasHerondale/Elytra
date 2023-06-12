@@ -9,10 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.reflect.javaType
 import kotlin.reflect.typeOf
 
-private val valueTypeKeys = mapOf(
-    "%boolean%" to "boolean"
-)
-
 object DatabaseDAO {
 
     private val retrofit: Retrofit by lazy {
@@ -47,14 +43,8 @@ object DatabaseDAO {
 
     fun formatQuery(query: String): String {
         // elimina spazi e indentazioni
-        var formattedQuery = query
+        return query
             .trimIndent()
             .trim()
-
-        // sostituisci i placeholder per i tipi
-        for ((key, value) in valueTypeKeys) {
-            formattedQuery = formattedQuery.replace(key, value)
-        }
-        return formattedQuery
     }
 }
