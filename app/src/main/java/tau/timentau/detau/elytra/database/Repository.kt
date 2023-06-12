@@ -8,6 +8,7 @@ import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
+import tau.timentau.detau.elytra.toDateString
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -16,7 +17,6 @@ import java.util.Locale
 object Repository {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    private val dateFormatter =  SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     suspend fun userExists(email: String, password: String): Deferred<Boolean> {
         return coroutineScope.async {
@@ -44,7 +44,6 @@ object Repository {
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
     suspend fun createUser(
         email: String,
         fullName: String,
@@ -52,13 +51,10 @@ object Repository {
         sex: Sex,
         password: String
     ) {
-        val date = dateFormatter.parse("$birthDate")
-        val dateStr = dateFormatter.format(date!!)
-
         DatabaseDAO.insert("""
             INSERT
             INTO users(email, fullName, birthDate, sex, password)
-            VALUE ('$email', '$fullName', '$dateStr', '$sex', '$password')
+            VALUE ('$email', '$fullName', '${birthDate.toDateString()}', '$sex', '$password')
         """)
     }
 
