@@ -68,7 +68,7 @@ class RegisterFragment : Fragment() {
         val birthDate = binding.dateText.text.parseToDate()
         val sex = selectedSex()
 
-        Repository.createUser(fullName, email, password, birthDate, sex)
+        Repository.createUser(email, fullName, birthDate, sex, password)
     }
 
     private suspend fun checkMailField() {
@@ -87,6 +87,9 @@ class RegisterFragment : Fragment() {
 
             if (isEmailUsed)
                 binding.mailText.error = getString(R.string.mail_in_uso)
+
+            // nascondi la barra se già questo check fallisce, i.e. se c'è un errore
+            showOrHideProgressBar(binding.mailText.error == null)
         } catch (e: Exception) {
             Log.e(TAG, e.stackTraceToString())
             networkError()
