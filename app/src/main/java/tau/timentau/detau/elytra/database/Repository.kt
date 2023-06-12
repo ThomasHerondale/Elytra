@@ -50,6 +50,20 @@ object Repository {
         }
     }
 
+    suspend fun createUser(
+        email: String,
+        fullName: String,
+        birthDate: Date,
+        sex: Sex,
+        password: String
+    ) {
+        DatabaseDAO.insert("""
+            INSERT
+            INTO users(email, fullName, birthDate, sex, password)
+            VALUE ('$email', '$fullName', '$birthDate', '$sex', '$password')
+        """)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,

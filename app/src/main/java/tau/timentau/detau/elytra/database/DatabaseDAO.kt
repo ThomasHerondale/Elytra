@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra.database
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -43,6 +44,12 @@ object DatabaseDAO {
 
         val typeToken = typeOf<T>().javaType
         return parser.fromJson(jsonArray[0], typeToken)
+    }
+
+    suspend inline fun insert(query: String) {
+        val response = dbInterface.insert(formatQuery(query))
+        val body = response.body() ?: throw NetworkException("Server did not respond on insert")
+        Log.d("DB", "$body")
     }
 
     fun formatQuery(query: String): String {
