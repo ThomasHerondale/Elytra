@@ -1,42 +1,32 @@
 package tau.timentau.detau.elytra.database
 
-import com.google.gson.TypeAdapter
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonToken
-import com.google.gson.stream.JsonWriter
-import java.io.IOException
+import android.util.Log
+    import com.google.gson.TypeAdapter
+    import com.google.gson.stream.JsonReader
+    import com.google.gson.stream.JsonToken
+    import com.google.gson.stream.JsonWriter
+    import java.io.IOException
 
 class BooleanTypeAdapter : TypeAdapter<Boolean>() {
-    override fun write(out: JsonWriter?, value: Boolean?) {
-        // non necessario
+    override fun write(out: JsonWriter, value: Boolean?) {
+        value?.let { out.value(if (it) 1 else 0) }
     }
 
-    override fun read(`in`: JsonReader): Boolean {
-        when (val token = `in`.peek()) {
-            JsonToken.BEGIN_ARRAY -> {
-                `in`.beginArray()
-                val result = if (`in`.hasNext()) {
-                    `in`.beginObject()
-                    val fieldName = `in`.nextName()
-                    if (fieldName == "boolean") {
-                        val numberValue = `in`.nextInt()
-                        `in`.endObject()
-                        numberValue == 1
-                    } else {
-                        throw IOException("Invalid field name: $fieldName")
-                    }
+    override fun read(input: JsonReader): Boolean {
+        if (input.peek() == JsonToken.BEGIN_OBJECT) {
+            input.beginObject()
+            while (input.hasNext()) {
+                if (input.nextName() == "boolean") {
+                    val booleanValue = input.nextInt() == 1
+                    input.endObject()
+                    return booleanValue
                 } else {
-                    throw IOException("Empty array")
+                    input.skipValue()
                 }
-                `in`.endArray()
-                return result
             }
-            JsonToken.BOOLEAN -> {
-                return `in`.nextBoolean()
-            }
-            else -> {
-                throw IOException("Invalid token: $token")
-            }
+            input.endObject()
         }
+        return false
     }
 }
+
