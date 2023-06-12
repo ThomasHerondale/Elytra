@@ -5,7 +5,10 @@ import android.view.View
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.datetime.LocalDate
-import java.util.IllegalFormatException
+import java.text.SimpleDateFormat
+import java.util.Locale
+
+private val dateFormatter =  SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
 val TextInputLayout.text: String
     get() = editText?.text.toString()
@@ -22,3 +25,8 @@ fun String.parseToDate(): LocalDate {
 }
 
 fun ChipGroup.noChipSelected() = checkedChipId == View.NO_ID
+
+fun LocalDate.toDateString(): String {
+    val date = dateFormatter.parse("$this")
+    return dateFormatter.format(date!!)
+}
