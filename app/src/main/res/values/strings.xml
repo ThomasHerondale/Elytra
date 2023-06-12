@@ -9,4 +9,10 @@
     </string>
     <string name="mail_invalida">Inserisci un indirizzo email valido</string>
     <string name="mail_in_uso">Questo indirizzo email è già in uso</string>
+    <string name="pwd_corta">La password deve comprendere tra 6 e 18 caratteri</string>
+    <string name="pwd_spaziata">La password non può contenere spazi</string>
+    <string name="pwd_invalida">La password deve contenere almeno una lettera maiuscola,
+        una lettera minuscola e un numero
+    </string>
+    <string name="conferma_invalida">Le due password non coincidono</string>
 </resources>
