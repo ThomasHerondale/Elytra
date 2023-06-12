@@ -24,7 +24,7 @@ object DatabaseDAO {
         .registerTypeAdapter(Boolean::class.java, BooleanTypeAdapter())
         .create()
 
-    suspend inline fun <T> selectList(query: String): List<T> {
+    suspend inline fun <reified T> selectList(query: String): List<T> {
         val response = dbInterface.select(formatQuery(query))
         // workaround per tipizzare il token senza passare la classe di T per parametro ;)
         val typeToken = object : TypeToken<List<T>>() {}.type
