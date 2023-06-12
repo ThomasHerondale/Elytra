@@ -2,6 +2,7 @@ package tau.timentau.detau.elytra
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity(), EntryActivity {
     }
 
     override fun login(email: String) {
+        Log.v("LOGIN", "Logging user $email")
         TODO("Not yet implemented")
     }
 }

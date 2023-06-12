@@ -1,12 +1,16 @@
 package tau.timentau.detau.elytra
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -26,13 +30,23 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.loginBttn.setOnClickListener { attemptLogin(
+            binding.emailText.editText.toString()
+        ) }
     }
 
-    fun attemptLogin(email: String, password: String) {
-        // controllo repository
-        // se i dati sono corretti
-        (requireActivity() as EntryActivity).login(email)
+    private fun attemptLogin(email: String, password: String) {
+        Log.v("LOGIN", "Checking existence for ($email, $password)")
+        coroutineScope.launch {
+            val userExists = Repository.userExists(email, password).await()
+            if (userExists)
+                    (requireActivity() as EntryActivity).login(email)
+            else
+                loginIncorrect()
+        }
+    }
 
-        // altrimenti
+    private fun loginIncorrect() {
+
     }
 }
