@@ -69,7 +69,7 @@ class LoginFragment : Fragment() {
             ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
             .setTitle(getString(R.string.login_fallito))
-            .setMessage(R.string.dati_inseriti_ncorretti)
+            .setMessage(R.string.dati_inseriti_incorretti)
             .setIcon(R.drawable.ic_problem_48)
             .setPositiveButton(R.string.okay) { _, _ -> } // non fare nulla, il dismiss è automatico
             .show()
