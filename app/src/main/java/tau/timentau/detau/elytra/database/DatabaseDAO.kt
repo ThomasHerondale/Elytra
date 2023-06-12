@@ -9,6 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.reflect.javaType
 import kotlin.reflect.typeOf
 
+const val QUERYSET_KEY = "queryset"
+
 object DatabaseDAO {
 
     private val retrofit: Retrofit by lazy {
@@ -29,14 +31,14 @@ object DatabaseDAO {
         // workaround per tipizzare il token senza passare la classe di T per parametro ;)
         val typeToken = object : TypeToken<List<T>>() {}.type
 
-        return parser.fromJson(response.body()?.get("queryset"), typeToken) ?: listOf()
+        return parser.fromJson(response.body()?.get(QUERYSET_KEY), typeToken) ?: listOf()
     }
 
     @OptIn(ExperimentalStdlibApi::class)
     suspend inline fun <reified T> selectValue(query: String): T? {
         val response = dbInterface.select(formatQuery(query))
         val body = response.body() ?: return null
-        val jsonArray = body["queryset"].asJsonArray
+        val jsonArray = body[QUERYSET_KEY].asJsonArray
 
         // l'oggetto json dovrebbe contenere un solo valore
         if (jsonArray.size() != 1)
@@ -49,7 +51,9 @@ object DatabaseDAO {
     suspend inline fun insert(query: String) {
         val response = dbInterface.insert(formatQuery(query))
         val body = response.body() ?: throw NetworkException("Server did not respond on insert")
-        Log.d("DB", "$body")
+        val message = body[QUERYSET_KEY].asString
+
+        if (message != "insert executed!") throw NetworkException("Insert not succesful")
     }
 
     fun formatQuery(query: String): String {
