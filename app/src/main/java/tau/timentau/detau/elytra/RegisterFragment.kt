@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.todayIn
@@ -32,6 +31,8 @@ class RegisterFragment : Fragment() {
         binding.passText.editText?.setOnFocusChangeListener { _, _ -> validatePasswordField() }
         binding.confirmText.editText?.setOnFocusChangeListener { _, _ -> validateConfirmField() }
         binding.dateText.editText?.setOnFocusChangeListener { _, _ -> validateBirthDateField() }
+
+        binding.registerBttn.setOnClickListener { validateSexSelection() }
 
         return binding.root
     }
@@ -104,6 +105,19 @@ class RegisterFragment : Fragment() {
         }
 
         return binding.dateText.error == null
+    }
+
+    private fun validateSexSelection(): Boolean {
+        val resId =
+            if (binding.sexChips.noChipSelected())
+                R.drawable.sex_chipgroup_error_bground
+            else
+                0
+
+        binding.sexChips.setBackgroundResource(resId)
+
+        // resId == 0 -> no bground -> sesso selezionato
+        return resId == 0
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {

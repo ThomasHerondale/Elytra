@@ -1,6 +1,8 @@
 package tau.timentau.detau.elytra
 
 import android.util.Patterns
+import android.view.View
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.datetime.LocalDate
 import java.util.IllegalFormatException
@@ -18,3 +20,5 @@ fun String.parseToDate(): LocalDate {
     if (tokens.size != 3) throw IllegalArgumentException()
     return LocalDate.parse("${tokens[0]}-${tokens[1]}-${tokens[2]}")
 }
+
+fun ChipGroup.noChipSelected() = checkedChipId == View.NO_ID
