@@ -83,9 +83,10 @@ class SecurityQuestionDialog : DialogFragment() {
         coroutineScope.launch {
             val isAnswerOkay = handler.checkAnswer(answer).await()
 
-            if (isAnswerOkay)
-                TODO()
-            else
+            if (isAnswerOkay) {
+                dismiss()
+                handler.toPasswordReset()
+            } else
                 binding.answerText.error = getString(R.string.risposta_errata)
         }
             .invokeOnCompletion { enableOrDisableConfirmButton(false) }
@@ -129,5 +130,7 @@ class SecurityQuestionDialog : DialogFragment() {
         suspend fun fetchSecurityQuestion(): Deferred<String>
 
         suspend fun checkAnswer(answer: String): Deferred<Boolean>
+
+        fun toPasswordReset()
     }
 }

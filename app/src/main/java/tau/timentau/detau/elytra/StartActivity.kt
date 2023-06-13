@@ -11,7 +11,8 @@ import tau.timentau.detau.elytra.databinding.ActivityStartBinding
 class StartActivity :
     AppCompatActivity(),
     NavHostActivity,
-    SecurityQuestionDialog.SecurityQuestionHandler {
+    SecurityQuestionDialog.SecurityQuestionHandler,
+    PasswordResetDialog.PasswordResetHandler {
 
     private lateinit var binding : ActivityStartBinding
     private val navigator by lazy { getNavController() }
@@ -33,5 +34,9 @@ class StartActivity :
 
     override suspend fun checkAnswer(answer: String): Deferred<Boolean> {
         return Repository.isAnswerCorrect("test@test.com", answer)
+    }
+
+    override fun toPasswordReset() {
+        PasswordResetDialog().show(supportFragmentManager, "passwordReset")
     }
 }

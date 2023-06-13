@@ -23,4 +23,5 @@
     <string name="annulla">Annulla</string>
     <string name="risposta_errata">Risposta errata</string>
     <string name="inserisci_risposta">Inserisci una risposta</string>
+    <string name="reimposta_password">Reimposta password</string>
 </resources>
