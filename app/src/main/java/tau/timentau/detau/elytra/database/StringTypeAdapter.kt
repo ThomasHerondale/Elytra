@@ -15,21 +15,8 @@ class StringTypeAdapter: TypeAdapter<String>() {
         `in`.beginObject()
         while (`in`.hasNext()) {
             val name = `in`.nextName()
-            if (name == "queryset") {
-                `in`.beginArray()
-                while (`in`.hasNext()) {
-                    `in`.beginObject()
-                    while (`in`.hasNext()) {
-                        val innerName = `in`.nextName()
-                        if (innerName == "string") {
-                            result = `in`.nextString()
-                        } else {
-                            `in`.skipValue()
-                        }
-                    }
-                    `in`.endObject()
-                }
-                `in`.endArray()
+            if (name == "string") {
+                result = `in`.nextString()
             } else {
                 `in`.skipValue()
             }
