@@ -4,13 +4,16 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.DialogSecurityQuestionBinding
 
 class SecurityQuestionDialog : DialogFragment() {
@@ -45,15 +48,20 @@ class SecurityQuestionDialog : DialogFragment() {
         } ?: throw IllegalStateException("No activity to attach dialog")
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         showSecurityQuestion()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     private fun showSecurityQuestion() {
         coroutineScope.launch {
             val question = handler.fetchSecurityQuestion().await()
 
+            println(question)
             // show layout
             binding.questionText.text = question
             binding.questionText.visibility = View.VISIBLE

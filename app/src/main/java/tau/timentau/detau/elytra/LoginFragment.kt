@@ -20,7 +20,7 @@ import tau.timentau.detau.elytra.databinding.FragmentLoginBinding
 
 private const val TAG = "LOGIN"
 
-class LoginFragment : Fragment(), SecurityQuestionDialog.SecurityQuestionHandler {
+class LoginFragment : Fragment() {
 
     private lateinit var binding : FragmentLoginBinding
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
@@ -103,9 +103,5 @@ class LoginFragment : Fragment(), SecurityQuestionDialog.SecurityQuestionHandler
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.loginProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
-    }
-
-    override suspend fun fetchSecurityQuestion(): Deferred<String> {
-        TODO()
     }
 }
