@@ -61,9 +61,9 @@ class SecurityQuestionDialog : DialogFragment() {
         coroutineScope.launch {
             val question = handler.fetchSecurityQuestion().await()
 
-            println(question)
-            // show layout
             binding.questionText.text = question
+            // show layout
+            binding.questionProgress.visibility = View.GONE
             binding.questionText.visibility = View.VISIBLE
             binding.answerText.visibility = View.VISIBLE
         }
