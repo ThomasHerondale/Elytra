@@ -55,14 +55,10 @@ class RegisterFragment : Fragment() {
         binding.registerBttn.setOnClickListener {
             showOrHideProgressBar(false)
 
-            coroutineScope.launch { checkMailField() }.invokeOnCompletion {
-                showOrHideProgressBar(true)
-                val isEmailOkay = binding.mailText.error == null
-
-                if (isEmailOkay and validateForm()) {
-                    showOrHideProgressBar(false)
-                    coroutineScope.launch { registerUser() }.invokeOnCompletion {
-                    }
+            coroutineScope.launch {
+                if (checkMailField() and validateForm()) {
+                    registerUser()
+                    // todo return to login screen
                 }
             }
         }
@@ -78,7 +74,7 @@ class RegisterFragment : Fragment() {
         Repository.createUser(email, fullName, birthDate, sex, password)
     }
 
-    private suspend fun checkMailField() {
+    private suspend fun checkMailField(): Boolean {
         try {
             val isEmailUsed = Repository.isMailUsed(binding.mailText.text).await()
 
@@ -95,12 +91,14 @@ class RegisterFragment : Fragment() {
             if (isEmailUsed)
                 binding.mailText.error = getString(R.string.mail_in_uso)
 
-            // nascondi la barra se già questo check fallisce, i.e. se c'è un errore
-            showOrHideProgressBar(binding.mailText.error == null)
+            showOrHideProgressBar(true)
+            return binding.mailText.error == null
         } catch (e: Exception) {
             Log.e(TAG, e.stackTraceToString())
             networkError()
+
             showOrHideProgressBar(true)
+            return false
         }
     }
 
