@@ -24,4 +24,6 @@
     <string name="risposta_errata">Risposta errata</string>
     <string name="inserisci_risposta">Inserisci una risposta</string>
     <string name="reimposta_password">Reimposta password</string>
+    <string name="password_reimpostata">Password reimpostata</string>
+    <string name="password_reset_conferma">La tua password è stata reimpostata correttamente.</string>
 </resources>

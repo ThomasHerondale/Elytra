@@ -70,6 +70,7 @@ class PasswordResetDialog : DialogFragment() {
         coroutineScope.launch {
             handler.resetPassword(password)
             dismiss()
+            handler.toPasswordResetConfirm()
         }
             .invokeOnCompletion { showOrHideProgressBar(true) }
     }
@@ -109,5 +110,7 @@ class PasswordResetDialog : DialogFragment() {
     interface PasswordResetHandler {
 
         suspend fun resetPassword(newPassword: String)
+
+        fun toPasswordResetConfirm()
     }
 }
