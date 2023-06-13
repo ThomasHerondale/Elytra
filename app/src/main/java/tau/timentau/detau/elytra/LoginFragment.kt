@@ -44,6 +44,10 @@ class LoginFragment : Fragment() {
         binding.loginBttn.setOnClickListener {
             attemptLogin(binding.emailText.text, binding.pwdText.text)
         }
+
+        binding.noAccountBttn.setOnClickListener {
+            navHostActivity.navigateTo(LoginFragmentDirections.loginToRegister())
+        }
     }
 
     private fun attemptLogin(email: String, password: String) {
