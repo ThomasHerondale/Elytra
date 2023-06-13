@@ -58,7 +58,7 @@ class RegisterFragment : Fragment() {
             coroutineScope.launch {
                 if (checkMailField() and validateForm()) {
                     registerUser()
-                    // todo return to login screen
+                    navHostActivity.navigateTo(RegisterFragmentDirections.registerToLogin())
                 }
             }
         }
