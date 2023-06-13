@@ -50,9 +50,31 @@ class SecurityQuestionDialog : DialogFragment() {
     ): View? {
         showSecurityQuestion()
 
-        binding.securityQuestionDialogBottomButtons.negativeButton.setOnClickListener { dismiss() }
+        binding.securityQuestionDialogBottomButtons.negativeButton
+            .setOnClickListener { dismiss() }
+
+        binding.securityQuestionDialogBottomButtons.positiveButton
+            .setOnClickListener { answerConfirmed() }
 
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    private fun answerConfirmed() {
+        val answer = binding.answerText.text
+        // non inviare risposte vuote
+        if (answer.isBlank()) {
+            binding.answerText.error = getString(R.string.inserisci_risposta)
+            return
+        }
+
+        coroutineScope.launch {
+            val isAnswerOkay = handler.checkAnswer(answer).await()
+
+            if (isAnswerOkay)
+                TODO()
+            else
+                binding.answerText.error = getString(R.string.risposta_errata)
+        }
     }
 
     private fun showSecurityQuestion() {
@@ -77,6 +99,9 @@ class SecurityQuestionDialog : DialogFragment() {
     }
 
     interface SecurityQuestionHandler {
+
         suspend fun fetchSecurityQuestion(): Deferred<String>
+
+        suspend fun checkAnswer(answer: String): Deferred<Boolean>
     }
 }

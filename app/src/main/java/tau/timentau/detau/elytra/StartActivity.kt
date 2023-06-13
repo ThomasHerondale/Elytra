@@ -30,4 +30,8 @@ class StartActivity :
     override suspend fun fetchSecurityQuestion(): Deferred<String> {
         return Repository.getSecurityQuestion("test@test.com")
     }
+
+    override suspend fun checkAnswer(answer: String): Deferred<Boolean> {
+        return Repository.isAnswerCorrect("test@test.com", answer)
+    }
 }

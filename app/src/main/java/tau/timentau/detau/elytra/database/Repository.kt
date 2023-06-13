@@ -76,6 +76,18 @@ object Repository {
         }
     }
 
+    suspend fun isAnswerCorrect(email: String, answer: String): Deferred<Boolean> {
+        return coroutineScope.async {
+            DatabaseDAO.selectValue<Boolean>("""
+                SELECT EXISTS(
+                    SELECT *
+                    FROM users
+                    WHERE users.email = '$email' and answer = '$answer'
+                ) as boolean
+            """) ?: throw IllegalStateException("Could not retrieve data")
+        }
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
