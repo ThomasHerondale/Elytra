@@ -68,7 +68,8 @@ class SecurityQuestionDialog : DialogFragment() {
     }
 
     private fun enableOrDisableConfirmButton(disable: Boolean) {
-        binding.bottomButtons.positiveButton.isEnabled = !disable
+        binding.securityQuestionDialogBottomButtons
+            .positiveButton.isEnabled = !disable
     }
 
     interface SecurityQuestionHandler {

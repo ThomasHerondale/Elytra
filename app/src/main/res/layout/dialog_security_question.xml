@@ -51,7 +51,7 @@
         app:barrierDirection="bottom" />
 
     <include
-        android:id="@+id/bottomButtons"
+        android:id="@+id/security_question_dialogBottomButtons"
         layout="@layout/dialog_bottom_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
