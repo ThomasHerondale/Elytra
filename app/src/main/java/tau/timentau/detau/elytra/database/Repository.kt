@@ -66,6 +66,16 @@ object Repository {
         """)
     }
 
+    suspend fun getSecurityQuestion(email: String): Deferred<String> {
+        return coroutineScope.async {
+            DatabaseDAO.selectValue<String>("""
+                SELECT security_questions.question as string
+                FROM users JOIN security_questions on users.question = security_questions.id
+                WHERE users.email = 'test@test.com' 
+            """) ?: throw IllegalStateException("Could not retrieve data")
+        }
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
