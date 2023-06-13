@@ -24,6 +24,7 @@ object DatabaseDAO {
 
     val parser: Gson = GsonBuilder()
         .registerTypeAdapter(Boolean::class.java, BooleanTypeAdapter())
+        .registerTypeAdapter(String::class.java, StringTypeAdapter())
         .create()
 
     suspend inline fun <reified T> selectList(query: String): List<T> {
