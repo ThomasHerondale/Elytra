@@ -39,4 +39,8 @@ class StartActivity :
     override fun toPasswordReset() {
         PasswordResetDialog().show(supportFragmentManager, "passwordReset")
     }
+
+    override suspend fun resetPassword(password: String) {
+        TODO("Not yet implemented")
+    }
 }
