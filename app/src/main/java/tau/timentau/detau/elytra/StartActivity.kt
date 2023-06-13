@@ -1,11 +1,24 @@
 package tau.timentau.detau.elytra
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavDirections
+import tau.timentau.detau.elytra.databinding.ActivityStartBinding
 
-class StartActivity : AppCompatActivity() {
+class StartActivity : AppCompatActivity(), NavHostActivity {
+
+    private lateinit var binding : ActivityStartBinding
+    private val navigator by lazy { getNavController() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_start)
+        binding = ActivityStartBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+    }
+
+    override fun navigateTo(directions: NavDirections) {
+        navigator.navigate(directions)
     }
 }
