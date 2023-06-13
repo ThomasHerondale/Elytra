@@ -57,6 +57,14 @@ object DatabaseDAO {
         if (message != "insert executed!") throw NetworkException("Insert not succesful")
     }
 
+    suspend inline fun update(query: String) {
+        val response = dbInterface.update(formatQuery(query))
+        val body = response.body() ?: throw NetworkException("Server did not respond on update")
+        val message = body[QUERYSET_KEY].asString
+
+        if (message != "update executed!") throw NetworkException("Update not succesful")
+    }
+
     fun formatQuery(query: String): String {
         // elimina spazi e indentazioni
         return query
