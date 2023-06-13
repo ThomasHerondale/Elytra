@@ -73,7 +73,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun showRestorePasswordDialog() {
-        SecurityQuestionDialog().show(parentFragmentManager, "securityQuestion")
+        InsertEmailDialog().show(parentFragmentManager, "insertEmail")
     }
 
     private fun loginIncorrect() {

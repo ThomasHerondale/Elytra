@@ -13,10 +13,21 @@ class StartActivity :
     AppCompatActivity(),
     NavHostActivity,
     SecurityQuestionDialog.SecurityQuestionHandler,
-    PasswordResetDialog.PasswordResetHandler {
+    PasswordResetDialog.PasswordResetHandler,
+    InsertEmailDialog.InsertEmailHandler {
 
     private lateinit var binding : ActivityStartBinding
     private val navigator by lazy { getNavController() }
+
+    private var _emailForPasswordReset: String? = null
+        // vista non nullabile
+    private val emailForPasswordReset: String
+        get() {
+            if (_emailForPasswordReset != null)
+                return _emailForPasswordReset as String
+            else
+                throw IllegalStateException("No email for password reset has been set")
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +40,12 @@ class StartActivity :
         navigator.navigate(directions)
     }
 
-    // todo email dialog
-
     override suspend fun fetchSecurityQuestion(): Deferred<String> {
-        return Repository.getSecurityQuestion("test@test.com")
+        return Repository.getSecurityQuestion(emailForPasswordReset)
     }
 
     override suspend fun checkAnswer(answer: String): Deferred<Boolean> {
-        return Repository.isAnswerCorrect("test@test.com", answer)
+        return Repository.isAnswerCorrect(emailForPasswordReset, answer)
     }
 
     override fun toPasswordReset() {
@@ -44,7 +53,7 @@ class StartActivity :
     }
 
     override suspend fun resetPassword(newPassword: String) {
-        Repository.resetPassword("test@test.com", newPassword)
+        Repository.resetPassword(emailForPasswordReset, newPassword)
     }
 
     override fun toPasswordResetConfirm() {
@@ -57,5 +66,14 @@ class StartActivity :
             .setIcon(R.drawable.ic_check_circle_24)
             .setPositiveButton(R.string.okay) { _, _ -> }
             .show()
+    }
+
+    override suspend fun checkEmailExistence(email: String): Deferred<Boolean> {
+        return Repository.isMailUsed(email)
+    }
+
+    override fun setEmailForPasswordReset(email: String) {
+        _emailForPasswordReset = email
+        SecurityQuestionDialog().show(supportFragmentManager, "securityQuestion")
     }
 }
