@@ -1,6 +1,5 @@
 package tau.timentau.detau.elytra
 
-import androidx.appcompat.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -12,7 +11,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.databinding.DialogSecurityQuestionBinding
 
@@ -28,8 +26,8 @@ class SecurityQuestionDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            val builder = MaterialAlertDialogBuilder(it)
+        return activity?.let { activity ->
+            val builder = MaterialAlertDialogBuilder(activity)
 
             val layoutInflater = requireActivity().layoutInflater
             binding = DialogSecurityQuestionBinding.inflate(layoutInflater)
@@ -38,6 +36,9 @@ class SecurityQuestionDialog : DialogFragment() {
                 .setTitle(getString(R.string.domanda_sicurezza))
                 .setView(binding.root)
                 .create()
+                .also {
+                    it.setCanceledOnTouchOutside(false)
+                }
 
         } ?: throw IllegalStateException("No activity to attach dialog")
     }
@@ -48,6 +49,9 @@ class SecurityQuestionDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         showSecurityQuestion()
+
+        binding.securityQuestionDialogBottomButtons.negativeButton.setOnClickListener { dismiss() }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
