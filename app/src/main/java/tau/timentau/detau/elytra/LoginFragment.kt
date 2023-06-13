@@ -5,11 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.database.Repository
@@ -17,7 +20,7 @@ import tau.timentau.detau.elytra.databinding.FragmentLoginBinding
 
 private const val TAG = "LOGIN"
 
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(), SecurityQuestionDialog.SecurityQuestionHandler {
 
     private lateinit var binding : FragmentLoginBinding
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
@@ -48,6 +51,8 @@ class LoginFragment : Fragment() {
         binding.noAccountBttn.setOnClickListener {
             navHostActivity.navigateTo(LoginFragmentDirections.loginToRegister())
         }
+
+        binding.pwdForgotBttn.setOnClickListener { showRestorePasswordDialog() }
     }
 
     private fun attemptLogin(email: String, password: String) {
@@ -65,6 +70,10 @@ class LoginFragment : Fragment() {
             else
                 loginIncorrect()
         }
+    }
+
+    private fun showRestorePasswordDialog() {
+        SecurityQuestionDialog().show(parentFragmentManager, "securityQuestion")
     }
 
     private fun loginIncorrect() {
@@ -94,5 +103,9 @@ class LoginFragment : Fragment() {
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.loginProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    override suspend fun fetchSecurityQuestion(): Deferred<String> {
+        TODO()
     }
 }
