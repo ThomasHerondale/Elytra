@@ -1,7 +1,6 @@
 package tau.timentau.detau.elytra
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
 import kotlinx.coroutines.Deferred
@@ -28,6 +27,8 @@ class StartActivity :
         navigator.navigate(directions)
     }
 
+    // todo email dialog
+
     override suspend fun fetchSecurityQuestion(): Deferred<String> {
         return Repository.getSecurityQuestion("test@test.com")
     }
@@ -40,7 +41,7 @@ class StartActivity :
         PasswordResetDialog().show(supportFragmentManager, "passwordReset")
     }
 
-    override suspend fun resetPassword(password: String) {
-        TODO("Not yet implemented")
+    override suspend fun resetPassword(newPassword: String) {
+        Repository.resetPassword("test@test.com", newPassword)
     }
 }

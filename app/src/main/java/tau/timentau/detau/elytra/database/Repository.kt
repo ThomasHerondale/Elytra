@@ -88,6 +88,14 @@ object Repository {
         }
     }
 
+    suspend fun resetPassword(email: String, newPassword: String) {
+        DatabaseDAO.update("""
+            UPDATE users
+            SET password = '$newPassword'
+            WHERE email = '$email' 
+        """)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,

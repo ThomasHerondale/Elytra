@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.LifecycleCoroutineScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,10 +66,12 @@ class PasswordResetDialog : DialogFragment() {
     private fun resetConfirmed() {
         val password = binding.resetPasswordText.text
 
+        showOrHideProgressBar(false)
         coroutineScope.launch {
             handler.resetPassword(password)
             dismiss()
         }
+            .invokeOnCompletion { showOrHideProgressBar(true) }
     }
 
     private fun validatePasswordField(): Boolean {
@@ -101,8 +102,12 @@ class PasswordResetDialog : DialogFragment() {
         return binding.resetConfirmText.error == null
     }
 
+    private fun showOrHideProgressBar(hide: Boolean) {
+        binding.resetProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
     interface PasswordResetHandler {
 
-        suspend fun resetPassword(password: String)
+        suspend fun resetPassword(newPassword: String)
     }
 }
