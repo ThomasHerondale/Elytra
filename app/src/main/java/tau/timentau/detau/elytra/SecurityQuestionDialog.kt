@@ -1,6 +1,6 @@
 package tau.timentau.detau.elytra
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -12,8 +12,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.DialogSecurityQuestionBinding
 
 class SecurityQuestionDialog : DialogFragment() {
@@ -37,14 +37,8 @@ class SecurityQuestionDialog : DialogFragment() {
             builder
                 .setTitle(getString(R.string.domanda_sicurezza))
                 .setView(binding.root)
-                .setPositiveButton(getString(R.string.conferma)) { _, _ ->
+                .create()
 
-                }
-                .setNegativeButton(getString(R.string.annulla)) { _, _ ->
-
-                }
-
-            builder.create()
         } ?: throw IllegalStateException("No activity to attach dialog")
     }
 
@@ -58,6 +52,8 @@ class SecurityQuestionDialog : DialogFragment() {
     }
 
     private fun showSecurityQuestion() {
+        enableOrDisableConfirmButton(true)
+
         coroutineScope.launch {
             val question = handler.fetchSecurityQuestion().await()
 
@@ -66,7 +62,13 @@ class SecurityQuestionDialog : DialogFragment() {
             binding.questionProgress.visibility = View.GONE
             binding.questionText.visibility = View.VISIBLE
             binding.answerText.visibility = View.VISIBLE
+
+            enableOrDisableConfirmButton(false)
         }
+    }
+
+    private fun enableOrDisableConfirmButton(disable: Boolean) {
+        binding.bottomButtons.positiveButton.isEnabled = !disable
     }
 
     interface SecurityQuestionHandler {
