@@ -3,21 +3,31 @@ package tau.timentau.detau.elytra
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.databinding.DialogPasswordResetBinding
 
+private const val TAG = "PASSWORD_RESET"
+
 class PasswordResetDialog : DialogFragment() {
 
     private lateinit var binding: DialogPasswordResetBinding
     private lateinit var handler: PasswordResetHandler
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        networkError()
+        Log.e(TAG, e.stackTraceToString())
+    }
+    private val coroutineScope = CoroutineScope(
+        Dispatchers.Main + coroutineExceptionHandler
+    )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -105,6 +115,18 @@ class PasswordResetDialog : DialogFragment() {
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.resetProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun networkError() {
+        MaterialAlertDialogBuilder(
+            requireActivity(),
+            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(R.string.errore_connessione)
+            .setMessage(R.string.imposs_connettersi_al_server)
+            .setIcon(R.drawable.ic_link_off_24)
+            .setPositiveButton(R.string.okay) { _, _ -> }
+            .show()
     }
 
     interface PasswordResetHandler {
