@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -77,6 +78,17 @@ class InsertEmailDialog : DialogFragment() {
                 }
             }
 
+        // disabilita il pulsante di conferma all'avvio
+        enableOrDisableConfirmButton(true)
+
+        binding.mailForResetText.editText!!.addTextChangedListener {
+            // ad ogni cambiamento del testo
+            if (it.isNullOrBlank())
+                enableOrDisableConfirmButton(true)
+            else
+                enableOrDisableConfirmButton(false)
+        }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -96,6 +108,11 @@ class InsertEmailDialog : DialogFragment() {
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.mailCheckProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun enableOrDisableConfirmButton(disable: Boolean) {
+        binding.insertEmailDialogBottomButtons
+            .positiveButton.isEnabled = !disable
     }
 
     private fun networkError() {
