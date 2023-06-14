@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra.database
 
+import android.graphics.Bitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -128,6 +129,23 @@ object Repository {
         """)
     }
 
+    suspend fun getAvatars(): List<Bitmap> {
+        val paths = DatabaseDAO.selectList<AvatarDTO>("""
+            SELECT *
+            FROM avatar_images
+        """).map { it.path }
+
+        val images = mutableListOf<Bitmap>()
+
+        for (path in paths) {
+            images.add(
+                DatabaseDAO.getImage(path)
+            )
+        }
+
+        return images
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
@@ -141,7 +159,12 @@ object Repository {
         fun toUser() = User(email, fullName, birthDate, sex)
     }
 
-    private data class QuestionDTO(
+    private class QuestionDTO(
         val question: String
+    )
+
+    private class AvatarDTO(
+        val id: Int,
+        val path: String
     )
 }
