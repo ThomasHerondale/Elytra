@@ -47,3 +47,10 @@ val Fragment.navHostActivity: NavHostActivity
             throw e
         }
     }
+
+val AppCompatActivity.EMAIL_KEY: String
+    get() = "email"
+
+val AppCompatActivity.loggedEmail: String
+    get() = intent.getStringExtra(EMAIL_KEY) ?:
+        throw IllegalStateException("Could not retrieve logged user email")
