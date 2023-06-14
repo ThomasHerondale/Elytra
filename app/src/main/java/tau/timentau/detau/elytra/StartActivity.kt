@@ -39,7 +39,7 @@ class StartActivity :
 
     fun login(email: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("EMAIL", email)
+            putExtra(EMAIL_KEY, email)
         }
         startActivity(intent)
     }
