@@ -1,6 +1,5 @@
 package tau.timentau.detau.elytra.database
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -22,17 +21,19 @@ object DatabaseDAO {
 
     val dbInterface: DatabaseAPI by lazy { retrofit.create(DatabaseAPI::class.java) }
 
-    val parser: Gson = GsonBuilder()
+    val valueParser: Gson = GsonBuilder()
         .registerTypeAdapter(Boolean::class.java, BooleanTypeAdapter())
         .registerTypeAdapter(String::class.java, StringTypeAdapter())
         .create()
+
+    val listParser = Gson()
 
     suspend inline fun <reified T> selectList(query: String): List<T> {
         val response = dbInterface.select(formatQuery(query))
         // workaround per tipizzare il token senza passare la classe di T per parametro ;)
         val typeToken = object : TypeToken<List<T>>() {}.type
 
-        return parser.fromJson(response.body()?.get(QUERYSET_KEY), typeToken) ?: listOf()
+        return listParser.fromJson(response.body()?.get(QUERYSET_KEY), typeToken) ?: listOf()
     }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -46,7 +47,7 @@ object DatabaseDAO {
             throw IllegalStateException("Query didn't return single value")
 
         val typeToken = typeOf<T>().javaType
-        return parser.fromJson(jsonArray[0], typeToken)
+        return valueParser.fromJson(jsonArray[0], typeToken)
     }
 
     suspend inline fun insert(query: String) {
