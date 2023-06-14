@@ -1,6 +1,5 @@
 package tau.timentau.detau.elytra
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
@@ -33,9 +32,6 @@ class StartActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
-
-        // todo remove
-        startActivity(Intent(this, MainActivity::class.java))
 
         setContentView(binding.root)
     }
