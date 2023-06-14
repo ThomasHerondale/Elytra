@@ -3,11 +3,13 @@ package tau.timentau.detau.elytra
 import android.content.Intent
 import android.util.Patterns
 import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
@@ -63,5 +65,25 @@ fun AppCompatActivity.startLoggedActivity(intent: Intent) {
     } catch (e: java.lang.IllegalStateException) {
         throw IllegalStateException(
             "This method should be called from another logged activity.", e)
+    }
+}
+
+fun MaterialAutoCompleteTextView.setOnItemSelectedListener(
+    onItemSelected: (AdapterView<*>, View, Int, Long) -> Unit
+) {
+    onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+            parent: AdapterView<*>?,
+            view: View?,
+            position: Int,
+            id: Long,
+        ) {
+
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            // do nothing
+        }
+
     }
 }
