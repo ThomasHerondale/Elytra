@@ -53,15 +53,22 @@ class SetSecurityQuestionDialog(
         savedInstanceState: Bundle?
     ): View? {
 
+        // disabilita il pulsante di conferma all'avvio
+        enableOrDisableConfirmButton(true)
+
         questionBox.setSimpleItems(questions)
 
-        binding.setSecurityQuestionBottomButtons.positiveButton
-            .setOnClickListener {
-                if (binding.setAnswerText.text.isNotBlank()) {
-                }
-            }
-
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    private fun showOrHideProgressBar(hide: Boolean) {
+        binding.setProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+
+    private fun enableOrDisableConfirmButton(disable: Boolean) {
+        binding.setSecurityQuestionBottomButtons
+            .positiveButton.isEnabled = !disable
     }
 
     interface SetSecurityQuestionHandler {
