@@ -3,6 +3,7 @@ package tau.timentau.detau.elytra
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +11,23 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.databinding.DialogSetSecurityQuestionBinding
 
-class SetSecurityQuestionDialog(
-    private val securityQuestions: List<String>
-) : DialogFragment() {
+class SetSecurityQuestionDialog(securityQuestions: List<String>) : DialogFragment() {
 
     private lateinit var binding: DialogSetSecurityQuestionBinding
     private lateinit var handler: SetSecurityQuestionHandler
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        dismiss()
+        handler.connectionError(e)
+        Log.e("SECURITY_QUESTION_SETUP", e.stackTraceToString())
+    }
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler)
+
 
     private val questions = securityQuestions.toTypedArray()
     private var selectedQuestion: String? = null
@@ -68,6 +78,19 @@ class SetSecurityQuestionDialog(
             enableOrDisableConfirmButton(false)
         }
 
+        binding.setSecurityQuestionBottomButtons.positiveButton.setOnClickListener {
+            showOrHideProgressBar(false)
+
+            coroutineScope.launch {
+                handler.questionSelected(selectedQuestion!!, binding.setAnswerText.text)
+            }
+                .invokeOnCompletion {
+                    showOrHideProgressBar(true)
+                    handler.toAvatarSelection()
+                    dismiss()
+                }
+        }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -85,6 +108,11 @@ class SetSecurityQuestionDialog(
     }
 
     interface SetSecurityQuestionHandler {
-        fun choiceDone(question: String, answer: String)
+
+        suspend fun questionSelected(question: String, answer: String)
+
+        fun toAvatarSelection()
+
+        fun connectionError(e: Throwable)
     }
 }

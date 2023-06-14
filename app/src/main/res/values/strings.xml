@@ -32,4 +32,7 @@
     <string name="discover">Discover</string>
     <string name="voli">Voli</string>
     <string name="prenotazioni">Prenotazioni</string>
+    <string name="imposs_connettersi_al_server_torna_al_login">
+        Impossibile connettersi al server di Elytra, effettua nuovamente il login o riprova più tardi.
+    </string>
 </resources>

@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
@@ -27,19 +28,23 @@ class MainActivity : AppCompatActivity(), SetSecurityQuestionDialog.SetSecurityQ
     private fun checkForFirstAccess() {
         val progressDialog = showProgressDialog()
 
-        // todo exception
-        CoroutineScope(Dispatchers.Main).launch {
-            val isFirstAccess = Repository.isFirstAccess(loggedEmail).await()
-            if (isFirstAccess) {
-                Log.i("FIRST_ACCESS", "User $loggedEmail first access")
+        try {
+            CoroutineScope(Dispatchers.Main).launch {
+                val isFirstAccess = Repository.isFirstAccess(loggedEmail).await()
+                if (isFirstAccess) {
+                    Log.i("FIRST_ACCESS", "User $loggedEmail first access")
 
-                val questions = Repository.getSecurityQuestions().await()
-                Log.i("FIRST_ACCESS", "Fetched questions from database")
+                    val questions = Repository.getSecurityQuestions().await()
+                    Log.i("FIRST_ACCESS", "Fetched questions from database")
 
-                startFirstAccessProcedure(questions)
+                    startFirstAccessProcedure(questions)
+                }
             }
+                .invokeOnCompletion { progressDialog.cancel() }
+        } catch (e: Exception) {
+            Log.e("FIRST_ACCESS", e.stackTraceToString())
+            networkErrorOnFirstAccess()
         }
-            .invokeOnCompletion { progressDialog.cancel() }
 
     }
 
@@ -58,7 +63,34 @@ class MainActivity : AppCompatActivity(), SetSecurityQuestionDialog.SetSecurityQ
             .show()
     }
 
-    override fun choiceDone(question: String, answer: String) {
+    private fun networkErrorOnFirstAccess() {
+        MaterialAlertDialogBuilder(
+            this,
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(R.string.errore_connessione)
+            .setMessage(R.string.imposs_connettersi_al_server_torna_al_login)
+            .setIcon(R.drawable.ic_link_off_24)
+            .setPositiveButton(R.string.okay) { _, _ ->
+                goBackToLogin()
+            }
+            .show()
+    }
+
+    private fun goBackToLogin() {
+        startActivity(Intent(this, StartActivity::class.java))
+    }
+
+    override suspend fun questionSelected(question: String, answer: String) {
+        Repository.setupSecurityQuestion(loggedEmail, question, answer)
+    }
+
+    override fun toAvatarSelection() {
         TODO("Not yet implemented")
+    }
+
+    override fun connectionError(e: Throwable) {
+        Log.e("FIRST_ACCESS", e.stackTraceToString())
+        networkErrorOnFirstAccess()
     }
 }
