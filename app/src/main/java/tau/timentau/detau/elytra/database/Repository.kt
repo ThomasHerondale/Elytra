@@ -115,6 +115,19 @@ object Repository {
         }
     }
 
+    suspend fun setupSecurityQuestion(email: String, question: String, answer: String) {
+        DatabaseDAO.update("""
+            UPDATE users u
+            SET u.question = (
+                SELECT sq.id
+                FROM security_questions sq
+                WHERE sq.question = '$question'
+                ),
+                u.answer = '$answer'
+            WHERE u.email = '$email'
+        """)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
