@@ -78,7 +78,7 @@ fun MaterialAutoCompleteTextView.setOnItemSelectedListener(
             position: Int,
             id: Long,
         ) {
-
+            onItemSelected(parent, view, position, id)
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
