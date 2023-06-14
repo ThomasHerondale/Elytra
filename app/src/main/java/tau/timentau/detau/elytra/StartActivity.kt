@@ -3,7 +3,6 @@ package tau.timentau.detau.elytra
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.navigation.NavDirections
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -33,8 +32,6 @@ class StartActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // estendi l'app sotto alle barre
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityStartBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
