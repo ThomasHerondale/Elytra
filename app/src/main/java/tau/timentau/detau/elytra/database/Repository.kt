@@ -129,21 +129,23 @@ object Repository {
         """)
     }
 
-    suspend fun getAvatars(): List<Bitmap> {
-        val paths = DatabaseDAO.selectList<AvatarDTO>("""
-            SELECT *
-            FROM avatar_images
-        """).map { it.path }
+    suspend fun getAvatars(): Deferred<List<Bitmap>> {
+        return coroutineScope.async {
+            val paths = DatabaseDAO.selectList<AvatarDTO>("""
+                SELECT *
+                FROM avatar_images
+            """).map { it.path }
 
-        val images = mutableListOf<Bitmap>()
+            val images = mutableListOf<Bitmap>()
 
-        for (path in paths) {
-            images.add(
-                DatabaseDAO.getImage(path)
-            )
+            for (path in paths) {
+                images.add(
+                    DatabaseDAO.getImage(path)
+                )
+            }
+
+            images
         }
-
-        return images
     }
 
     private class UserDTO(
