@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -58,6 +59,15 @@ class SetSecurityQuestionDialog(
 
         questionBox.setSimpleItems(questions)
 
+        questionBox.setOnItemClickListener { adapter, _, position, _ ->
+            selectedQuestion = adapter.getItemAtPosition(position) as String
+            enableOrDisableConfirmButton(false)
+        }
+
+        binding.setAnswerText.editText?.doOnTextChanged { _, _, _, _ ->
+            enableOrDisableConfirmButton(false)
+        }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -67,8 +77,11 @@ class SetSecurityQuestionDialog(
 
 
     private fun enableOrDisableConfirmButton(disable: Boolean) {
-        binding.setSecurityQuestionBottomButtons
-            .positiveButton.isEnabled = !disable
+        binding.setSecurityQuestionBottomButtons.positiveButton.isEnabled =
+            !disable &&
+            selectedQuestion != null && // abilita solo se la domanda è stata selezionata
+            binding.setAnswerText.text.isNotBlank() // abilita solo se la risposta non è vuota
+
     }
 
     interface SetSecurityQuestionHandler {
