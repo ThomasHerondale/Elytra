@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra
 
+import android.content.Intent
 import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -43,8 +44,9 @@ val Fragment.navHostActivity: NavHostActivity
         try {
             return requireActivity() as NavHostActivity
         } catch (e: ClassCastException) {
-            System.err.println("Activity attached to this fragment is not a NavHostActivity")
-            throw e
+            throw IllegalStateException(
+                "Activity attached to this fragment is not a NavHostActivity", e
+            )
         }
     }
 
@@ -54,3 +56,12 @@ val AppCompatActivity.EMAIL_KEY: String
 val AppCompatActivity.loggedEmail: String
     get() = intent.getStringExtra(EMAIL_KEY) ?:
         throw IllegalStateException("Could not retrieve logged user email")
+
+fun AppCompatActivity.startLoggedActivity(intent: Intent) {
+    try {
+        intent.putExtra(EMAIL_KEY, loggedEmail)
+    } catch (e: java.lang.IllegalStateException) {
+        throw IllegalStateException(
+            "This method should be called from another logged activity.", e)
+    }
+}
