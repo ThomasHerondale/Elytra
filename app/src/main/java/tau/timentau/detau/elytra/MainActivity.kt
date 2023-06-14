@@ -1,6 +1,7 @@
 package tau.timentau.detau.elytra
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
@@ -8,12 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), SetSecurityQuestionDialog.SetSecurityQuestionHandler {
+class MainActivity :
+    AppCompatActivity(),
+    SetSecurityQuestionDialog.SetSecurityQuestionHandler,
+    SelectAvatarDialog.SelectAvatarHandler {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,5 +97,9 @@ class MainActivity : AppCompatActivity(), SetSecurityQuestionDialog.SetSecurityQ
     override fun connectionError(e: Throwable) {
         Log.e("FIRST_ACCESS", e.stackTraceToString())
         networkErrorOnFirstAccess()
+    }
+
+    override suspend fun fetchAvatars(): Deferred<List<Bitmap>> {
+        return Repository.getAvatars()
     }
 }
