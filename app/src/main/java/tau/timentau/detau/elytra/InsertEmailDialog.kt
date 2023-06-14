@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -118,7 +119,7 @@ class InsertEmailDialog : DialogFragment() {
     private fun networkError() {
         MaterialAlertDialogBuilder(
             requireActivity(),
-            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
             .setTitle(R.string.errore_connessione)
             .setMessage(R.string.imposs_connettersi_al_server)
