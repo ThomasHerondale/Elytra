@@ -5,11 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.database.Repository
@@ -44,6 +47,12 @@ class LoginFragment : Fragment() {
         binding.loginBttn.setOnClickListener {
             attemptLogin(binding.emailText.text, binding.pwdText.text)
         }
+
+        binding.noAccountBttn.setOnClickListener {
+            navHostActivity.navigateTo(LoginFragmentDirections.loginToRegister())
+        }
+
+        binding.pwdForgotBttn.setOnClickListener { showRestorePasswordDialog() }
     }
 
     private fun attemptLogin(email: String, password: String) {
@@ -63,13 +72,17 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private fun showRestorePasswordDialog() {
+        InsertEmailDialog().show(parentFragmentManager, "insertEmail")
+    }
+
     private fun loginIncorrect() {
         MaterialAlertDialogBuilder(
             requireActivity(),
             ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
             .setTitle(getString(R.string.login_fallito))
-            .setMessage(R.string.dati_inseriti_ncorretti)
+            .setMessage(R.string.dati_inseriti_incorretti)
             .setIcon(R.drawable.ic_problem_48)
             .setPositiveButton(R.string.okay) { _, _ -> } // non fare nulla, il dismiss è automatico
             .show()

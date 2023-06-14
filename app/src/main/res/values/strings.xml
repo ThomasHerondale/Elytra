@@ -1,10 +1,31 @@
 <resources>
     <string name="app_name">Elytra</string>
     <string name="login_fallito">Login fallito</string>
-    <string name="dati_inseriti_ncorretti">I dati inseriti non sono corretti.</string>
+    <string name="dati_inseriti_incorretti">I dati inseriti non sono corretti.</string>
     <string name="okay">Okay</string>
     <string name="errore_connessione">Errore di connessione</string>
     <string name="imposs_connettersi_al_server">
         Impossibile connettersi al server di Elytra, riprova più tardi.
     </string>
+    <string name="mail_invalida">Inserisci un indirizzo email valido</string>
+    <string name="mail_in_uso">Questo indirizzo email è già in uso</string>
+    <string name="pwd_corta">La password deve comprendere tra 6 e 18 caratteri</string>
+    <string name="pwd_spaziata">La password non può contenere spazi</string>
+    <string name="pwd_invalida">La password deve contenere almeno una lettera maiuscola,
+        una lettera minuscola e un numero
+    </string>
+    <string name="conferma_invalida">Le due password non coincidono</string>
+    <string name="data_invalida">Inserisci una data valida</string>
+    <string name="data_non_maggiorenne">Devi avere compiuto 18 anni</string>
+    <string name="seleziona_sesso">Seleziona il tuo sesso</string>
+    <string name="domanda_sicurezza">Domanda di sicurezza</string>
+    <string name="conferma">Conferma</string>
+    <string name="annulla">Annulla</string>
+    <string name="risposta_errata">Risposta errata</string>
+    <string name="inserisci_risposta">Inserisci una risposta</string>
+    <string name="reimposta_password">Reimposta password</string>
+    <string name="password_reimpostata">Password reimpostata</string>
+    <string name="password_reset_conferma">La tua password è stata reimpostata correttamente.</string>
+    <string name="inserisci_email">Inserisci indirizzo email</string>
+    <string name="email_non_associata_msg">Inserisci un indirizzo email associato ad un account</string>
 </resources>
