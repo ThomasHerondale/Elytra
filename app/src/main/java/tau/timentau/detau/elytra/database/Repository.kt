@@ -96,6 +96,15 @@ object Repository {
         """)
     }
 
+    suspend fun getSecurityQuestions(): Deferred<List<String>> {
+        return coroutineScope.async {
+            DatabaseDAO.selectList<QuestionDTO>("""
+                SELECT question
+                FROM security_questions
+            """).map { it.question }
+        }
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
@@ -108,4 +117,8 @@ object Repository {
     ) {
         fun toUser() = User(email, fullName, birthDate, sex)
     }
+
+    private data class QuestionDTO(
+        val question: String
+    )
 }
