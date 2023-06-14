@@ -28,4 +28,8 @@
     <string name="password_reset_conferma">La tua password è stata reimpostata correttamente.</string>
     <string name="inserisci_email">Inserisci indirizzo email</string>
     <string name="email_non_associata_msg">Inserisci un indirizzo email associato ad un account</string>
+    <string name="profile">profile</string>
+    <string name="discover">Discover</string>
+    <string name="voli">Voli</string>
+    <string name="prenotazioni">Prenotazioni</string>
 </resources>
