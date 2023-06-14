@@ -105,6 +105,16 @@ object Repository {
         }
     }
 
+    suspend fun isFirstAccess(email: String): Deferred<Boolean> {
+        return coroutineScope.async {
+            DatabaseDAO.selectValue<Boolean>("""
+                SELECT (question IS NULL) as boolean
+                FROM users
+                WHERE email = '$email'
+            """) ?: throw IllegalStateException("Could not retrieve data")
+        }
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
