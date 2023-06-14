@@ -34,8 +34,6 @@ class StartActivity :
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
 
-        SelectAvatarDialog().show(supportFragmentManager, "")
-
         setContentView(binding.root)
     }
 
