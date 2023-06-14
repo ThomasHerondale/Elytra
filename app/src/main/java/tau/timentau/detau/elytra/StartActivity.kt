@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
@@ -34,6 +35,13 @@ class StartActivity :
         binding = ActivityStartBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+    }
+
+    fun login(email: String) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("EMAIL", email)
+        }
+        startActivity(intent)
     }
 
     override fun navigateTo(directions: NavDirections) {

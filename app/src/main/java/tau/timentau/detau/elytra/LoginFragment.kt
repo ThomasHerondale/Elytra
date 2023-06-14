@@ -5,14 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.database.Repository
@@ -66,7 +63,7 @@ class LoginFragment : Fragment() {
             val userExists = Repository.userExists(email, password).await()
             showOrHideProgressBar(true)
             if (userExists)
-                    (requireActivity() as EntryActivity).login(email)
+                    (requireActivity() as StartActivity).login(email)
             else
                 loginIncorrect()
         }
