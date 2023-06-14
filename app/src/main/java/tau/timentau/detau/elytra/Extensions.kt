@@ -68,22 +68,8 @@ fun AppCompatActivity.startLoggedActivity(intent: Intent) {
     }
 }
 
-fun MaterialAutoCompleteTextView.setOnItemSelectedListener(
-    onItemSelected: (AdapterView<*>, View, Int, Long) -> Unit
+fun MaterialAutoCompleteTextView.setOnItemClickListener (
+    onItemClicked: (AdapterView<*>, View, Int, Long) -> Unit
 ) {
-    onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(
-            parent: AdapterView<*>?,
-            view: View?,
-            position: Int,
-            id: Long,
-        ) {
-            onItemSelected(parent, view, position, id)
-        }
-
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-            // do nothing
-        }
-
-    }
+    onItemClickListener = AdapterView.OnItemClickListener(onItemClicked)
 }
