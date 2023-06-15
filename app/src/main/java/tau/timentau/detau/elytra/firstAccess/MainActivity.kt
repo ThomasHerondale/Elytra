@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.firstAccess
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -12,9 +12,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.R
+import tau.timentau.detau.elytra.SetSecurityQuestionDialog
+import tau.timentau.detau.elytra.StartActivity
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
-import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
+import tau.timentau.detau.elytra.loggedEmail
 
 class MainActivity :
     AppCompatActivity(),
