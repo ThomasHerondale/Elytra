@@ -60,6 +60,7 @@ val AppCompatActivity.loggedEmail: String
 fun AppCompatActivity.startLoggedActivity(intent: Intent) {
     try {
         intent.putExtra(EMAIL_KEY, loggedEmail)
+        startActivity(intent)
     } catch (e: java.lang.IllegalStateException) {
         throw IllegalStateException(
             "This method should be called from another logged activity.", e)
