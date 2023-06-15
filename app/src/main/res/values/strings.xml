@@ -36,4 +36,6 @@
         Impossibile connettersi al server di Elytra, effettua nuovamente il login o riprova più tardi.
     </string>
     <string name="non_ora">Non ora</string>
+    <string name="avatar_impostato">Avatar impostato</string>
+    <string name="immagine_impostata">La tua immagine del profile è stata impostata correttamente.</string>
 </resources>

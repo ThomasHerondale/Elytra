@@ -148,6 +148,15 @@ object Repository {
         }
     }
 
+    suspend fun setAvatar(email: String, id: Int) {
+        val dbId = id + 1 // gli indici generati partono da 1
+        DatabaseDAO.update("""
+            UPDATE users
+            SET avatar = $dbId
+            WHERE email = '$email'
+        """)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,

@@ -102,4 +102,20 @@ class MainActivity :
     override suspend fun fetchAvatars(): Deferred<List<Bitmap>> {
         return Repository.getAvatars()
     }
+
+    override suspend fun avatarSelected(id: Int) {
+        Repository.setAvatar(loggedEmail, id)
+    }
+
+    override fun toAvatarSetConfirm() {
+        MaterialAlertDialogBuilder(
+            this,
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(getString(R.string.avatar_impostato))
+            .setMessage(getString(R.string.immagine_impostata))
+            .setIcon(R.drawable.ic_check_circle_24)
+            .setPositiveButton(R.string.okay) { _, _ -> }
+            .show()
+    }
 }
