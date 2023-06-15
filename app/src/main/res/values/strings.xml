@@ -40,4 +40,8 @@
     <string name="immagine_impostata">La tua immagine del profile è stata impostata correttamente.</string>
     <string name="profile_title">Profile</string>
     <string name="logout">logout</string>
+    <string name="modifica_email">Modifica email</string>
+    <string name="password_non_corretta">La password inserita non è corretta</string>
+    <string name="indirizzo_email_modificato">Indirizzo email modificato</string>
+    <string name="indirizzo_mail_modificato_to_login">Il tuo indirizzo email è stato modificato correttamente. Rieffettua il login per continuare in Elytra.</string>
 </resources>

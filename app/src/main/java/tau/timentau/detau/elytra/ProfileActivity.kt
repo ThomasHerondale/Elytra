@@ -1,11 +1,13 @@
 package tau.timentau.detau.elytra
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Deferred
 import tau.timentau.detau.elytra.database.Repository
@@ -13,7 +15,8 @@ import tau.timentau.detau.elytra.databinding.ActivityProfileBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 
 class ProfileActivity : AppCompatActivity(),
-    SelectAvatarDialog.SelectAvatarHandler by MainActivity() {
+    SelectAvatarDialog.SelectAvatarHandler,
+    EditEmailDialog.EditEmailHandler {
 
     private lateinit var binding: ActivityProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
@@ -33,6 +36,9 @@ class ProfileActivity : AppCompatActivity(),
 
         binding.editProfileImgBttn.setOnClickListener {
             SelectAvatarDialog(false).show(supportFragmentManager, "selectAvatar")
+        }
+        binding.editEmailBttn.setOnClickListener {
+            EditEmailDialog().show(supportFragmentManager, "editEmail")
         }
 
         setContentView(binding.root)
@@ -77,12 +83,46 @@ class ProfileActivity : AppCompatActivity(),
 
         MaterialAlertDialogBuilder(
             this,
-            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
             .setTitle(getString(R.string.avatar_impostato))
             .setMessage(getString(R.string.immagine_impostata))
             .setIcon(R.drawable.ic_check_circle_24)
             .setPositiveButton(R.string.okay) { _, _ -> }
+            .show()
+    }
+
+    override suspend fun checkEmailUsage(email: String): Deferred<Boolean> {
+        return Repository.isMailUsed(email)
+    }
+
+    override suspend fun isPasswordCorrect(password: String): Deferred<Boolean> {
+        return Repository.userExists(loggedEmail, password)
+    }
+
+    override suspend fun editEmail(email: String) {
+        Repository.changeEmail(loggedEmail, email)
+    }
+
+    override fun toEmailEditedConfirm() {
+        MaterialAlertDialogBuilder(
+            this,
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(getString(R.string.indirizzo_email_modificato))
+            .setMessage(getString(R.string.indirizzo_mail_modificato_to_login))
+            .setIcon(R.drawable.ic_check_circle_24)
+            .setCancelable(false)
+            .setPositiveButton(R.string.okay) { _, _ ->
+                // ritorna alla schermata di login al click
+                val intent = Intent(this, StartActivity::class.java)
+
+                // impedisci di tornare alle altre activity premendo il tasto indietro
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
+                startActivity(intent)
+                finish()
+            }
             .show()
     }
 }

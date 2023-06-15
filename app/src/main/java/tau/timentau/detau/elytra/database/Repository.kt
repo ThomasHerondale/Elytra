@@ -159,6 +159,15 @@ object Repository {
         """)
     }
 
+    suspend fun changeEmail(oldEmail: String, newEmail: String) {
+        DatabaseDAO.update("""
+            UPDATE users
+            SET email = '$newEmail'
+            WHERE email = '$oldEmail'
+        """)
+        println("updated")
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
