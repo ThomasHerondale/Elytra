@@ -45,6 +45,7 @@ class StartActivity :
             putExtra(EMAIL_KEY, email)
         }
         startActivity(intent)
+        finish()
     }
 
     override fun navigateTo(directions: NavDirections) {
