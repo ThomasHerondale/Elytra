@@ -44,4 +44,7 @@
     <string name="password_non_corretta">La password inserita non è corretta</string>
     <string name="indirizzo_email_modificato">Indirizzo email modificato</string>
     <string name="indirizzo_mail_modificato_to_login">Il tuo indirizzo email è stato modificato correttamente. Rieffettua il login per continuare in Elytra.</string>
+    <string name="password_incorretta">La password inserita non è corretta</string>
+    <string name="password_modificata_to_login">La tua password è stata modificata correttamente. Rieffettua il login per continuare in Elytra.</string>
+    <string name="password_modificata">Password modificata</string>
 </resources>

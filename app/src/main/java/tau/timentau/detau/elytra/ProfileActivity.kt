@@ -16,7 +16,8 @@ import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 
 class ProfileActivity : AppCompatActivity(),
     SelectAvatarDialog.SelectAvatarHandler,
-    EditEmailDialog.EditEmailHandler {
+    EditEmailDialog.EditEmailHandler,
+    EditPasswordDialog.EditPasswordHandler {
 
     private lateinit var binding: ActivityProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
@@ -39,6 +40,9 @@ class ProfileActivity : AppCompatActivity(),
         }
         binding.editEmailBttn.setOnClickListener {
             EditEmailDialog().show(supportFragmentManager, "editEmail")
+        }
+        binding.editPwdBttn.setOnClickListener {
+            EditPasswordDialog().show(supportFragmentManager, "editPassword")
         }
 
         setContentView(binding.root)
@@ -104,13 +108,33 @@ class ProfileActivity : AppCompatActivity(),
         Repository.changeEmail(loggedEmail, email)
     }
 
-    override fun toEmailEditedConfirm() {
+    override suspend fun editPassword(password: String) {
+        Repository.resetPassword(loggedEmail, password)
+    }
+
+    override fun toEmailEditedConfirm() = toCredentialEditedConfirm(false)
+
+    override fun toPasswordEditedConfirm() = toCredentialEditedConfirm(true)
+
+    private fun toCredentialEditedConfirm(isPassword: Boolean) {
+        val titleResId =
+            if (isPassword)
+                R.string.password_modificata
+            else
+                R.string.indirizzo_email_modificato
+
+        val messageResId =
+            if (isPassword)
+                R.string.password_modificata_to_login
+            else
+                R.string.indirizzo_mail_modificato_to_login
+
         MaterialAlertDialogBuilder(
             this,
             ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
-            .setTitle(getString(R.string.indirizzo_email_modificato))
-            .setMessage(getString(R.string.indirizzo_mail_modificato_to_login))
+            .setTitle(getString(titleResId))
+            .setMessage(getString(messageResId))
             .setIcon(R.drawable.ic_check_circle_24)
             .setCancelable(false)
             .setPositiveButton(R.string.okay) { _, _ ->
