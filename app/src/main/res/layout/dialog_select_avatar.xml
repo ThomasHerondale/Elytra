@@ -20,6 +20,17 @@
         tools:itemCount="8"
         tools:listitem="@layout/avatar_choice_view_holder" />
 
+    <ProgressBar
+        android:id="@+id/setAvatarProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:indeterminate="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatarList" />
+
     <include
         android:id="@+id/select_avatar_dialogBottomButtons"
         layout="@layout/dialog_bottom_buttons"
@@ -27,5 +38,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatarList" />
+        app:layout_constraintTop_toBottomOf="@+id/setAvatarProgress" />
 </androidx.constraintlayout.widget.ConstraintLayout>

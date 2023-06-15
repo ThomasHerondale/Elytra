@@ -27,6 +27,7 @@ class SelectAvatarDialog : DialogFragment() {
     private lateinit var handler: SelectAvatarHandler
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        showOrHideProgressBar(true)
         networkError()
         Log.e(TAG, e.stackTraceToString())
     }
@@ -72,6 +73,7 @@ class SelectAvatarDialog : DialogFragment() {
         }
 
         binding.selectAvatarDialogBottomButtons.positiveButton.setOnClickListener {
+            showOrHideProgressBar(false)
             coroutineScope.launch {
                 handler.avatarSelected(currentSelectedAvatar!!)
                 Log.v(TAG, "Selected and set avatar n. $currentSelectedAvatar")
@@ -120,6 +122,11 @@ class SelectAvatarDialog : DialogFragment() {
             .setPositiveButton(R.string.okay) { _, _ -> }
             .show()
     }
+
+    private fun showOrHideProgressBar(hide: Boolean) {
+        binding.setAvatarProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
 
     interface SelectAvatarHandler {
         suspend fun fetchAvatars(): Deferred<List<Bitmap>>

@@ -91,7 +91,7 @@ class MainActivity :
     }
 
     override fun toAvatarSelection() {
-        TODO("Not yet implemented")
+        SelectAvatarDialog().show(supportFragmentManager, "selectAvatar")
     }
 
     override fun connectionError(e: Throwable) {
