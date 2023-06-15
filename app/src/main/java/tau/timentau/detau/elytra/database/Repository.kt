@@ -37,7 +37,9 @@ object Repository {
                 WHERE email = '$email';
             """) ?: throw IllegalStateException("Could not retrieve data")
 
-            userDTO.toUser()
+            val userAvatar = DatabaseDAO.getImage(userDTO.avatar)
+
+            userDTO.toUser(userAvatar)
         }
     }
 
@@ -167,7 +169,15 @@ object Repository {
         val question: String,
         val answer: String
     ) {
-        fun toUser() = User(email, fullName, birthDate, sex)
+        fun toUser(avatar: Bitmap) =
+            User(
+                email,
+                fullName,
+                birthDate,
+                sex,
+                password.length,
+                avatar
+            )
     }
 
     private class QuestionDTO(

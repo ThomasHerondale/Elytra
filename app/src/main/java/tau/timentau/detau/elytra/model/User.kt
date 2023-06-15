@@ -26,8 +26,8 @@ data class User(
     }
 }
 
-enum class Sex(name: String) {
+enum class Sex(val stringVal: String) {
     MALE("Uomo"),
     FEMALE("Donna"),
-    OTHER("Altro")
+    OTHER("Altro");
 }
