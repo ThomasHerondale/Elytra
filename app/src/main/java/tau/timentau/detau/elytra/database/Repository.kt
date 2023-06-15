@@ -6,6 +6,8 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
+import tau.timentau.detau.elytra.model.PaymentCircuit
+import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
@@ -168,6 +170,35 @@ object Repository {
         println("updated")
     }
 
+    suspend fun getPaymentMethods(email: String): Deferred<List<PaymentMethod>> {
+        return coroutineScope.async {
+            val paymentMethodDTOs = DatabaseDAO.selectList<PaymentMethodDTO>("""
+                SELECT *
+                FROM payment_methods
+                WHERE userEmail = '$email'
+            """)
+
+            // ottieni i dati dei circuiti
+            val circuitsDTOs = DatabaseDAO.selectList<PaymentCircuitDTO>("""
+                SELECT *
+                FROM payment_circuits
+            """)
+
+            val circuits = circuitsDTOs.map {
+                val logo = DatabaseDAO.getImage(it.logo)
+                it.toPaymentCircuit(logo)
+            }
+
+            paymentMethodDTOs.map {
+                // ottieni il circuito completo della carta
+                val circuit = circuits.find { circuit -> circuit.name == it.circuit } ?:
+                throw IllegalArgumentException("Unknown circuit")
+
+                it.toPaymentMethod(circuit)
+            }
+        }
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
@@ -197,4 +228,35 @@ object Repository {
         val id: Int,
         val path: String
     )
+
+    private class PaymentMethodDTO(
+        val number: String,
+        val userEmail: String,
+        val circuit: String,
+        val expiryDate: Date,
+        val safetyCode: String,
+        val ownerFullName: String
+    ) {
+        fun toPaymentMethod(circuit: PaymentCircuit) =
+            PaymentMethod(
+                number,
+                circuit,
+                expiryDate,
+                safetyCode,
+                ownerFullName
+            )
+    }
+
+    private class PaymentCircuitDTO(
+        val name: String,
+        val logo: String,
+        val startDigit: String
+    ) {
+        fun toPaymentCircuit(logo: Bitmap) =
+            PaymentCircuit(
+                name,
+                logo,
+                startDigit[0]
+            )
+    }
 }
