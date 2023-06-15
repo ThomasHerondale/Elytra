@@ -9,7 +9,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Deferred
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityStartBinding
-import tau.timentau.detau.elytra.firstAccess.MainActivity
 import tau.timentau.detau.elytra.passwordReset.InsertEmailDialog
 import tau.timentau.detau.elytra.passwordReset.PasswordResetDialog
 import tau.timentau.detau.elytra.passwordReset.SecurityQuestionDialog
