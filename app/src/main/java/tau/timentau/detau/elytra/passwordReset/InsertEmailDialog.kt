@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.passwordReset
 
 import android.app.Dialog
 import android.content.Context
@@ -16,7 +16,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.DialogInsertEmailBinding
+import tau.timentau.detau.elytra.text
 
 private const val TAG = "MAIL_FOR_RESET"
 
@@ -96,8 +98,6 @@ class InsertEmailDialog : DialogFragment() {
     private suspend fun emailConfirmed() {
         val email = binding.mailForResetText.text
         val emailExists = handler.checkEmailExistence(email).await()
-
-        println(emailExists)
 
         if (emailExists) {
             handler.setEmailForPasswordReset(email)

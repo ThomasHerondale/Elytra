@@ -72,7 +72,7 @@ object Repository {
             DatabaseDAO.selectValue<String>("""
                 SELECT security_questions.question as string
                 FROM users JOIN security_questions on users.question = security_questions.id
-                WHERE users.email = 'test@test.com' 
+                WHERE users.email = '$email' 
             """) ?: throw IllegalStateException("Could not retrieve data")
         }
     }

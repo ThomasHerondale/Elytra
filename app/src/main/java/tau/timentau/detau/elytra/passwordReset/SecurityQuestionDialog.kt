@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.passwordReset
 
 import android.app.Dialog
 import android.content.Context
@@ -13,9 +13,10 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.DialogSecurityQuestionBinding
+import tau.timentau.detau.elytra.text
 
 private const val TAG = "SECURITY_QUESTION"
 
