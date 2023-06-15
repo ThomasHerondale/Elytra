@@ -42,6 +42,8 @@ object DatabaseDAO {
         val body = response.body() ?: return null
         val jsonArray = body[QUERYSET_KEY].asJsonArray
 
+        println(jsonArray)
+
         // l'oggetto json dovrebbe contenere un solo valore
         if (jsonArray.size() != 1)
             throw IllegalStateException("Query didn't return single value")
