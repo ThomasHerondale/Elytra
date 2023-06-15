@@ -28,6 +28,13 @@ class MainActivity :
 
         checkForFirstAccess()
 
+        binding.topAppBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.profile -> toProfile()
+                else -> throw IllegalStateException("Unknown menu item")
+            }
+        }
+
         setContentView(binding.root)
     }
 
@@ -67,6 +74,11 @@ class MainActivity :
             .setView(R.layout.dialog_progress_simple)
             .setCancelable(false)
             .show()
+    }
+
+    private fun toProfile(): Boolean {
+        startLoggedActivity(Intent(this, ProfileActivity::class.java))
+        return true
     }
 
     private fun networkErrorOnFirstAccess() {
