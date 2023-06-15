@@ -23,19 +23,33 @@ object DatabaseDAO {
 
     val dbInterface: DatabaseAPI by lazy { retrofit.create(DatabaseAPI::class.java) }
 
-    val valueParser: Gson = GsonBuilder()
+    val primitiveValueParser: Gson = GsonBuilder()
         .registerTypeAdapter(Boolean::class.java, BooleanTypeAdapter())
         .registerTypeAdapter(String::class.java, StringTypeAdapter())
         .create()
 
-    val listParser = Gson()
+    val parser = Gson()
 
     suspend inline fun <reified T> selectList(query: String): List<T> {
         val response = dbInterface.select(formatQuery(query))
         // workaround per tipizzare il token senza passare la classe di T per parametro ;)
         val typeToken = object : TypeToken<List<T>>() {}.type
 
-        return listParser.fromJson(response.body()?.get(QUERYSET_KEY), typeToken) ?: listOf()
+        return parser.fromJson(response.body()?.get(QUERYSET_KEY), typeToken) ?: listOf()
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    suspend inline fun <reified T> selectPrimitiveValue(query: String): T? {
+        val response = dbInterface.select(formatQuery(query))
+        val body = response.body() ?: return null
+        val jsonArray = body[QUERYSET_KEY].asJsonArray
+
+        // l'oggetto json dovrebbe contenere un solo valore
+        if (jsonArray.size() != 1)
+            throw IllegalStateException("Query didn't return single value")
+
+        val typeToken = typeOf<T>().javaType
+        return primitiveValueParser.fromJson(jsonArray[0], typeToken)
     }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -49,7 +63,7 @@ object DatabaseDAO {
             throw IllegalStateException("Query didn't return single value")
 
         val typeToken = typeOf<T>().javaType
-        return valueParser.fromJson(jsonArray[0], typeToken)
+        return parser.fromJson(jsonArray[0], typeToken)
     }
 
     suspend inline fun insert(query: String) {

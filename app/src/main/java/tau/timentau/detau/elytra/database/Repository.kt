@@ -16,7 +16,7 @@ object Repository {
 
     suspend fun userExists(email: String, password: String): Deferred<Boolean> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<Boolean>("""
+            DatabaseDAO.selectPrimitiveValue<Boolean>("""
                 SELECT EXISTS(
                     SELECT *
                     FROM users
@@ -42,7 +42,7 @@ object Repository {
 
     suspend fun isMailUsed(email: String): Deferred<Boolean> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<Boolean>("""
+            DatabaseDAO.selectPrimitiveValue<Boolean>("""
                 SELECT EXISTS(
                     SELECT *
                     FROM users
@@ -68,7 +68,7 @@ object Repository {
 
     suspend fun getSecurityQuestion(email: String): Deferred<String> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<String>("""
+            DatabaseDAO.selectPrimitiveValue<String>("""
                 SELECT security_questions.question as string
                 FROM users JOIN security_questions on users.question = security_questions.id
                 WHERE users.email = 'test@test.com' 
@@ -78,7 +78,7 @@ object Repository {
 
     suspend fun isAnswerCorrect(email: String, answer: String): Deferred<Boolean> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<Boolean>("""
+            DatabaseDAO.selectPrimitiveValue<Boolean>("""
                 SELECT EXISTS(
                     SELECT *
                     FROM users
@@ -107,7 +107,7 @@ object Repository {
 
     suspend fun isFirstAccess(email: String): Deferred<Boolean> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<Boolean>("""
+            DatabaseDAO.selectPrimitiveValue<Boolean>("""
                 SELECT (question IS NULL) as boolean
                 FROM users
                 WHERE email = '$email'
