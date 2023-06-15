@@ -105,7 +105,7 @@ class MainActivity :
     }
 
     override fun toAvatarSelection() {
-        SelectAvatarDialog().show(supportFragmentManager, "selectAvatar")
+        SelectAvatarDialog(true).show(supportFragmentManager, "selectAvatar")
     }
 
     override fun connectionError(e: Throwable) {

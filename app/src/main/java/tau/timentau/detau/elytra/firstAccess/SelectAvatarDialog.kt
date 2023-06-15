@@ -22,7 +22,9 @@ import tau.timentau.detau.elytra.databinding.DialogSelectAvatarBinding
 
 private const val TAG = "SELECT_AVATAR"
 
-class SelectAvatarDialog : DialogFragment() {
+class SelectAvatarDialog(
+    private val isForFirstAccess: Boolean
+) : DialogFragment() {
 
     private lateinit var binding: DialogSelectAvatarBinding
     private lateinit var handler: SelectAvatarHandler
@@ -68,7 +70,12 @@ class SelectAvatarDialog : DialogFragment() {
         // disabilita il pulsante di conferma all'avvio
         binding.selectAvatarDialogBottomButtons.positiveButton.isEnabled = false
 
-        binding.selectAvatarDialogBottomButtons.negativeButton.text = getString(R.string.non_ora)
+        binding.selectAvatarDialogBottomButtons.negativeButton.text =
+            if (isForFirstAccess)
+                getString(R.string.non_ora)
+            else
+                getString(R.string.annulla)
+
         binding.selectAvatarDialogBottomButtons.negativeButton.setOnClickListener {
             dismiss()
         }

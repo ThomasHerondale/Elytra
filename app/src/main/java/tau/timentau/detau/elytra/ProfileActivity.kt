@@ -1,13 +1,19 @@
 package tau.timentau.detau.elytra
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Deferred
+import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityProfileBinding
+import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity(),
+    SelectAvatarDialog.SelectAvatarHandler by MainActivity() {
 
     private lateinit var binding: ActivityProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
@@ -24,6 +30,10 @@ class ProfileActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         setupUserUiInfo()
+
+        binding.editProfileImgBttn.setOnClickListener {
+            SelectAvatarDialog(false).show(supportFragmentManager, "selectAvatar")
+        }
 
         setContentView(binding.root)
     }
@@ -51,5 +61,28 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override suspend fun fetchAvatars(): Deferred<List<Bitmap>> {
+        return Repository.getAvatars()
+    }
+
+    override suspend fun avatarSelected(id: Int) {
+        Repository.setAvatar(loggedEmail, id)
+        toAvatarSetConfirm()
+    }
+
+    override fun toAvatarSetConfirm() {
+        profileViewModel.reloadUserData(loggedEmail)
+
+        MaterialAlertDialogBuilder(
+            this,
+            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(getString(R.string.avatar_impostato))
+            .setMessage(getString(R.string.immagine_impostata))
+            .setIcon(R.drawable.ic_check_circle_24)
+            .setPositiveButton(R.string.okay) { _, _ -> }
+            .show()
     }
 }

@@ -21,4 +21,11 @@ class ProfileViewModel : ViewModel() {
             _user.postValue(user)
         }
     }
+
+    fun reloadUserData(email: String) {
+        if (_user.value == null)
+            throw IllegalStateException("User cannot be reloaded as it's not been loaded once")
+
+        retrieveUserData(email)
+    }
 }
