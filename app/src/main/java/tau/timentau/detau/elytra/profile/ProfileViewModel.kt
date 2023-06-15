@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

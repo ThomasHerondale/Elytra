@@ -16,6 +16,7 @@ import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.firstAccess.SetSecurityQuestionDialog
+import tau.timentau.detau.elytra.profile.ProfileActivity
 
 class MainActivity :
     AppCompatActivity(),

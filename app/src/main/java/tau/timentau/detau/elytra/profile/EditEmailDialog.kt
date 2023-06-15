@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.profile
 
 import android.app.Dialog
 import android.content.Context
@@ -14,7 +14,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.DialogEditEmailBinding
+import tau.timentau.detau.elytra.isNotEmail
+import tau.timentau.detau.elytra.text
 
 private const val TAG = "EDIT_EMAIL"
 
