@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.firstAccess
 
 import android.app.Dialog
 import android.content.Context
@@ -15,7 +15,9 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.DialogSetSecurityQuestionBinding
+import tau.timentau.detau.elytra.text
 
 class SetSecurityQuestionDialog(securityQuestions: List<String>) : DialogFragment() {
 
