@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.firstAccess
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.AvatarChoiceViewHolderBinding
 
 private const val IS_SELECTED_KEY = "isSelected"
