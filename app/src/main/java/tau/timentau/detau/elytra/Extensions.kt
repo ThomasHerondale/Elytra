@@ -13,9 +13,11 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.datetime.LocalDate
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
-private val dateFormatter =  SimpleDateFormat("yyyy-MM-dd", Locale.US)
+private val dbDateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+private val readableDateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.ITALY)
 
 val TextInputLayout.text: String
     get() = editText?.text.toString()
@@ -34,9 +36,13 @@ fun String.parseToDate(): LocalDate {
 fun ChipGroup.noChipSelected() = checkedChipId == View.NO_ID
 
 fun LocalDate.toDateString(): String {
-    val date = dateFormatter.parse("$this")
-    return dateFormatter.format(date!!)
+    val date = dbDateFormatter.parse("$this")
+    return dbDateFormatter.format(date!!)
 }
+
+fun Date.toReadable(): String = readableDateFormatter.format(this)
+
+fun hiddenPasswordString(length: Int) = "•".repeat(length)
 
 fun AppCompatActivity.getNavController(): NavController =
     (supportFragmentManager.fragments[0] as NavHostFragment).navController

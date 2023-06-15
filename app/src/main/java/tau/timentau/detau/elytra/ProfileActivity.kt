@@ -36,8 +36,11 @@ class ProfileActivity : AppCompatActivity() {
                 .into(binding.profileImg)
 
             binding.fullnameLabel.text = it.fullName
-            binding.birthDateLabel.text = it.birthDate.toString()
             binding.sexLabel.text = it.sex.stringVal
+            binding.birthDateLabel.text = it.birthDate.toReadable()
+
+            binding.profileEmailLabel.text = it.email
+            binding.profilePwdLabel.text = hiddenPasswordString(it.passwordLength)
         }
     }
 

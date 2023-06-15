@@ -118,7 +118,7 @@
                 app:layout_constraintStart_toEndOf="@+id/profileEmailLabel" />
 
             <TextView
-                android:id="@+id/passwordEmailLabel"
+                android:id="@+id/profilePwdLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -134,7 +134,7 @@
                 android:text="Button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/passwordEmailLabel"
+                app:layout_constraintStart_toEndOf="@+id/profilePwdLabel"
                 app:layout_constraintTop_toBottomOf="@+id/editEmailBttn" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
