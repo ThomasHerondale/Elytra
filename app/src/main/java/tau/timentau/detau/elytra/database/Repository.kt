@@ -199,6 +199,14 @@ object Repository {
         }
     }
 
+    suspend fun removePaymentMethod(number: String) {
+        DatabaseDAO.remove("""
+            DELETE
+            FROM payment_methods
+            WHERE number = '$number'
+        """)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,

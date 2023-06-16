@@ -32,6 +32,8 @@ class PaymentMethodAdapter(
 
         holder.binding.cardNumberLabel.text = method.number
         holder.binding.ownerNameLabel.text = method.ownerFullname
+
+        holder.binding.removeCardBttn.setOnClickListener { onRemoveClicked(method.number) }
     }
 
     companion object {

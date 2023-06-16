@@ -168,6 +168,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="4"
                 tools:listitem="@layout/payment_method_view_holder" />
+
+            <ProgressBar
+                android:id="@+id/removeCardProgress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/paymentMethodsList"
+                app:layout_constraintStart_toStartOf="@+id/paymentMethodsList"
+                app:layout_constraintTop_toBottomOf="@+id/paymentMethodsList" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

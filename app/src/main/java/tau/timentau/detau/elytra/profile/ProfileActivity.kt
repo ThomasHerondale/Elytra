@@ -3,7 +3,9 @@ package tau.timentau.detau.elytra.profile
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.StartActivity
 import tau.timentau.detau.elytra.database.Repository
@@ -21,6 +27,8 @@ import tau.timentau.detau.elytra.hiddenPasswordString
 import tau.timentau.detau.elytra.loggedEmail
 import tau.timentau.detau.elytra.toReadable
 
+private const val TAG = "PROFILE"
+
 class ProfileActivity : AppCompatActivity(),
     SelectAvatarDialog.SelectAvatarHandler,
     EditEmailDialog.EditEmailHandler,
@@ -28,6 +36,12 @@ class ProfileActivity : AppCompatActivity(),
 
     private lateinit var binding: ActivityProfileBinding
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        showOrHideProgressBar(true)
+        networkError()
+        Log.e(TAG, e.stackTraceToString())
+    }
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +92,9 @@ class ProfileActivity : AppCompatActivity(),
             this, VERTICAL, false
         )
 
-        val adapter = PaymentMethodAdapter(::removePaymentMethod)
+        val adapter = PaymentMethodAdapter {// al click su un pulsante rimuovi
+            removePaymentMethod(it)
+        }
         binding.paymentMethodsList.adapter = adapter
 
         profileViewModel.paymentMethods.observe(this) {
@@ -87,7 +103,17 @@ class ProfileActivity : AppCompatActivity(),
     }
 
     private fun removePaymentMethod(number: String) {
-
+        showOrHideProgressBar(false)
+        coroutineScope.launch {
+            Repository.removePaymentMethod(number)
+        }
+            .invokeOnCompletion {
+                showOrHideProgressBar(true)
+                if (it == null) {
+                    // aggiorna la lista delle carte solo se non ci sono stati problemi
+                    profileViewModel.reloadPaymentMethods(loggedEmail)
+                }
+            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -173,6 +199,22 @@ class ProfileActivity : AppCompatActivity(),
                 startActivity(intent)
                 finish()
             }
+            .show()
+    }
+
+    private fun showOrHideProgressBar(hide: Boolean) {
+        binding.removeCardProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun networkError() {
+        MaterialAlertDialogBuilder(
+            this,
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(R.string.errore_connessione)
+            .setMessage(R.string.imposs_connettersi_al_server)
+            .setIcon(R.drawable.ic_link_off_24)
+            .setPositiveButton(R.string.okay) { _, _ -> }
             .show()
     }
 }

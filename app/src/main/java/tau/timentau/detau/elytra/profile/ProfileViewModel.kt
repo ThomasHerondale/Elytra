@@ -39,4 +39,13 @@ class ProfileViewModel : ViewModel() {
             _paymentMethods.postValue(paymentMethods)
         }
     }
+
+    fun reloadPaymentMethods(email: String) {
+        if (_paymentMethods.value == null)
+            throw IllegalStateException(
+                "Payment methods cannot be reloaded as they've not been loaded once"
+            )
+
+        retrievePaymentMethods(email)
+    }
 }
