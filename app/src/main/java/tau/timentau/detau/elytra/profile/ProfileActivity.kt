@@ -25,6 +25,8 @@ import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityProfileBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.hiddenPasswordString
+import tau.timentau.detau.elytra.setDialogResultListener
+import tau.timentau.detau.elytra.show
 import tau.timentau.detau.elytra.toReadable
 
 private const val TAG = "PROFILE"
@@ -69,7 +71,14 @@ class ProfileActivity : AppCompatActivity(),
         }
 
         binding.addCardBttn.setOnClickListener {
-            AddPaymentMethodDialog().show(supportFragmentManager, "addPamentMethod")
+            AddPaymentMethodDialog()
+                .show(supportFragmentManager)
+                .setDialogResultListener(METHOD_CREATION_OK) {
+                    println("Ok")
+                }
+                .setDialogResultListener(METHOD_CREATION_FAILED) {
+                    println("Fail")
+                }
         }
 
         setContentView(binding.root)

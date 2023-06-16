@@ -12,20 +12,22 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.R
+import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.DialogAddPaymentMethodBinding
 import tau.timentau.detau.elytra.parseToDate
+import tau.timentau.detau.elytra.setDialogResult
 import tau.timentau.detau.elytra.text
+
+const val METHOD_CREATION_OK = "method_creation_ok"
+const val METHOD_CREATION_FAILED = "method_creation_failed"
 
 class AddPaymentMethodDialog : DialogFragment() {
 
     private lateinit var binding: DialogAddPaymentMethodBinding
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     private val viewModel: AddPaymentMethodViewModel by viewModels()
 
@@ -56,6 +58,24 @@ class AddPaymentMethodDialog : DialogFragment() {
         setupCircuitObserver()
         setupNumberField()
 
+        binding.expiryText.editText?.setOnFocusChangeListener { _, _ -> validateExpiryDateField() }
+
+        binding.addPaymentMethodDialogBottomButtons.positiveButton.setOnClickListener {
+            viewModel.createPaymentMethod(
+                binding.numberText.text,
+                binding.expiryText.text.parseToDate(),
+                binding.securityCodeText.text,
+                binding.ownerNameText.text
+            )
+        }
+
+        viewModel.paymentMethodCreationStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> { setDialogResult(METHOD_CREATION_FAILED) }
+                is Status.Loading -> binding.newCardProgress.visibility = View.VISIBLE
+                is Status.Success -> { setDialogResult(METHOD_CREATION_OK) }
+            }
+        }
 
         return binding.root
     }
@@ -140,8 +160,10 @@ class AddPaymentMethodDialog : DialogFragment() {
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
 
             // controlla se la carta è già scaduta
-            if (date >= today)
+            if (date <= today)
                 binding.expiryText.error = getString(R.string.carta_scaduta)
+            else
+                binding.expiryText.error = null
 
         } catch (e: IllegalArgumentException) {
             binding.expiryText.error = getString(R.string.data_invalida)

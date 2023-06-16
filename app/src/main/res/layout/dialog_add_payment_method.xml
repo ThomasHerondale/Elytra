@@ -28,8 +28,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:hint="hint"
+            android:inputType="number"
             android:maxLength="19"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -41,6 +41,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toStartOf="@+id/securityCodeText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numberText">
@@ -54,10 +55,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/securityCodeText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="24dp"
+        android:maxEms="4"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="@+id/expiryText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +76,23 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ownerNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expiryText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <ProgressBar
         android:id="@+id/newCardProgress"
         style="?android:attr/progressBarStyleHorizontal"
@@ -84,7 +103,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/securityCodeText" />
+        app:layout_constraintTop_toBottomOf="@+id/ownerNameText" />
 
     <include
         android:id="@+id/add_payment_method_dialogBottomButtons"
