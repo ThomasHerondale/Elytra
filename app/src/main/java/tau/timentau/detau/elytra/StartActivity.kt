@@ -41,10 +41,9 @@ class StartActivity :
     }
 
     fun login(email: String) {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("EMAIL", email)
-        }
-        startActivity(intent)
+        Session.login(email)
+
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
