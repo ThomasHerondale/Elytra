@@ -59,14 +59,27 @@ class AddPaymentMethodDialog : DialogFragment() {
         setupNumberField()
 
         binding.expiryText.editText?.setOnFocusChangeListener { _, _ -> validateExpiryDateField() }
+        binding.securityCodeText.editText?.setOnFocusChangeListener { _, _ ->
+            validateSafetyCodeField()
+        }
+        binding.ownerNameText.editText?.setOnFocusChangeListener { _, _ ->
+            validateOwnerNameField()
+        }
+        binding.numberText.editText?.setOnFocusChangeListener { _, _ -> validateNumberField() }
+
+        binding.addPaymentMethodDialogBottomButtons.negativeButton.setOnClickListener { dismiss() }
+
+        // Pulsante di conferma -> creazione del metodo di pagamento
 
         binding.addPaymentMethodDialogBottomButtons.positiveButton.setOnClickListener {
-            viewModel.createPaymentMethod(
-                binding.numberText.text,
-                binding.expiryText.text.parseToDate(),
-                binding.securityCodeText.text,
-                binding.ownerNameText.text
-            )
+            if (validateFields()) {
+                viewModel.createPaymentMethod(
+                    binding.numberText.text,
+                    binding.expiryText.text.parseToDate(),
+                    binding.securityCodeText.text,
+                    binding.ownerNameText.text
+                )
+            }
         }
 
         viewModel.paymentMethodCreationStatus.observe(viewLifecycleOwner) {
@@ -78,6 +91,54 @@ class AddPaymentMethodDialog : DialogFragment() {
         }
 
         return binding.root
+    }
+
+    private fun validateFields() =
+        validateNumberField() and
+        validateExpiryDateField() and
+        validateSafetyCodeField() and
+        validateOwnerNameField()
+
+
+    private fun setupNumberField() {
+        /* istanzia il componente che si occupa di aggiungere gli spazi al numero di carta
+         * durante l'inserimento */
+        binding.numberText.editText?.addTextChangedListener(object : TextWatcher {
+
+            private val SPACE_REGEX = Regex("(\\d{4})")
+            private val SPACE_REPLACEMENT = "$1 "
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // inutile
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // inutile
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val editText = binding.numberText.editText!!
+
+                // evitiamo le chiamate ricorsive
+                editText.removeTextChangedListener(this)
+
+                // rimuovi ogni tipo di spazio
+                val text = editText.text.replace(Regex("\\s"), "")
+
+                // aggiungi gli spazi ogni quattro cifre
+                val formattedText = text.replace(SPACE_REGEX, SPACE_REPLACEMENT).trim()
+
+                editText.setText(formattedText)
+
+                // sposta il cursore alla fine del testo
+                editText.setSelection(formattedText.length)
+
+                // resetta il watcher
+                editText.addTextChangedListener(this)
+            }
+        })
+
+        setupCircuitObserver()
     }
 
     private fun setupCircuitObserver() {
@@ -113,48 +174,17 @@ class AddPaymentMethodDialog : DialogFragment() {
         }
     }
 
-    private fun setupNumberField() {
-        /* istanzia il componente che si occupa di aggiungere gli spazi al numero di carta
-         * durante l'inserimento */
-        binding.numberText.editText?.addTextChangedListener(object : TextWatcher {
+    private fun validateNumberField(): Boolean {
+        // se il campo non è vuoto e il testo è lungo 19 caratteri (16 cifre e 3 spazi)
+        if (binding.numberText.text.isBlank() || binding.numberText.text.length != 19)
+            binding.numberText.error = getString(R.string.inserisci_num_carta_valido)
+        else
+            binding.numberText.error = null
 
-            private val SPACE_REGEX = Regex("(\\d{4})")
-            private val SPACE_REPLACEMENT = "$1 "
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-               // inutile
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // inutile
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val editText = binding.numberText.editText!!
-
-                // evitiamo le chiamate ricorsive
-                editText.removeTextChangedListener(this)
-
-                // rimuovi ogni tipo di spazio
-                val text = editText.text.replace(Regex("\\s"), "")
-
-                // aggiungi gli spazi ogni quattro cifre
-                val formattedText = text.replace(SPACE_REGEX, SPACE_REPLACEMENT).trim()
-
-                editText.setText(formattedText)
-
-                // sposta il cursore alla fine del testo
-                editText.setSelection(formattedText.length)
-
-                // resetta il watcher
-                editText.addTextChangedListener(this)
-            }
-        })
-
-        setupCircuitObserver()
+        return binding.numberText.error == null
     }
 
-    private fun validateExpiryDateField() {
+    private fun validateExpiryDateField(): Boolean {
         try {
             val date = binding.expiryText.text.parseToDate()
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
@@ -168,5 +198,25 @@ class AddPaymentMethodDialog : DialogFragment() {
         } catch (e: IllegalArgumentException) {
             binding.expiryText.error = getString(R.string.data_invalida)
         }
+
+        return binding.expiryText.error == null
+    }
+
+    private fun validateSafetyCodeField(): Boolean {
+        if (binding.securityCodeText.text.length != 3)
+            binding.securityCodeText.error = " "
+        else
+            binding.securityCodeText.error = null
+
+        return binding.securityCodeText.error == null
+    }
+
+    private fun validateOwnerNameField(): Boolean {
+        if (binding.ownerNameText.text.isBlank())
+            binding.ownerNameText.error = getString(R.string.inserisci_nome_intestatario)
+        else
+            binding.ownerNameText.error = null
+
+        return binding.ownerNameText.error == null
     }
 }

@@ -14,6 +14,7 @@ import tau.timentau.detau.elytra.performStateful
 
 class AddPaymentMethodViewModel : ViewModel() {
     private val _circuits = MutableLiveData<List<PaymentCircuit>>()
+
     private val _currentCircuit = MutableLiveData<PaymentCircuit?>()
     val currentCircuit: LiveData<PaymentCircuit?> = _currentCircuit
 

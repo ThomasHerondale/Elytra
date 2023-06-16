@@ -74,10 +74,10 @@ class ProfileActivity : AppCompatActivity(),
             AddPaymentMethodDialog()
                 .show(supportFragmentManager)
                 .setDialogResultListener(METHOD_CREATION_OK) {
-                    println("Ok")
+                    paymentMethodCreatedConfirm()
                 }
                 .setDialogResultListener(METHOD_CREATION_FAILED) {
-                    println("Fail")
+                    networkError()
                 }
         }
 
@@ -161,6 +161,20 @@ class ProfileActivity : AppCompatActivity(),
             .show()
     }
 
+    private fun paymentMethodCreatedConfirm() {
+        profileViewModel.reloadPaymentMethods()
+
+        MaterialAlertDialogBuilder(
+            this,
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(getString(R.string.metodo_di_pagamento_aggiunto))
+            .setMessage(getString(R.string.carta_associata_profilo))
+            .setIcon(R.drawable.ic_check_circle_24)
+            .setPositiveButton(R.string.okay) { _, _ -> }
+            .show()
+    }
+
     override suspend fun checkEmailUsage(email: String): Deferred<Boolean> {
         return Repository.isMailUsed(email)
     }
@@ -230,4 +244,5 @@ class ProfileActivity : AppCompatActivity(),
             .setPositiveButton(R.string.okay) { _, _ -> }
             .show()
     }
+
 }
