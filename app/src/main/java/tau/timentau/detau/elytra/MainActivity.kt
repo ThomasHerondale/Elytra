@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.Session.loggedEmail
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
