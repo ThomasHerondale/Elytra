@@ -11,7 +11,9 @@ import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.PaymentMethodViewHolderBinding
 import tau.timentau.detau.elytra.model.PaymentMethod
 
-class PaymentMethodAdapter :
+class PaymentMethodAdapter(
+    private val onRemoveClicked: (String) -> Unit
+) :
     ListAdapter<PaymentMethod, PaymentMethodAdapter.ViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

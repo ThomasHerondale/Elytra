@@ -78,12 +78,16 @@ class ProfileActivity : AppCompatActivity(),
             this, VERTICAL, false
         )
 
-        val adapter = PaymentMethodAdapter()
+        val adapter = PaymentMethodAdapter(::removePaymentMethod)
         binding.paymentMethodsList.adapter = adapter
 
         profileViewModel.paymentMethods.observe(this) {
             adapter.submitList(it)
         }
+    }
+
+    private fun removePaymentMethod(number: String) {
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
