@@ -82,6 +82,14 @@ object DatabaseDAO {
         if (message != "update executed!") throw NetworkException("Update not succesful")
     }
 
+    suspend inline fun remove(query: String) {
+        val response = dbInterface.remove(formatQuery(query))
+        val body = response.body() ?: throw NetworkException("Server did not respond on remove")
+        val message = body[QUERYSET_KEY].asString
+
+        if (message != "remove executed!") throw NetworkException("Remove not succesful")
+    }
+
     suspend inline fun getImage(path: String): Bitmap {
         val response = dbInterface.get(path)
         val body = response.body() ?: throw NetworkException("Server did not respond on request")
