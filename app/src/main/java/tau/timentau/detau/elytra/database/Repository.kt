@@ -218,6 +218,22 @@ object Repository {
         """)
     }
 
+    suspend fun createPaymentMethod(
+        email: String,
+        number: String,
+        circuit: PaymentCircuit,
+        expiryDate: LocalDate,
+        safetyCode: String,
+        ownerFullName: String
+    ) {
+        DatabaseDAO.insert("""
+            INSERT
+            INTO payment_methods(number, userEmail, circuit, expiryDate, safetyCode, ownerFullName)
+            VALUE ('$number', '$email', '${circuit.name}', '${expiryDate.toDateString()}',
+                '$safetyCode', '$ownerFullName')
+        """)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,

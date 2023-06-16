@@ -56,6 +56,7 @@ class AddPaymentMethodDialog : DialogFragment() {
         setupCircuitObserver()
         setupNumberField()
 
+        binding.expiryText.editText?.setOnFocusChangeListener { _, _ -> validateExpiryDateField() }
 
         return binding.root
     }
@@ -140,11 +141,19 @@ class AddPaymentMethodDialog : DialogFragment() {
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
 
             // controlla se la carta è già scaduta
-            if (date >= today)
+            if (date <= today)
                 binding.expiryText.error = getString(R.string.carta_scaduta)
+            else
+                binding.expiryText.error = null
 
         } catch (e: IllegalArgumentException) {
             binding.expiryText.error = getString(R.string.data_invalida)
         }
+    }
+
+    interface AddPaymentMethodHandler {
+
+
+        fun toPaymentMethodAddedConfirm()
     }
 }

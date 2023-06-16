@@ -41,6 +41,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toStartOf="@+id/securityCodeText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numberText">
@@ -54,10 +55,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/securityCodeText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="24dp"
+        android:maxEms="4"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="@+id/expiryText"
         app:layout_constraintEnd_toEndOf="parent"
