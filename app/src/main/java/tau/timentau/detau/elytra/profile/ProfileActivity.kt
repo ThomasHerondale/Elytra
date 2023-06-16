@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -33,12 +35,14 @@ class ProfileActivity : AppCompatActivity(),
 
         // aggiorna i dati del profilo
         profileViewModel.retrieveUserData(loggedEmail)
+        profileViewModel.retrievePaymentMethods(loggedEmail)
 
         // abilita il pulsante indietro
         setSupportActionBar(binding.profileTopAppBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         setupUserUiInfo()
+        setupPaymentMethodsUi()
 
         binding.editProfileImgBttn.setOnClickListener {
             SelectAvatarDialog(false).show(supportFragmentManager, "selectAvatar")
@@ -66,6 +70,19 @@ class ProfileActivity : AppCompatActivity(),
 
             binding.profileEmailLabel.text = it.email
             binding.profilePwdLabel.text = hiddenPasswordString(it.passwordLength)
+        }
+    }
+
+    private fun setupPaymentMethodsUi() {
+        binding.paymentMethodsList.layoutManager = LinearLayoutManager(
+            this, VERTICAL, false
+        )
+
+        val adapter = PaymentMethodAdapter()
+        binding.paymentMethodsList.adapter = adapter
+
+        profileViewModel.paymentMethods.observe(this) {
+            adapter.submitList(it)
         }
     }
 
