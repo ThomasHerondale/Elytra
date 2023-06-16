@@ -68,6 +68,7 @@ object DatabaseDAO {
 
     suspend inline fun insert(query: String) {
         val response = dbInterface.insert(formatQuery(query))
+        println(formatQuery(query))
         val body = response.body() ?: throw NetworkException("Server did not respond on insert")
         val message = body[QUERYSET_KEY].asString
 

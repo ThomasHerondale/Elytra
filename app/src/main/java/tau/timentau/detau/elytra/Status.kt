@@ -13,7 +13,7 @@ sealed class Status<out T> {
     companion object {
         fun <T> success(data: T) = Success(data)
 
-        fun operationSuccess() = Success(Unit)
+        fun success() = Success(Unit)
 
         fun failure(exception: Exception) = Failed(exception)
 

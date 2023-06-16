@@ -3,11 +3,11 @@ package tau.timentau.detau.elytra.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import tau.timentau.detau.elytra.OperationStatus
+import tau.timentau.detau.elytra.Session
 import tau.timentau.detau.elytra.Status
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.model.PaymentCircuit
@@ -21,10 +21,8 @@ class AddPaymentMethodViewModel : ViewModel() {
     private val _methodCreationStatus = MutableLiveData<OperationStatus>()
     val methodCreationStatus: LiveData<OperationStatus> = _methodCreationStatus
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
-
     init {
-        coroutineScope.launch {
+        viewModelScope.launch {
             val circuits = Repository.getPaymentCircuits().await()
             _circuits.postValue(circuits)
         }
@@ -39,21 +37,30 @@ class AddPaymentMethodViewModel : ViewModel() {
 
     fun createPaymentMethod(
         number: String,
-        circuit: PaymentCircuit,
         expiryDate: LocalDate,
         safetyCode: String,
         ownerFullName: String
     ) {
         _methodCreationStatus.value = Status.loading()
-        try {
-            coroutineScope.launch {
-                Repository.createPaymentMethod(
 
-                )
+            viewModelScope.launch {
+                try {
+                    val circuit = currentCircuit.value ?:
+                        throw IllegalStateException("Invalid circuit")
+
+                    Repository.createPaymentMethod(
+                        Session.loggedEmail,
+                        number,
+                        circuit,
+                        expiryDate,
+                        safetyCode,
+                        ownerFullName
+                    )
+                    _methodCreationStatus.value = Status.success()
+                } catch (e: Exception) {
+                    _methodCreationStatus.value = Status.failure(e)
+                }
             }
-        } catch (e: Exception) {
-            _methodCreationStatus.value = Status.failure(e)
-        }
     }
 
 }

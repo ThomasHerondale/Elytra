@@ -226,10 +226,13 @@ object Repository {
         safetyCode: String,
         ownerFullName: String
     ) {
+        // rimuovi gli spazi
+        val cardNumber = number.replace(Regex("\\s"), "")
+
         DatabaseDAO.insert("""
             INSERT
             INTO payment_methods(number, userEmail, circuit, expiryDate, safetyCode, ownerFullName)
-            VALUE ('$number', '$email', '${circuit.name}', '${expiryDate.toDateString()}',
+            VALUE ('$cardNumber', '$email', '${circuit.name}', '${expiryDate.toDateString()}',
                 '$safetyCode', '$ownerFullName')
         """)
     }

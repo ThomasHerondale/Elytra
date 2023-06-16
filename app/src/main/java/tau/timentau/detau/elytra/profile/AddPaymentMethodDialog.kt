@@ -18,6 +18,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.R
+import tau.timentau.detau.elytra.Status
 import tau.timentau.detau.elytra.databinding.DialogAddPaymentMethodBinding
 import tau.timentau.detau.elytra.parseToDate
 import tau.timentau.detau.elytra.text
@@ -58,7 +59,38 @@ class AddPaymentMethodDialog : DialogFragment() {
 
         binding.expiryText.editText?.setOnFocusChangeListener { _, _ -> validateExpiryDateField() }
 
+        binding.addPaymentMethodDialogBottomButtons.positiveButton.setOnClickListener {
+            create()
+        }
+
         return binding.root
+    }
+
+    private fun create() {
+        viewModel.createPaymentMethod(
+            binding.numberText.text,
+            binding.expiryText.text.parseToDate(),
+            binding.securityCodeText.text,
+            binding.ownerNameText.text
+        )
+
+        viewModel.methodCreationStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> {
+                    MaterialAlertDialogBuilder(
+                        requireActivity(),
+                        com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+                    )
+                        .setTitle(R.string.errore_connessione)
+                        .setMessage(R.string.imposs_connettersi_al_server)
+                        .setIcon(R.drawable.ic_link_off_24)
+                        .setPositiveButton(R.string.okay) { _, _ -> }
+                        .show()
+                }
+                is Status.Loading -> binding.newCardProgress.visibility = View.VISIBLE
+                is Status.Success -> {}
+            }
+        }
     }
 
     private fun setupCircuitObserver() {
@@ -152,7 +184,6 @@ class AddPaymentMethodDialog : DialogFragment() {
     }
 
     interface AddPaymentMethodHandler {
-
 
         fun toPaymentMethodAddedConfirm()
     }

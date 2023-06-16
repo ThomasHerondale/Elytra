@@ -44,6 +44,7 @@ class StartActivity :
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra(EMAIL_KEY, email)
         }
+        Session.login(email)
         startActivity(intent)
         finish()
     }
