@@ -27,5 +27,10 @@
     <string name="password_reimpostata">Password reimpostata</string>
     <string name="password_reset_conferma">La tua password è stata reimpostata correttamente.</string>
     <string name="inserisci_email">Inserisci indirizzo email</string>
+    <string name="password_dimenticata">Ho dimenticato la password</string>
     <string name="email_non_associata_msg">Inserisci un indirizzo email associato ad un account</string>
+    <string name="password">Password</string>
+    <string name="no_account_string">Non hai un account?</string>
+    <string name="register">Registrati</string>
+    <string name="login">Login</string>
 </resources>

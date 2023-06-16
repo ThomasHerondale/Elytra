@@ -54,19 +54,27 @@ class LoginFragment : Fragment() {
     }
 
     private fun attemptLogin(email: String, password: String) {
-        if (email.isBlank() || password.isBlank())
-            return
+        binding.emailText.helperText = ""
+        binding.pwdText.helperText = ""
+        val regexEmail = Regex("^.+@.*\\..+$")
+        if (password.isBlank()) {
+            binding.pwdText.helperText = "Campo obbligatorio"
+        }
+        if (!regexEmail.matches(email)) {
+            binding.emailText.helperText = "Inserire un'email corretta"
+        }
+        if (regexEmail.matches(email) && password.isNotBlank()) {
+            showOrHideProgressBar(false)
+            Log.v(TAG, "Checking existence for ($email, $password)")
 
-        showOrHideProgressBar(false)
-        Log.v(TAG, "Checking existence for ($email, $password)")
-
-        coroutineScope.launch {
-            val userExists = Repository.userExists(email, password).await()
-            showOrHideProgressBar(true)
-            if (userExists)
+            coroutineScope.launch {
+                val userExists = Repository.userExists(email, password).await()
+                showOrHideProgressBar(true)
+                if (userExists)
                     (requireActivity() as StartActivity).login(email)
-            else
-                loginIncorrect()
+                else
+                    loginIncorrect()
+            }
         }
     }
 
@@ -100,6 +108,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.loginProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+        binding.loginProgress.visibility = if (hide) View.GONE else View.VISIBLE
     }
 }
