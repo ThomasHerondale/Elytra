@@ -178,16 +178,8 @@ object Repository {
                 WHERE userEmail = '$email'
             """)
 
-            // ottieni i dati dei circuiti
-            val circuitsDTOs = DatabaseDAO.selectList<PaymentCircuitDTO>("""
-                SELECT *
-                FROM payment_circuits
-            """)
+            val circuits = getPaymentCircuits().await()
 
-            val circuits = circuitsDTOs.map {
-                val logo = DatabaseDAO.getImage(it.logo)
-                it.toPaymentCircuit(logo)
-            }
 
             paymentMethodDTOs.map {
                 // ottieni il circuito completo della carta
@@ -196,6 +188,25 @@ object Repository {
 
                 it.toPaymentMethod(circuit)
             }
+        }
+    }
+
+    suspend fun getPaymentCircuits(): Deferred<List<PaymentCircuit>> {
+        return coroutineScope.async {
+            // ottieni i dati dei circuiti
+            val circuitsDTOs = DatabaseDAO.selectList<PaymentCircuitDTO>(
+                """
+                    SELECT *
+                    FROM payment_circuits
+                """
+            )
+
+            val circuits = circuitsDTOs.map {
+                val logo = DatabaseDAO.getImage(it.logo)
+                it.toPaymentCircuit(logo)
+            }
+
+            circuits
         }
     }
 
