@@ -68,6 +68,10 @@ class ProfileActivity : AppCompatActivity(),
             EditPasswordDialog().show(supportFragmentManager, "editPassword")
         }
 
+        binding.addCardBttn.setOnClickListener {
+            AddPaymentMethodDialog().show(supportFragmentManager, "addPamentMethod")
+        }
+
         setContentView(binding.root)
     }
 

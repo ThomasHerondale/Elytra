@@ -47,4 +47,5 @@
     <string name="password_incorretta">La password inserita non è corretta</string>
     <string name="password_modificata_to_login">La tua password è stata modificata correttamente. Rieffettua il login per continuare in Elytra.</string>
     <string name="password_modificata">Password modificata</string>
+    <string name="nuovo_metodo_di_pagamento">Nuovo metodo di pagamento</string>
 </resources>
