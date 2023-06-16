@@ -1,6 +1,5 @@
 package tau.timentau.detau.elytra
 
-import android.content.Intent
 import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -49,20 +48,3 @@ val Fragment.navHostActivity: NavHostActivity
             )
         }
     }
-
-val AppCompatActivity.EMAIL_KEY: String
-    get() = "email"
-
-val AppCompatActivity.loggedEmail: String
-    get() = intent.getStringExtra(EMAIL_KEY) ?:
-        throw IllegalStateException("Could not retrieve logged user email")
-
-fun AppCompatActivity.startLoggedActivity(intent: Intent) {
-    try {
-        intent.putExtra(EMAIL_KEY, loggedEmail)
-        startActivity(intent)
-    } catch (e: java.lang.IllegalStateException) {
-        throw IllegalStateException(
-            "This method should be called from another logged activity.", e)
-    }
-}
