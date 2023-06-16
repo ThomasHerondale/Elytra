@@ -80,7 +80,7 @@ class MainActivity :
     }
 
     private fun toProfile(): Boolean {
-        startLoggedActivity(Intent(this, ProfileActivity::class.java))
+        startActivity(Intent(this, ProfileActivity::class.java))
         return true
     }
 

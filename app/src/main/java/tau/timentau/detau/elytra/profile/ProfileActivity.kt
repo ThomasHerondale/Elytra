@@ -19,12 +19,12 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.R
+import tau.timentau.detau.elytra.Session.loggedEmail
 import tau.timentau.detau.elytra.StartActivity
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityProfileBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.hiddenPasswordString
-import tau.timentau.detau.elytra.loggedEmail
 import tau.timentau.detau.elytra.toReadable
 
 private const val TAG = "PROFILE"
@@ -48,8 +48,8 @@ class ProfileActivity : AppCompatActivity(),
         binding = ActivityProfileBinding.inflate(layoutInflater)
 
         // aggiorna i dati del profilo
-        profileViewModel.retrieveUserData(loggedEmail)
-        profileViewModel.retrievePaymentMethods(loggedEmail)
+        profileViewModel.retrieveUserData()
+        profileViewModel.retrievePaymentMethods()
 
         // abilita il pulsante indietro
         setSupportActionBar(binding.profileTopAppBar)
@@ -115,7 +115,7 @@ class ProfileActivity : AppCompatActivity(),
                 showOrHideProgressBar(true)
                 if (it == null) {
                     // aggiorna la lista delle carte solo se non ci sono stati problemi
-                    profileViewModel.reloadPaymentMethods(loggedEmail)
+                    profileViewModel.reloadPaymentMethods()
                 }
             }
     }
@@ -139,7 +139,7 @@ class ProfileActivity : AppCompatActivity(),
     }
 
     override fun toAvatarSetConfirm() {
-        profileViewModel.reloadUserData(loggedEmail)
+        profileViewModel.reloadUserData()
 
         MaterialAlertDialogBuilder(
             this,

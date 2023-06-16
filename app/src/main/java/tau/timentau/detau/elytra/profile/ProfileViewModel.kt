@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tau.timentau.detau.elytra.Session
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.User
@@ -19,33 +20,33 @@ class ProfileViewModel : ViewModel() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    fun retrieveUserData(email: String) {
+    fun retrieveUserData() {
         coroutineScope.launch {
-            val user = Repository.fetchUserData(email).await()
+            val user = Repository.fetchUserData(Session.loggedEmail).await()
             _user.postValue(user)
         }
     }
 
-    fun reloadUserData(email: String) {
+    fun reloadUserData() {
         if (_user.value == null)
             throw IllegalStateException("User cannot be reloaded as it's not been loaded once")
 
-        retrieveUserData(email)
+        retrieveUserData()
     }
 
-    fun retrievePaymentMethods(email: String) {
+    fun retrievePaymentMethods() {
         coroutineScope.launch {
-            val paymentMethods = Repository.getPaymentMethods(email).await()
+            val paymentMethods = Repository.getPaymentMethods(Session.loggedEmail).await()
             _paymentMethods.postValue(paymentMethods)
         }
     }
 
-    fun reloadPaymentMethods(email: String) {
+    fun reloadPaymentMethods() {
         if (_paymentMethods.value == null)
             throw IllegalStateException(
                 "Payment methods cannot be reloaded as they've not been loaded once"
             )
 
-        retrievePaymentMethods(email)
+        retrievePaymentMethods()
     }
 }
