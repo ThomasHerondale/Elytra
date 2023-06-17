@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.DialogEditEmailBinding
 import tau.timentau.detau.elytra.isNotEmail
+import tau.timentau.detau.elytra.showNetworkErrorDialog
 import tau.timentau.detau.elytra.text
 
 private const val TAG = "EDIT_EMAIL"
@@ -26,7 +27,7 @@ class EditEmailDialog : DialogFragment() {
     private lateinit var binding: DialogEditEmailBinding
     private lateinit var handler: EditEmailHandler
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
-        networkError()
+        showNetworkErrorDialog()
         Log.e(TAG, e.stackTraceToString())
         dismiss()
     }
@@ -115,18 +116,6 @@ class EditEmailDialog : DialogFragment() {
 
         // messaggio di errore vuoto -> campo corretto
         return errorTextRes == null
-    }
-
-    private fun networkError() {
-        MaterialAlertDialogBuilder(
-            requireActivity(),
-            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
-        )
-            .setTitle(R.string.errore_connessione)
-            .setMessage(R.string.imposs_connettersi_al_server)
-            .setIcon(R.drawable.ic_link_off_24)
-            .setPositiveButton(R.string.okay) { _, _ -> }
-            .show()
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {

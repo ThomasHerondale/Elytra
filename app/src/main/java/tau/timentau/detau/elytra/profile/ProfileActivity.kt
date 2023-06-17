@@ -1,6 +1,5 @@
 package tau.timentau.detau.elytra.profile
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
@@ -20,13 +19,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.Session.loggedEmail
-import tau.timentau.detau.elytra.StartActivity
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityProfileBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.hiddenPasswordString
 import tau.timentau.detau.elytra.setDialogResultListener
 import tau.timentau.detau.elytra.show
+import tau.timentau.detau.elytra.showConfirmDialog
 import tau.timentau.detau.elytra.toReadable
 
 private const val TAG = "PROFILE"
@@ -208,25 +207,7 @@ class ProfileActivity : AppCompatActivity(),
             else
                 R.string.indirizzo_mail_modificato_to_login
 
-        MaterialAlertDialogBuilder(
-            this,
-            ThemeOverlay_Material3_MaterialAlertDialog_Centered
-        )
-            .setTitle(getString(titleResId))
-            .setMessage(getString(messageResId))
-            .setIcon(R.drawable.ic_check_circle_24)
-            .setCancelable(false)
-            .setPositiveButton(R.string.okay) { _, _ ->
-                // ritorna alla schermata di login al click
-                val intent = Intent(this, StartActivity::class.java)
-
-                // impedisci di tornare alle altre activity premendo il tasto indietro
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-
-                startActivity(intent)
-                finish()
-            }
-            .show()
+        showConfirmDialog(titleResId, messageResId)
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
