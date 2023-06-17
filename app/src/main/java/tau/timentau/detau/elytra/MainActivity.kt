@@ -123,15 +123,6 @@ class MainActivity :
         Repository.setAvatar(loggedEmail, id)
     }
 
-    override fun toAvatarSetConfirm() {
-        MaterialAlertDialogBuilder(
-            this,
-            ThemeOverlay_Material3_MaterialAlertDialog_Centered
-        )
-            .setTitle(getString(R.string.avatar_impostato))
-            .setMessage(getString(R.string.immagine_impostata))
-            .setIcon(R.drawable.ic_check_circle_24)
-            .setPositiveButton(R.string.okay) { _, _ -> }
-            .show()
-    }
+    override fun toAvatarSetConfirm() =
+        showConfirmDialog(R.string.avatar_impostato, R.string.immagine_impostata)
 }
