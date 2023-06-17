@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +29,7 @@ class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
         showOrHideProgressBar(true)
-        networkError()
+        showNetworkErrorDialog()
         Log.e(TAG, e.stackTraceToString())
     }
     private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler)
@@ -95,7 +93,7 @@ class RegisterFragment : Fragment() {
             return binding.mailText.error == null
         } catch (e: Exception) {
             Log.e(TAG, e.stackTraceToString())
-            networkError()
+            showNetworkErrorDialog()
 
             showOrHideProgressBar(true)
             return false
@@ -204,17 +202,5 @@ class RegisterFragment : Fragment() {
             R.id.otherChip -> OTHER
             else -> throw IllegalStateException("No sex selected")
         }
-    }
-
-    private fun networkError() {
-        MaterialAlertDialogBuilder(
-            requireActivity(),
-            ThemeOverlay_Material3_MaterialAlertDialog_Centered
-        )
-            .setTitle(R.string.errore_connessione)
-            .setMessage(R.string.imposs_connettersi_al_server)
-            .setIcon(R.drawable.ic_link_off_24)
-            .setPositiveButton(R.string.okay) { _, _ -> }
-            .show()
     }
 }
