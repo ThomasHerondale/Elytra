@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Elytra</string>
+    <string name="errore_connessione">Errore di connessione</string>
+    <string name="imposs_connettersi_al_server">
+        Impossibile connettersi al server di Elytra, riprova più tardi.
+    </string>
+    <string name="okay">Okay</string>
 </resources>
