@@ -16,4 +16,8 @@ data class Airport(
     override fun hashCode(): Int {
         return code.hashCode()
     }
+
+    override fun toString(): String {
+        return "$code  $name"
+    }
 }

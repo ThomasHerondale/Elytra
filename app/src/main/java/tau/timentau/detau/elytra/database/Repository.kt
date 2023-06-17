@@ -6,6 +6,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
+import tau.timentau.detau.elytra.model.Airport
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
@@ -155,6 +156,15 @@ object Repository {
             SET avatar = $dbId
             WHERE email = '$email'
         """)
+    }
+
+    suspend fun getAirports(): Deferred<List<Airport>> {
+        return coroutineScope.async {
+            DatabaseDAO.selectList<Airport>("""
+                SELECT *
+                FROM airports
+            """)
+        }
     }
 
     private class UserDTO(
