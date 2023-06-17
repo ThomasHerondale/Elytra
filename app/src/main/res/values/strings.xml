@@ -33,4 +33,8 @@
     <string name="no_account_string">Non hai un account?</string>
     <string name="register">Registrati</string>
     <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="nome_cognome">Nome e cognome</string>
+    <string name="confirm_password">Conferma password</string>
+    <string name="data_nascita">Data di nascita</string>
 </resources>

@@ -47,7 +47,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="32dp"
             app:errorIconDrawable="@null"
-            android:hint="Email"
+            android:hint="@string/email"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
