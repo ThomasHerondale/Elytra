@@ -37,6 +37,9 @@ class StartActivity :
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
 
+        // comando debug per saltare la schermata di login
+        intent.getStringExtra("TEST_EMAIL")?.let { login(it) }
+
         setContentView(binding.root)
     }
 
