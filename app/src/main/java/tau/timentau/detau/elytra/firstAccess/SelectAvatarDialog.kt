@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.DialogSelectAvatarBinding
+import tau.timentau.detau.elytra.showNetworkErrorDialog
 
 private const val TAG = "SELECT_AVATAR"
 
@@ -29,7 +30,7 @@ class SelectAvatarDialog : DialogFragment() {
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
         showOrHideProgressBar(true)
-        networkError()
+        showNetworkErrorDialog()
         Log.e(TAG, e.stackTraceToString())
     }
     private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler)
@@ -110,18 +111,6 @@ class SelectAvatarDialog : DialogFragment() {
 
     private fun enableConfirmButton() {
         binding.selectAvatarDialogBottomButtons.positiveButton.isEnabled = true
-    }
-
-    private fun networkError() {
-        MaterialAlertDialogBuilder(
-            requireActivity(),
-            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
-        )
-            .setTitle(R.string.errore_connessione)
-            .setMessage(R.string.imposs_connettersi_al_server)
-            .setIcon(R.drawable.ic_link_off_24)
-            .setPositiveButton(R.string.okay) { _, _ -> }
-            .show()
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
