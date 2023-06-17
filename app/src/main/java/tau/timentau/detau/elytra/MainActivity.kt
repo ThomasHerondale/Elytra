@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -24,10 +26,16 @@ class MainActivity :
     SelectAvatarDialog.SelectAvatarHandler {
 
     private lateinit var binding: ActivityMainBinding
+    private val navController by lazy {
+        (binding.mainFragmentContainer.getFragment() as NavHostFragment).navController
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        // inizializza la barra di navigazione
+        binding.mainNavBar.setupWithNavController(navController)
 
         checkForFirstAccess()
 
