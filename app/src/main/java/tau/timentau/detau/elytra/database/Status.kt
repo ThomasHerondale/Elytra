@@ -1,6 +1,10 @@
 package tau.timentau.detau.elytra.database
 
+import androidx.lifecycle.MutableLiveData
+
 typealias OperationStatus = Status<Unit>
+
+typealias ObservableStatus<T> = MutableLiveData<Status<T>>
 
 sealed class Status<out T> {
 
