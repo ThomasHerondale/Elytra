@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra.profile
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +19,9 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.R
+import tau.timentau.detau.elytra.Session
 import tau.timentau.detau.elytra.Session.loggedEmail
+import tau.timentau.detau.elytra.StartActivity
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityProfileBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
@@ -26,6 +29,7 @@ import tau.timentau.detau.elytra.hiddenPasswordString
 import tau.timentau.detau.elytra.setDialogResultListener
 import tau.timentau.detau.elytra.show
 import tau.timentau.detau.elytra.showConfirmDialog
+import tau.timentau.detau.elytra.showNetworkErrorDialog
 import tau.timentau.detau.elytra.toReadable
 
 private const val TAG = "PROFILE"
@@ -39,7 +43,7 @@ class ProfileActivity : AppCompatActivity(),
     private val profileViewModel: ProfileViewModel by viewModels()
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
         showOrHideProgressBar(true)
-        networkError()
+        showNetworkErrorDialog()
         Log.e(TAG, e.stackTraceToString())
     }
     private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler)
@@ -72,13 +76,11 @@ class ProfileActivity : AppCompatActivity(),
         binding.addCardBttn.setOnClickListener {
             AddPaymentMethodDialog()
                 .show(supportFragmentManager)
-                .setDialogResultListener(METHOD_CREATION_OK) {
-                    paymentMethodCreatedConfirm()
-                }
-                .setDialogResultListener(METHOD_CREATION_FAILED) {
-                    networkError()
-                }
+                .setDialogResultListener(METHOD_CREATION_OK) { paymentMethodCreatedConfirm() }
+                .setDialogResultListener(METHOD_CREATION_FAILED) { showNetworkErrorDialog() }
         }
+
+        binding.logoutBttn.setOnClickListener { showLogoutConfirmDialog() }
 
         setContentView(binding.root)
     }
@@ -214,15 +216,29 @@ class ProfileActivity : AppCompatActivity(),
         binding.removeCardProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
     }
 
-    private fun networkError() {
+    private fun logoutConfirmed() {
+        Session.invalidate()
+
+        val intent = Intent(this, StartActivity::class.java)
+        // impedisci di tornare qui premendo indietro
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
+        startActivity(intent)
+        finish()
+    }
+
+    private fun showLogoutConfirmDialog() {
         MaterialAlertDialogBuilder(
             this,
             ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
-            .setTitle(R.string.errore_connessione)
-            .setMessage(R.string.imposs_connettersi_al_server)
-            .setIcon(R.drawable.ic_link_off_24)
-            .setPositiveButton(R.string.okay) { _, _ -> }
+            .setTitle(getString(R.string.logout_title))
+            .setMessage(getString(R.string.sicuro_del_logout))
+            .setIcon(R.drawable.ic_error_24)
+            .setPositiveButton(R.string.logout_title) { _, _ ->
+                logoutConfirmed()
+            }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
     }
 

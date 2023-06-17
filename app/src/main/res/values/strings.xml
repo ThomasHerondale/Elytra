@@ -54,4 +54,6 @@
     <string name="inserisci_num_carta_valido">Inserisci un numero di carta valido</string>
     <string name="metodo_di_pagamento_aggiunto">Metodo di pagamento aggiunto</string>
     <string name="carta_associata_profilo">La tua carta è stata associata correttamente al tuo profilo.</string>
+    <string name="logout_title">Logout</string>
+    <string name="sicuro_del_logout">Sei sicuro di voler effettuare il logout?</string>
 </resources>
