@@ -23,6 +23,7 @@ class MainActivity :
     AppCompatActivity(),
     SetSecurityQuestionDialog.SetSecurityQuestionHandler,
     SelectAvatarDialog.SelectAvatarHandler {
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
