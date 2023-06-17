@@ -31,24 +31,33 @@ class FlightsFragment : Fragment() {
     ): View {
         binding = FragmentFlightsBinding.inflate(layoutInflater)
 
-        flightsViewModel.airportsFetchStatus.observe(viewLifecycleOwner) {
-            when (it) {
+        setupAirportFields()
+
+        return binding.root
+    }
+
+    private fun setupAirportFields() {
+        flightsViewModel.airportsFetchStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
                 is Status.Failed -> showNetworkErrorDialog()
                 is Status.Loading -> {
                     showOrHideProgressBar(false)
                     Log.d(TAG, "Fetching flights from database")
                 }
                 is Status.Success -> {
+                    val airportDropdownItems = status.data.map { it.toString() }.toTypedArray()
+                    departureAptField.setSimpleItems(airportDropdownItems)
+                    arrivalAptField.setSimpleItems(airportDropdownItems)
+
                     showOrHideProgressBar(true)
-                    departureAptField.setSimpleItems(it.data.map { "${it.code} - ${it.name}" }.toTypedArray())
+
+                    // non è più necessario osservare la lista
+                    flightsViewModel.airportsFetchStatus.removeObservers(this)
                 }
             }
         }
 
         flightsViewModel.loadAirports()
-
-
-        return binding.root
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
