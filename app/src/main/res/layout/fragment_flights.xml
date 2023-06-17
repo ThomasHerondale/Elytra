@@ -76,6 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toStartOf="@+id/arrivalDateText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -97,6 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintBottom_toBottomOf="@+id/departureDateText"
         app:layout_constraintEnd_toStartOf="@+id/passengersText"
         app:layout_constraintHorizontal_bias="0.5"
@@ -118,6 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintBottom_toBottomOf="@+id/arrivalDateText"
         app:layout_constraintEnd_toEndOf="@+id/fetchAptsProgress"
         app:layout_constraintHorizontal_bias="0.5"
@@ -127,6 +130,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="hint"
             android:maxLength="1"
             android:maxLines="1" />

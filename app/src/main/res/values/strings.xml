@@ -40,4 +40,7 @@
     <string name="immagine_impostata">La tua immagine del profile è stata impostata correttamente.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="seleziona_aeroporto">Seleziona un aeroporto</string>
+    <string name="dest_part_coincidono">Destinazione e partenza coincidono</string>
+    <string name="inserisci_data_futura">Inserisci una data nel futuro</string>
 </resources>
