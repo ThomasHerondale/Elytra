@@ -1,8 +1,10 @@
 package tau.timentau.detau.elytra
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -14,7 +16,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -95,4 +99,35 @@ fun DialogFragment.setDialogResultListener(
 fun DialogFragment.setDialogResult(resultKey: String)  {
     setFragmentResult(resultKey, Bundle())
     dismiss()
+}
+
+fun Activity.showConfirmDialog(@StringRes title: Int, @StringRes message: Int) {
+    MaterialAlertDialogBuilder(
+        this,
+        ThemeOverlay_Material3_MaterialAlertDialog_Centered
+    )
+        .setTitle(getString(title))
+        .setMessage(getString(message))
+        .setIcon(R.drawable.ic_check_circle_24)
+        .setPositiveButton(R.string.okay) { _, _ -> }
+        .show()
+}
+
+fun Activity.showNetworkErrorDialog() {
+    MaterialAlertDialogBuilder(
+        this,
+        ThemeOverlay_Material3_MaterialAlertDialog_Centered
+    )
+        .setTitle(R.string.errore_connessione)
+        .setMessage(R.string.imposs_connettersi_al_server)
+        .setIcon(R.drawable.ic_link_off_24)
+        .setPositiveButton(R.string.okay) { _, _ -> }
+        .show()
+}
+
+fun Fragment.showNetworkErrorDialog() {
+    val activity = activity
+        ?: throw IllegalStateException("Cannot show dialog: fragment is not attached")
+
+    activity.showNetworkErrorDialog()
 }
