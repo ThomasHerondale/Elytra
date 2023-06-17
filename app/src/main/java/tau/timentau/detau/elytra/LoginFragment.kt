@@ -54,16 +54,15 @@ class LoginFragment : Fragment() {
     }
 
     private fun attemptLogin(email: String, password: String) {
-        binding.emailText.helperText = ""
-        binding.pwdText.helperText = ""
-        val regexEmail = Regex("^.+@.*\\..+$")
+        binding.emailText.error = null
+        binding.pwdText.error = null
         if (password.isBlank()) {
-            binding.pwdText.helperText = "Campo obbligatorio"
+            binding.pwdText.error = "Campo obbligatorio"
         }
-        if (!regexEmail.matches(email)) {
-            binding.emailText.helperText = "Inserire un'email corretta"
+        if (email.isNotEmail()) {
+            binding.emailText.error = "Inserire un'email corretta"
         }
-        if (regexEmail.matches(email) && password.isNotBlank()) {
+        if (!email.isNotEmail() && password.isNotBlank()) {
             showOrHideProgressBar(false)
             Log.v(TAG, "Checking existence for ($email, $password)")
 
