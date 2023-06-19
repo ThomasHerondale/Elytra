@@ -37,4 +37,5 @@
     <string name="nome_cognome">Nome e cognome</string>
     <string name="confirm_password">Conferma password</string>
     <string name="data_nascita">Data di nascita</string>
+    <string name="risposta">Risposta</string>
 </resources>
