@@ -214,60 +214,72 @@ object Repository {
                 // aggiungi i voli richiesti
                 if (economy) {
                     flightsDTOs.addAll(
-                        DatabaseDAO.selectList<FlightDTO>("""
-                            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, 
-                                f.gateClosingTime, f.departureTime, f.arrivalTime, f.duration, 
-                                fp.economyPrice as price
-                            FROM flights f JOIN
-                                flights_free_seats ffs ON f.id = ffs.id JOIN
-                                flights_prices fp ON f.id = fp.id
-                            WHERE f.departureApt = '$departureApt' AND
-                                f.arrivalApt = '$arrivalApt' AND
-                                f.date = '${date.toDateString()}' AND
-                                fp.economyPrice BETWEEN $minPrice AND $maxPrice AND
-                                ffs.economyFree >= $passengersCount
-                        """)
+                        getFlightsForServiceClass(
+                            departureApt,
+                            arrivalApt,
+                            date,
+                            minPrice,
+                            maxPrice,
+                            passengersCount,
+                            "economy"
+                        )
                     )
                 }
 
                 if (business) {
                     flightsDTOs.addAll(
-                        DatabaseDAO.selectList<FlightDTO>("""
-                            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, 
-                                f.gateClosingTime, f.departureTime, f.arrivalTime, f.duration, 
-                                fp.businessPrice as price
-                            FROM flights f JOIN
-                                flights_free_seats ffs ON f.id = ffs.id JOIN
-                                flights_prices fp ON f.id = fp.id
-                            WHERE f.departureApt = '$departureApt' AND
-                                f.arrivalApt = '$arrivalApt' AND
-                                f.date = '${date.toDateString()}' AND
-                                fp.businessPrice BETWEEN $minPrice AND $maxPrice AND
-                                ffs.businessFree >= $passengersCount
-                            """)
+                        getFlightsForServiceClass(
+                            departureApt,
+                            arrivalApt,
+                            date,
+                            minPrice,
+                            maxPrice,
+                            passengersCount,
+                            "business"
+                        )
                     )
                 }
 
                 if (firstClass) {
                     flightsDTOs.addAll(
-                        DatabaseDAO.selectList<FlightDTO>("""
-                            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, 
-                                f.gateClosingTime, f.departureTime, f.arrivalTime, f.duration, 
-                                fp.firstClassPrice as price
-                            FROM flights f JOIN
-                                flights_free_seats ffs ON f.id = ffs.id JOIN
-                                flights_prices fp ON f.id = fp.id
-                            WHERE f.departureApt = '$departureApt' AND
-                                f.arrivalApt = '$arrivalApt' AND
-                                f.date = '${date.toDateString()}' AND
-                                fp.firstClassPrice BETWEEN $minPrice AND $maxPrice AND
-                                ffs.firstClassFree >= $passengersCount
-                                """)
+                        getFlightsForServiceClass(
+                            departureApt,
+                            arrivalApt,
+                            date,
+                            minPrice,
+                            maxPrice,
+                            passengersCount,
+                            "firstClass"
+                        )
                     )
                 }
 
             flightsDTOs.map { it.toFlight(companies, airports) }
         }
+    }
+
+    private suspend fun getFlightsForServiceClass(
+        departureApt: String,
+        arrivalApt: String,
+        date: LocalDate,
+        minPrice: Double,
+        maxPrice: Double,
+        passengersCount: Int,
+        serviceClass: String
+    ): List<FlightDTO> {
+        return DatabaseDAO.selectList<FlightDTO>("""
+            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, 
+                f.gateClosingTime, f.departureTime, f.arrivalTime, f.duration, 
+                fp.${serviceClass}Price as price
+            FROM flights f JOIN
+                flights_free_seats ffs ON f.id = ffs.id JOIN
+                flights_prices fp ON f.id = fp.id
+            WHERE f.departureApt = '$departureApt' AND
+                f.arrivalApt = '$arrivalApt' AND
+                f.date = '${date.toDateString()}' AND
+                fp.${serviceClass}Price BETWEEN $minPrice AND $maxPrice AND
+                ffs.${serviceClass}Free >= $passengersCount
+            """)
     }
 
     private class UserDTO(
