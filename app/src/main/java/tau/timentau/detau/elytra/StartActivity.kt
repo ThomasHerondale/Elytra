@@ -2,6 +2,7 @@ package tau.timentau.detau.elytra
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
 import kotlinx.coroutines.Deferred
@@ -37,6 +38,14 @@ class StartActivity :
 
         // comando debug per saltare la schermata di login
         intent.getStringExtra("TEST_EMAIL")?.let { login(it) }
+
+        // imposta il pulsante indietro
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+                navigator.popBackStack()
+            }
+        })
 
         setContentView(binding.root)
     }
