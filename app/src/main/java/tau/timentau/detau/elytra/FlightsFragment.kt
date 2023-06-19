@@ -13,6 +13,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentFlightsBinding
+import java.text.NumberFormat
+import java.util.Currency
+import java.util.Locale
 
 private const val TAG = "FLIGHTS"
 
@@ -36,33 +39,44 @@ class FlightsFragment : Fragment() {
 
         setupAirportFields()
 
+        // imposta lo slider in euro senza centesimi
+        binding.priceSlider.setLabelFormatter {
+            val formatter = NumberFormat.getCurrencyInstance()
+            formatter.minimumFractionDigits = 0
+            formatter.currency = Currency.getInstance(Locale.ITALY)
+            formatter.format(it)
+        }
+
         binding.searchFlightsBttn.setOnClickListener {
-
-            flightsViewModel.flightsFetchStatus.observe(viewLifecycleOwner) {
-                when (it) {
-                    is Status.Failed -> Log.e("FL", it.exception.stackTraceToString())
-                    is Status.Loading -> binding.searchProgress.visibility = View.VISIBLE
-                    is Status.Success -> {
-                        binding.searchProgress.visibility = View.GONE
-                        Log.i("FL", "${it.data}")
-                    }
-                }
-            }
-
-            flightsViewModel.searchFlights(
-                binding.departureAptText.text,
-                binding.arrivalAptText.text,
-                binding.goingDateText.text,
-                0.0,
-                1000.0,
-                2,
-                economy = true,
-                business = true,
-                firstClass = true
-            )
+            if (validateFields())
+                performSearch()
         }
 
         return binding.root
+    }
+
+    private fun performSearch() {
+        flightsViewModel.flightsFetchStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> Log.e("FL", it.exception.stackTraceToString())
+                is Status.Loading -> Log.e("FL", "Loading")
+                is Status.Success -> {
+                    Log.i("FL", "${it.data}")
+                }
+            }
+        }
+
+        flightsViewModel.searchFlights(
+            binding.departureAptText.text,
+            binding.arrivalAptText.text,
+            binding.goingDateText.text,
+            binding.priceSlider.values[0].toDouble(),
+            binding.priceSlider.values[1].toDouble(),
+            binding.passengersText.text.toInt(),
+            economy = binding.economyChip.isChecked,
+            business = binding.businessChip.isChecked,
+            firstClass = binding.firstClassChip.isChecked
+        )
     }
 
     private fun setupAirportFields() {
@@ -87,6 +101,21 @@ class FlightsFragment : Fragment() {
         }
 
         flightsViewModel.loadAirports()
+
+        // inizializza il pulsante di scambio destinazioni
+        binding.swapAirportsBttn.setOnClickListener {
+
+            // scambia solo se sono state selezionate entrambe le destinazioni
+            if (binding.departureAptText.text.isBlank() || binding.arrivalAptText.text.isBlank())
+                return@setOnClickListener
+
+            val temp = binding.departureAptText.editText?.text
+            binding.departureAptText.editText?.text = binding.arrivalAptText.editText?.text
+            binding.arrivalAptText.editText?.text = temp
+
+            // evita che si apra il menu di selezione dell'arrivo in automatico
+            binding.arrivalAptText.clearFocus()
+        }
     }
 
     private fun validateFields() =
@@ -183,10 +212,19 @@ class FlightsFragment : Fragment() {
     }
 
     private fun validatePassengersCountField(): Boolean {
-        if (binding.passengersText.text.isBlank())
+        try {
+            val count = binding.passengersText.text.toInt()
+
+            // il numero di passeggeri deve essere compreso tra 1 e 4
+            if (count <= 0 || count >= 5)
+                binding.passengersText.error = " "
+            else
+                binding.passengersText.error = null
+
+        } catch (e: NumberFormatException) {
+            // se il formato non è intero, errore
             binding.passengersText.error = " "
-        else
-            binding.passengersText.error = null
+        }
 
         return binding.passengersText.error == null
     }

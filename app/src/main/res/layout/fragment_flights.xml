@@ -34,14 +34,14 @@
         android:scaleX="1.5"
         android:scaleY="1.5"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="@+id/swapAirportsBttn"
+        app:layout_constraintEnd_toEndOf="@+id/swapAirportsBttn"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button" />
+        app:layout_constraintStart_toStartOf="@+id/swapAirportsBttn"
+        app:layout_constraintTop_toTopOf="@+id/swapAirportsBttn" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/swapAirportsBttn"
         style="@style/Widget.Material3.Button.IconButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="@+id/departureAptText"
         app:layout_constraintStart_toStartOf="@+id/departureAptText"
         app:layout_constraintTop_toBottomOf="@+id/departureAptText">
@@ -140,9 +140,9 @@
         android:id="@+id/roundTripSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintStart_toStartOf="@+id/goingDateText"
-        app:layout_constraintTop_toBottomOf="@+id/goingDateText" />
+        tools:layout_editor_absoluteY="583dp" />
 
     <Button
         android:id="@+id/searchFlightsBttn"
@@ -153,19 +153,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/roundTripSwitch" />
 
-    <ProgressBar
-        android:id="@+id/searchProgress"
-        style="?android:attr/progressBarStyle"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/companyChips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/goingDateText"
+        app:layout_constraintTop_toBottomOf="@+id/goingDateText">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/economyChip"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/economy" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/businessChip"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/business" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/firstClassChip"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prima_classe" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/priceSlider"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginBottom="200dp"
-        android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchFlightsBttn" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:valueFrom="0.0"
+        android:valueTo="700.0"
+        android:stepSize="10.0"
+        app:values="@array/price_slider_init"
+        app:labelBehavior="visible"
+        app:layout_constraintEnd_toEndOf="@+id/fetchAptsProgress"
+        app:layout_constraintStart_toStartOf="@+id/companyChips"
+        app:layout_constraintTop_toBottomOf="@+id/companyChips" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
