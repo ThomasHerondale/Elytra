@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
-import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Deferred
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityStartBinding
@@ -37,14 +35,16 @@ class StartActivity :
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
 
+        // comando debug per saltare la schermata di login
+        intent.getStringExtra("TEST_EMAIL")?.let { login(it) }
+
         setContentView(binding.root)
     }
 
     fun login(email: String) {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("EMAIL", email)
-        }
-        startActivity(intent)
+        Session.login(email)
+
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
@@ -68,17 +68,8 @@ class StartActivity :
         Repository.resetPassword(emailForPasswordReset, newPassword)
     }
 
-    override fun toPasswordResetConfirm() {
-        MaterialAlertDialogBuilder(
-            this,
-            ThemeOverlay_Material3_MaterialAlertDialog_Centered
-        )
-            .setTitle(getString(R.string.password_reimpostata))
-            .setMessage(getString(R.string.password_reset_conferma))
-            .setIcon(R.drawable.ic_check_circle_24)
-            .setPositiveButton(R.string.okay) { _, _ -> }
-            .show()
-    }
+    override fun toPasswordResetConfirm() =
+        showConfirmDialog(R.string.password_reimpostata, R.string.password_reset_conferma)
 
     override suspend fun checkEmailExistence(email: String): Deferred<Boolean> {
         return Repository.isMailUsed(email)

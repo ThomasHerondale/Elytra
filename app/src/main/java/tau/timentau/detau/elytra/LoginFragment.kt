@@ -23,7 +23,7 @@ class LoginFragment : Fragment() {
     private lateinit var binding : FragmentLoginBinding
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
         showOrHideProgressBar(true)
-        networkError()
+        showNetworkErrorDialog()
         Log.e(TAG, e.stackTraceToString())
     }
     private val coroutineScope = CoroutineScope(
@@ -90,19 +90,6 @@ class LoginFragment : Fragment() {
             .setMessage(R.string.dati_inseriti_incorretti)
             .setIcon(R.drawable.ic_problem_48)
             .setPositiveButton(R.string.okay) { _, _ -> } // non fare nulla, il dismiss è automatico
-            .show()
-    }
-
-
-    private fun networkError() {
-        MaterialAlertDialogBuilder(
-            requireActivity(),
-            ThemeOverlay_Material3_MaterialAlertDialog_Centered
-        )
-            .setTitle(R.string.errore_connessione)
-            .setMessage(R.string.imposs_connettersi_al_server)
-            .setIcon(R.drawable.ic_link_off_24)
-            .setPositiveButton(R.string.okay) { _, _ -> }
             .show()
     }
 
