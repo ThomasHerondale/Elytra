@@ -71,13 +71,13 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/departureDateText"
+        android:id="@+id/goingDateText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintEnd_toStartOf="@+id/arrivalDateText"
+        app:layout_constraintEnd_toStartOf="@+id/returnDatetext"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="@+id/arrivalAptText"
@@ -93,17 +93,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/arrivalDateText"
+        android:id="@+id/returnDatetext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/departureDateText"
+        app:layout_constraintBottom_toBottomOf="@+id/goingDateText"
         app:layout_constraintEnd_toStartOf="@+id/passengersText"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/departureDateText"
-        app:layout_constraintTop_toTopOf="@+id/departureDateText">
+        app:layout_constraintStart_toEndOf="@+id/goingDateText"
+        app:layout_constraintTop_toTopOf="@+id/goingDateText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -121,11 +121,11 @@
         android:layout_marginStart="32dp"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/arrivalDateText"
+        app:layout_constraintBottom_toBottomOf="@+id/returnDatetext"
         app:layout_constraintEnd_toEndOf="@+id/fetchAptsProgress"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/arrivalDateText"
-        app:layout_constraintTop_toTopOf="@+id/arrivalDateText">
+        app:layout_constraintStart_toEndOf="@+id/returnDatetext"
+        app:layout_constraintTop_toTopOf="@+id/returnDatetext">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -141,8 +141,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/departureDateText"
-        app:layout_constraintTop_toBottomOf="@+id/departureDateText" />
+        app:layout_constraintStart_toStartOf="@+id/goingDateText"
+        app:layout_constraintTop_toBottomOf="@+id/goingDateText" />
 
     <Button
         android:id="@+id/searchFlightsBttn"
@@ -152,5 +152,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/roundTripSwitch" />
+
+    <ProgressBar
+        android:id="@+id/searchProgress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="200dp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchFlightsBttn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,6 +37,29 @@ class FlightsFragment : Fragment() {
         setupAirportFields()
 
         binding.searchFlightsBttn.setOnClickListener {
+
+            flightsViewModel.flightsFetchStatus.observe(viewLifecycleOwner) {
+                when (it) {
+                    is Status.Failed -> Log.e("FL", it.exception.stackTraceToString())
+                    is Status.Loading -> binding.searchProgress.visibility = View.VISIBLE
+                    is Status.Success -> {
+                        binding.searchProgress.visibility = View.GONE
+                        Log.i("FL", "${it.data}")
+                    }
+                }
+            }
+
+            flightsViewModel.searchFlights(
+                binding.departureAptText.text,
+                binding.arrivalAptText.text,
+                binding.goingDateText.text,
+                0.0,
+                1000.0,
+                2,
+                economy = true,
+                business = true,
+                firstClass = true
+            )
         }
 
         return binding.root
@@ -93,52 +116,52 @@ class FlightsFragment : Fragment() {
     private fun validateDateFields(): Boolean {
         // se le date di partenza e arrivo sono state inserite
         if (validateDepartureDateField() and validateArrivalDateField()) {
-            val departureDate = binding.departureDateText.text.parseToDate()
-            val arrivalDate = binding.arrivalDateText.text.parseToDate()
+            val departureDate = binding.goingDateText.text.parseToDate()
+            val arrivalDate = binding.returnDatetext.text.parseToDate()
 
             // se l'arrivo precede la partenza
             if (arrivalDate < departureDate)
-                binding.arrivalDateText.error = "Inserisci una data successiva alla partenza"
+                binding.returnDatetext.error = "Inserisci una data successiva alla partenza"
             else
-                binding.arrivalDateText.error = null
+                binding.returnDatetext.error = null
 
-            return binding.arrivalDateText.error == null
+            return binding.returnDatetext.error == null
         } else // se non sono state inserite entrambe le date
             return false
     }
 
     private fun validateDepartureDateField(): Boolean {
         try {
-            val date = binding.departureDateText.text.parseToDate()
+            val date = binding.goingDateText.text.parseToDate()
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
 
             if (date < today)
-                binding.departureDateText.error = getString(R.string.inserisci_data_futura)
+                binding.goingDateText.error = getString(R.string.inserisci_data_futura)
             else
-                binding.departureDateText.error = null
+                binding.goingDateText.error = null
 
         } catch (e: IllegalArgumentException) {
-            binding.departureDateText.error = getString(R.string.data_invalida)
+            binding.goingDateText.error = getString(R.string.data_invalida)
         }
 
-        return binding.departureDateText.error == null
+        return binding.goingDateText.error == null
     }
 
     private fun validateArrivalDateField(): Boolean {
         try {
-            val date = binding.arrivalDateText.text.parseToDate()
+            val date = binding.returnDatetext.text.parseToDate()
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
 
             if (date < today)
-                binding.arrivalDateText.error = getString(R.string.inserisci_data_futura)
+                binding.returnDatetext.error = getString(R.string.inserisci_data_futura)
             else
-                binding.arrivalDateText.error = null
+                binding.returnDatetext.error = null
 
         } catch (e: IllegalArgumentException) {
-            binding.arrivalDateText.error = getString(R.string.data_invalida)
+            binding.returnDatetext.error = getString(R.string.data_invalida)
         }
 
-        return binding.arrivalDateText.error == null
+        return binding.returnDatetext.error == null
     }
 
     private fun validateDepartureAptField(): Boolean {

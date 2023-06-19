@@ -177,9 +177,7 @@ object Repository {
                 FROM companies
             """)
 
-            println(companyDtos)
             val paths = companyDtos.map { it.logo }
-            println(paths)
             val logos = mutableMapOf<String, Bitmap>()
 
             paths.forEach { logos[it] = DatabaseDAO.getImage(it) }
@@ -193,9 +191,9 @@ object Repository {
         date: LocalDate,
         priceRange: Pair<Double, Double>,
         passengersCount: Int,
-        economy: Boolean = false,
-        business: Boolean = false,
-        firstClass: Boolean = false): Deferred<List<Flight>> {
+        economy: Boolean,
+        business: Boolean,
+        firstClass: Boolean): Deferred<List<Flight>> {
 
          return coroutineScope.async {
              if (!(economy || business || firstClass))
