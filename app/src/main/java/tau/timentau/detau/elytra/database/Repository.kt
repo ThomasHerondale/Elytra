@@ -6,7 +6,10 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toLocalDate
 import tau.timentau.detau.elytra.model.Airport
+import tau.timentau.detau.elytra.model.Company
+import tau.timentau.detau.elytra.model.Flight
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
@@ -167,6 +170,106 @@ object Repository {
         }
     }
 
+    suspend fun getCompanies(): Deferred<List<Company>> {
+        return coroutineScope.async {
+            val companyDtos = DatabaseDAO.selectList<CompanyDTO>("""
+                SELECT name, logo
+                FROM companies
+            """)
+
+            println(companyDtos)
+            val paths = companyDtos.map { it.logo }
+            println(paths)
+            val logos = mutableMapOf<String, Bitmap>()
+
+            paths.forEach { logos[it] = DatabaseDAO.getImage(it) }
+            companyDtos.map { it.toCompany(logos[it.logo]!!) }
+        }
+    }
+
+    suspend fun getFlights(
+        departureApt: String,
+        arrivalApt: String,
+        date: LocalDate,
+        priceRange: Pair<Double, Double>,
+        passengersCount: Int,
+        economy: Boolean = false,
+        business: Boolean = false,
+        firstClass: Boolean = false): Deferred<List<Flight>> {
+
+         return coroutineScope.async {
+             if (!(economy || business || firstClass))
+                throw IllegalArgumentException("Cannot fetch flights: no service class provided")
+
+             // ottieni prima le informazioni sulle compagnie
+             val companies = getCompanies().await()
+
+                // ottieni le informazioni sugli aeroporti
+                val airports = getAirports().await()
+
+                val (minPrice, maxPrice) = priceRange
+
+                val flightsDTOs = mutableListOf<FlightDTO>()
+
+                // aggiungi i voli richiesti
+                if (economy) {
+                    flightsDTOs.addAll(
+                        DatabaseDAO.selectList<FlightDTO>("""
+                            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, 
+                                f.gateClosingTime, f.departureTime, f.arrivalTime, f.duration, 
+                                fp.economyPrice as price
+                            FROM flights f JOIN
+                                flights_free_seats ffs ON f.id = ffs.id JOIN
+                                flights_prices fp ON f.id = fp.id
+                            WHERE f.departureApt = '$departureApt' AND
+                                f.arrivalApt = '$arrivalApt' AND
+                                f.date = '${date.toDateString()}' AND
+                                fp.economyPrice BETWEEN $minPrice AND $maxPrice AND
+                                ffs.economyFree >= $passengersCount
+                        """)
+                    )
+                }
+
+                if (business) {
+                    flightsDTOs.addAll(
+                        DatabaseDAO.selectList<FlightDTO>("""
+                            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, 
+                                f.gateClosingTime, f.departureTime, f.arrivalTime, f.duration, 
+                                fp.businessPrice as price
+                            FROM flights f JOIN
+                                flights_free_seats ffs ON f.id = ffs.id JOIN
+                                flights_prices fp ON f.id = fp.id
+                            WHERE f.departureApt = '$departureApt' AND
+                                f.arrivalApt = '$arrivalApt' AND
+                                f.date = '${date.toDateString()}' AND
+                                fp.businessPrice BETWEEN $minPrice AND $maxPrice AND
+                                ffs.businessFree >= $passengersCount
+                            """)
+                    )
+                }
+
+                if (firstClass) {
+                    flightsDTOs.addAll(
+                        DatabaseDAO.selectList<FlightDTO>("""
+                            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, 
+                                f.gateClosingTime, f.departureTime, f.arrivalTime, f.duration, 
+                                fp.firstClassPrice as price
+                            FROM flights f JOIN
+                                flights_free_seats ffs ON f.id = ffs.id JOIN
+                                flights_prices fp ON f.id = fp.id
+                            WHERE f.departureApt = '$departureApt' AND
+                                f.arrivalApt = '$arrivalApt' AND
+                                f.date = '${date.toDateString()}' AND
+                                fp.firstClassPrice BETWEEN $minPrice AND $maxPrice AND
+                                ffs.firstClassFree >= $passengersCount
+                                """)
+                    )
+                }
+
+            flightsDTOs.map { it.toFlight(companies, airports) }
+        }
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
@@ -188,4 +291,48 @@ object Repository {
         val id: Int,
         val path: String
     )
+
+    private class CompanyDTO(
+        val name: String,
+        val logo: String
+    ) {
+        fun toCompany(logo: Bitmap) = Company(name, logo)
+    }
+
+    data class FlightDTO(
+        val id: String,
+        val company: String,
+        val departureApt: String,
+        val arrivalApt: String,
+        val date: String,
+        val gateClosingTime: String,
+        val departureTime: String,
+        val arrivalTime: String,
+        val duration: String,
+        val price: Double
+    ) {
+        fun toFlight(companies: List<Company>, airports: List<Airport>): Flight {
+            val company = companies.find { it.name == company } ?:
+                throw IllegalArgumentException("Unknown company")
+
+            val departureApt = airports.find { it.code == departureApt } ?:
+                throw IllegalArgumentException("Unknown airport")
+
+            val arrivalApt = airports.find { it.code == arrivalApt } ?:
+                throw IllegalArgumentException("Unknown airport")
+
+            return Flight(
+             id,
+             company,
+             departureApt,
+             arrivalApt,
+             date.toLocalDate(),
+             gateClosingTime,
+             departureTime,
+             arrivalTime,
+             duration,
+             price
+            )
+        }
+    }
 }
