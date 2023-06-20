@@ -209,10 +209,16 @@ class FlightsFragment : Fragment() {
         }
     }
 
-    private fun validateFields() =
-        validateAirportFields() and
-        validateDateFields() and
-        validatePassengersCountField()
+    private fun validateFields(): Boolean {
+        if (!binding.returnDatetext.isEnabled)
+            return validateAirportFields() and
+                    validateGoingDateField() and
+                    validatePassengersCountField()
+        else
+            return validateAirportFields() and
+                    validateDateFields() and
+                    validatePassengersCountField()
+    }
 
     private fun validateAirportFields(): Boolean {
         // se sono stati selezionati entrambi gli aeroporti
@@ -235,7 +241,7 @@ class FlightsFragment : Fragment() {
 
     private fun validateDateFields(): Boolean {
         // se le date di partenza e arrivo sono state inserite
-        if (validateDepartureDateField() and validateArrivalDateField()) {
+        if (validateGoingDateField() and validateReturnDateField()) {
             val departureDate = binding.goingDateText.text.parseToDate()
             val arrivalDate = binding.returnDatetext.text.parseToDate()
 
@@ -250,7 +256,7 @@ class FlightsFragment : Fragment() {
             return false
     }
 
-    private fun validateDepartureDateField(): Boolean {
+    private fun validateGoingDateField(): Boolean {
         try {
             val date = binding.goingDateText.text.parseToDate()
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
@@ -267,7 +273,7 @@ class FlightsFragment : Fragment() {
         return binding.goingDateText.error == null
     }
 
-    private fun validateArrivalDateField(): Boolean {
+    private fun validateReturnDateField(): Boolean {
         try {
             val date = binding.returnDatetext.text.parseToDate()
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
