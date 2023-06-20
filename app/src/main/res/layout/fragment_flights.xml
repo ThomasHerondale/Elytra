@@ -174,11 +174,11 @@
         android:valueFrom="0.0"
         android:valueTo="700.0"
         android:stepSize="10.0"
-        app:values="@array/price_slider_init"
         app:labelBehavior="visible"
         app:layout_constraintEnd_toEndOf="@+id/fetchAptsProgress"
         app:layout_constraintStart_toStartOf="@+id/serviceClassChips"
-        app:layout_constraintTop_toBottomOf="@+id/serviceClassChips" />
+        app:layout_constraintTop_toBottomOf="@+id/serviceClassChips"
+        app:values="@array/price_slider_init" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -224,7 +224,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tripKindLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -239,42 +239,7 @@
         android:layout_height="wrap_content"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/tripKindLabel"
         app:layout_constraintTop_toTopOf="@+id/roundTripSwitch" />
-
-    <!--    <FrameLayout
-            android:id="@+id/companiesMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="@+id/priceSlider"
-            app:layout_constraintTop_toBottomOf="@+id/priceSlider">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/expandCompanyMenuBttn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:text="@string/compagnie"
-                app:checkedIcon="@null"
-                app:checkedIconEnabled="false"
-                app:chipIcon="@null"
-                app:closeIcon="@drawable/ic_arrow_l2r_24"
-                app:closeIconEnabled="true">
-
-            </com.google.android.material.chip.Chip>
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/companyChips"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:orientation="horizontal"
-                android:visibility="invisible"
-                tools:visibility="visible">
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </FrameLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

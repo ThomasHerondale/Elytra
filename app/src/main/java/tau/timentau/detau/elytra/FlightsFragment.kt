@@ -57,6 +57,16 @@ class FlightsFragment : Fragment() {
                 performSearch()
         }
 
+        // se il viaggio è di sola andata, disabilita il campo data di ritorno
+        binding.roundTripSwitch.setOnCheckedChangeListener { _, isChecked ->
+            binding.returnDatetext.isEnabled = isChecked
+            binding.tripKindLabel.text =
+                if (isChecked)
+                    getString(R.string.andata_e_ritorno)
+                else
+                    getString(R.string.sola_andata)
+        }
+
         return binding.root
     }
 

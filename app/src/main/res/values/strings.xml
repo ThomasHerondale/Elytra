@@ -46,4 +46,5 @@
     <string name="prima_classe">Prima classe</string>
     <string name="compagnie">Compagnie</string>
     <string name="andata_e_ritorno">Andata e ritorno</string>
+    <string name="sola_andata">Sola andata</string>
 </resources>
