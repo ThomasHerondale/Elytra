@@ -103,6 +103,10 @@ class MainActivity :
         networkErrorOnFirstAccess()
     }
 
+    override fun dialogCancelled() {
+        checkForFirstAccess()
+    }
+
     override suspend fun fetchAvatars(): Deferred<List<Bitmap>> {
         return Repository.getAvatars()
     }
