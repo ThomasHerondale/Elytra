@@ -138,6 +138,7 @@ object Repository {
             val paths = DatabaseDAO.selectList<AvatarDTO>("""
                 SELECT *
                 FROM avatar_images
+                WHERE id <> 1
             """).map { it.path }
 
             val images = mutableListOf<Bitmap>()
