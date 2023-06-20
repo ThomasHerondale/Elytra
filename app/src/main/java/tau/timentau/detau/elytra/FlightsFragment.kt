@@ -62,6 +62,7 @@ class FlightsFragment : Fragment() {
 
     private fun performSearch() {
         flightsViewModel.flightsFetchStatus.observe(viewLifecycleOwner) {
+            // TODO
             when (it) {
                 is Status.Failed -> Log.e("FL", it.exception.stackTraceToString())
                 is Status.Loading -> Log.e("FL", "Loading")
@@ -83,7 +84,7 @@ class FlightsFragment : Fragment() {
         var isBusinessSelected = binding.businessChip.isChecked
         var isFirstClassSelected = binding.firstClassChip.isChecked
 
-        // se non è stato selezionato un filtraggio, considera tutte le classi
+        // se non è stato selezionato almeno un filtraggio, considera tutte le classi
         if (!isEconomySelected && !isBusinessSelected && !isFirstClassSelected) {
             isEconomySelected = true
             isBusinessSelected = true
@@ -146,17 +147,15 @@ class FlightsFragment : Fragment() {
     private fun setupCompanyFilters() {
         flightsViewModel.companyFetchStatus.observe(viewLifecycleOwner) {
             when (it) {
-                is Status.Failed -> TODO()
-                is Status.Loading -> {}
-                is Status.Success -> setupCompanyMenu()
+                is Status.Failed -> showNetworkErrorDialog()
+                is Status.Loading -> Log.d(TAG, "Fetching companies from database")
+                is Status.Success -> binding.expandCompanyMenuBttn.setOnClickListener {
+                    openOrCloseCompanyMenu()
+                }
             }
         }
 
         flightsViewModel.loadCompanies()
-    }
-
-    private fun setupCompanyMenu() {
-        binding.expandCompanyMenuBttn.setOnClickListener { openOrCloseCompanyMenu() }
     }
 
     private fun openOrCloseCompanyMenu() {
