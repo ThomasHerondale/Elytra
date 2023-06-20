@@ -12,5 +12,6 @@ data class Flight(
     val departureTime: String,
     val arrivalTime: String,
     val duration: String,
-    val price: Double
+    val price: Double,
+    val serviceClass: ServiceClass
 )

@@ -10,6 +10,10 @@ import kotlinx.datetime.toLocalDate
 import tau.timentau.detau.elytra.model.Airport
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
+import tau.timentau.detau.elytra.model.ServiceClass
+import tau.timentau.detau.elytra.model.ServiceClass.BUSINESS
+import tau.timentau.detau.elytra.model.ServiceClass.ECONOMY
+import tau.timentau.detau.elytra.model.ServiceClass.FIRST_CLASS
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
@@ -208,12 +212,11 @@ object Repository {
 
              val (minPrice, maxPrice) = priceRange
 
-             val flightsDTOs = mutableListOf<FlightDTO>()
+             val flights = mutableListOf<Flight>()
 
              // aggiungi i voli richiesti
              if (economy) {
-                 flightsDTOs.addAll(
-                     getFlightsForServiceClass(
+                 val flightDTOs = getFlightsForServiceClass(
                          departureApt,
                          arrivalApt,
                          date,
@@ -222,41 +225,48 @@ object Repository {
                          passengersCount,
                          "economy",
                          selectedCompanies
-                     )
+                 )
+
+                 flights.addAll(
+                     flightDTOs.map { it.toFlight(companies, airports, ECONOMY) }
                  )
              }
 
              if (business) {
-                flightsDTOs.addAll(
-                    getFlightsForServiceClass(
-                        departureApt,
-                        arrivalApt,
-                        date,
-                        minPrice,
-                        maxPrice,
-                        passengersCount,
-                        "business",
-                        selectedCompanies
-                    )
-                )
+                 val flightDTOs = getFlightsForServiceClass(
+                     departureApt,
+                     arrivalApt,
+                     date,
+                     minPrice,
+                     maxPrice,
+                     passengersCount,
+                     "business",
+                     selectedCompanies
+                 )
+
+                 flights.addAll(
+                     flightDTOs.map { it.toFlight(companies, airports, BUSINESS) }
+                 )
             }
 
              if (firstClass) {
-                flightsDTOs.addAll(
-                    getFlightsForServiceClass(
-                        departureApt,
-                        arrivalApt,
-                        date,
-                        minPrice,
-                        maxPrice,
-                        passengersCount,
-                        "firstClass",
-                        selectedCompanies
-                    )
-                )
+                 val flightDTOs = getFlightsForServiceClass(
+                     departureApt,
+                     arrivalApt,
+                     date,
+                     minPrice,
+                     maxPrice,
+                     passengersCount,
+                     "firstClass",
+                     selectedCompanies
+                 )
+
+                 flights.addAll(
+                     flightDTOs.map { it.toFlight(companies, airports, FIRST_CLASS) }
+                 )
             }
 
-             flightsDTOs.map { it.toFlight(companies, airports) }
+             flights
         }
     }
 
@@ -336,7 +346,11 @@ object Repository {
         val duration: String,
         val price: Double
     ) {
-        fun toFlight(companies: List<Company>, airports: List<Airport>): Flight {
+        fun toFlight(
+            companies: List<Company>,
+            airports: List<Airport>,
+            serviceClass: ServiceClass,
+        ): Flight {
             val company = companies.find { it.name == company } ?:
                 throw IllegalArgumentException("Unknown company")
 
@@ -347,16 +361,17 @@ object Repository {
                 throw IllegalArgumentException("Unknown airport")
 
             return Flight(
-             id,
-             company,
-             departureApt,
-             arrivalApt,
-             date.toLocalDate(),
-             gateClosingTime,
-             departureTime,
-             arrivalTime,
-             duration,
-             price
+                id,
+                company,
+                departureApt,
+                arrivalApt,
+                date.toLocalDate(),
+                gateClosingTime,
+                departureTime,
+                arrivalTime,
+                duration,
+                price,
+                serviceClass
             )
         }
     }
