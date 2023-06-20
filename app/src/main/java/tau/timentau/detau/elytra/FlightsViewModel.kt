@@ -5,6 +5,7 @@ import tau.timentau.detau.elytra.database.MutableStatus
 import tau.timentau.detau.elytra.database.ObservableStatus
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.model.Airport
+import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
 
 class FlightsViewModel : ViewModel() {
@@ -12,12 +13,21 @@ class FlightsViewModel : ViewModel() {
     private val _airportsFetchStatus = MutableStatus<List<Airport>>()
     val airportsFetchStatus: ObservableStatus<List<Airport>> = _airportsFetchStatus
 
+    private val _companyFetchStatus = MutableStatus<List<Company>>()
+    val companyFetchStatus: ObservableStatus<List<Company>> = _companyFetchStatus
+
     private val _flightsFetchStatus = MutableStatus<List<Flight>>()
     val flightsFetchStatus: ObservableStatus<List<Flight>> = _flightsFetchStatus
 
     fun loadAirports() {
         performStateful(_airportsFetchStatus) {
             Repository.getAirports().await()
+        }
+    }
+
+    fun loadCompanies() {
+        performStateful(_companyFetchStatus) {
+            Repository.getCompanies().await()
         }
     }
 

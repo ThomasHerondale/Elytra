@@ -5,14 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentFlightsBinding
+import tau.timentau.detau.elytra.model.Company
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
@@ -30,7 +34,6 @@ class FlightsFragment : Fragment() {
     private inline val arrivalAptField: MaterialAutoCompleteTextView
         get() = binding.arrivalAptText.editText as MaterialAutoCompleteTextView
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -38,6 +41,7 @@ class FlightsFragment : Fragment() {
         binding = FragmentFlightsBinding.inflate(layoutInflater)
 
         setupAirportFields()
+        setupCompanyFilters()
 
         // imposta lo slider in euro senza centesimi
         binding.priceSlider.setLabelFormatter {
@@ -115,6 +119,59 @@ class FlightsFragment : Fragment() {
 
             // evita che si apra il menu di selezione dell'arrivo in automatico
             binding.arrivalAptText.clearFocus()
+        }
+    }
+
+    private fun setupCompanyFilters() {
+        flightsViewModel.companyFetchStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> TODO()
+                is Status.Loading -> {}
+                is Status.Success -> setupCompanyMenu()
+            }
+        }
+
+        flightsViewModel.loadCompanies()
+    }
+
+    private fun setupCompanyMenu() {
+        binding.expandCompanyMenuBttn.setOnClickListener { openOrCloseCompanyMenu() }
+    }
+
+    private fun openOrCloseCompanyMenu() {
+        val isMenuOpened = !binding.expandCompanyMenuBttn.isChecked
+
+        if (isMenuOpened) {
+            // elimina tutte le chip
+            binding.companyChips.removeAllViews()
+
+            // cambia l'icona del pulsante di apertura del menu
+            binding.expandCompanyMenuBttn.closeIcon =
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_arrow_l2r_24,
+                    requireContext().theme
+                )
+        } else {
+            val companies =
+                (flightsViewModel.companyFetchStatus.value as Status.Success<List<Company>>).data
+
+            // crea e aggiungi le chip al layout
+            for (company in companies) {
+                val chip = Chip(requireContext())
+                chip.text = company.name
+                chip.chipIcon = company.logo.toDrawable(resources)
+                chip.isCheckable = true
+                binding.companyChips.addView(chip)
+            }
+
+            // cambia l'icona del pulsante di apertura del menu
+            binding.expandCompanyMenuBttn.closeIcon =
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.ic_arrow_r2l_24,
+                    requireContext().theme
+                )
         }
     }
 
