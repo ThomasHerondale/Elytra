@@ -154,7 +154,7 @@ object Repository {
     }
 
     suspend fun setAvatar(email: String, id: Int) {
-        val dbId = id + 1 // gli indici generati partono da 1
+        val dbId = id + 2 // gli indici generati partono da 1, e salta il primo che è di default
         DatabaseDAO.update("""
             UPDATE users
             SET avatar = $dbId
