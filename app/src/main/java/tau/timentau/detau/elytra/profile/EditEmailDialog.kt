@@ -66,9 +66,9 @@ class EditEmailDialog : DialogFragment() {
 
         binding.editEmailDialogBottomButtons.negativeButton.setOnClickListener { dismiss() }
         binding.editEmailDialogBottomButtons.positiveButton.setOnClickListener {
-            showOrHideProgressBar(false)
 
             if (validateMailField()) {
+                showOrHideProgressBar(false)
                 coroutineScope.launch {
                     // se i dati sono corretti, richiedi la modifica
                     if (validateFields()) {
