@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -90,6 +91,7 @@ class ProfileActivity : AppCompatActivity(),
             Glide
                 .with(this)
                 .load(it.avatar)
+                .transform(RoundedCorners(32))
                 .into(binding.profileImg)
 
             binding.fullnameLabel.text = it.fullName
