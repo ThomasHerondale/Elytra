@@ -138,6 +138,9 @@ class FlightsFragment : Fragment() {
 
         flightsViewModel.loadAirports()
 
+        departureAptField.dropDownHeight = 1000
+        arrivalAptField.dropDownHeight = 1000
+
         // inizializza il pulsante di scambio destinazioni
         binding.swapAirportsBttn.setOnClickListener {
 
