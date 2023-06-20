@@ -29,7 +29,6 @@ import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.hiddenPasswordString
 import tau.timentau.detau.elytra.setDialogResultListener
 import tau.timentau.detau.elytra.show
-import tau.timentau.detau.elytra.showConfirmDialog
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 import tau.timentau.detau.elytra.toReadable
 
@@ -211,7 +210,15 @@ class ProfileActivity : AppCompatActivity(),
             else
                 R.string.indirizzo_mail_modificato_to_login
 
-        showConfirmDialog(titleResId, messageResId)
+        MaterialAlertDialogBuilder(
+            this,
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(getString(titleResId))
+            .setMessage(getString(messageResId))
+            .setIcon(R.drawable.ic_check_circle_24)
+            .setPositiveButton(R.string.okay) { _, _ -> logoutConfirmed() }
+            .show()
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
