@@ -16,8 +16,11 @@ class FlightsViewModel : ViewModel() {
     private val _companyFetchStatus = MutableStatus<List<Company>>()
     val companyFetchStatus: ObservableStatus<List<Company>> = _companyFetchStatus
 
-    private val _flightsFetchStatus = MutableStatus<List<Flight>>()
-    val flightsFetchStatus: ObservableStatus<List<Flight>> = _flightsFetchStatus
+    private val _goingFlightsFetchStatus = MutableStatus<List<Flight>>()
+    val goingFlightsFetchStatus: ObservableStatus<List<Flight>> = _goingFlightsFetchStatus
+
+    private val _returnFlightsFetchStatus = MutableStatus<List<Flight>>()
+    val returnFlightsFetchStatus: ObservableStatus<List<Flight>> = _returnFlightsFetchStatus
 
     fun loadAirports() {
         performStateful(_airportsFetchStatus) {
@@ -41,11 +44,12 @@ class FlightsViewModel : ViewModel() {
         economy: Boolean = false,
         business: Boolean = false,
         firstClass: Boolean = false,
-        selectedCompanies: List<String>
+        selectedCompanies: List<String>,
+        roundTrip: Boolean
     ) {
         val departureAptCode = departureApt.split(" ")[0]
         val arrivalAptCode = arrivalApt.split(" ")[0]
-        performStateful(_flightsFetchStatus) {
+        performStateful(_goingFlightsFetchStatus) {
             Repository.getFlights(
                 departureAptCode,
                 arrivalAptCode,
@@ -57,6 +61,23 @@ class FlightsViewModel : ViewModel() {
                 firstClass,
                 selectedCompanies
             ).await()
+        }
+
+        // cerca anche i voli di ritorno se l'utente lo desidera
+        if (roundTrip) {
+            performStateful(_returnFlightsFetchStatus) {
+                Repository.getFlights(
+                    arrivalApt,
+                    departureApt, // scambia le destinazioni
+                    date.parseToDate(),
+                    minPrice to maxPrice,
+                    passengersCount,
+                    economy,
+                    business,
+                    firstClass,
+                    selectedCompanies
+                ).await()
+            }
         }
     }
 }

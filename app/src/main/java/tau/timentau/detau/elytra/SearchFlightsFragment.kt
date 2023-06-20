@@ -16,7 +16,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.database.Status
-import tau.timentau.detau.elytra.databinding.FragmentFlightsBinding
+import tau.timentau.detau.elytra.databinding.FragmentSearchFlightsBinding
 import tau.timentau.detau.elytra.model.Company
 import java.text.NumberFormat
 import java.util.Currency
@@ -24,9 +24,9 @@ import java.util.Locale
 
 private const val TAG = "FLIGHTS"
 
-class FlightsFragment : Fragment() {
+class SearchFlightsFragment : Fragment() {
 
-    private lateinit var binding: FragmentFlightsBinding
+    private lateinit var binding: FragmentSearchFlightsBinding
     private val flightsViewModel: FlightsViewModel by viewModels()
 
     private inline val departureAptField: MaterialAutoCompleteTextView
@@ -39,7 +39,7 @@ class FlightsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentFlightsBinding.inflate(layoutInflater)
+        binding = FragmentSearchFlightsBinding.inflate(layoutInflater)
 
         setupAirportFields()
         setupCompanyFilters()
@@ -71,7 +71,7 @@ class FlightsFragment : Fragment() {
     }
 
     private fun performSearch() {
-        flightsViewModel.flightsFetchStatus.observe(viewLifecycleOwner) {
+        flightsViewModel.goingFlightsFetchStatus.observe(viewLifecycleOwner) {
             // TODO
             when (it) {
                 is Status.Failed -> Log.e("FL", it.exception.stackTraceToString())
@@ -111,7 +111,8 @@ class FlightsFragment : Fragment() {
             isEconomySelected,
             isBusinessSelected,
             isFirstClassSelected,
-            selectedCompanies
+            selectedCompanies,
+            binding.returnDatetext.isEnabled
         )
     }
 
