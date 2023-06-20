@@ -56,4 +56,6 @@
     <string name="carta_associata_profilo">La tua carta è stata associata correttamente al tuo profilo.</string>
     <string name="logout_title">Logout</string>
     <string name="sicuro_del_logout">Sei sicuro di voler effettuare il logout?</string>
+    <string name="nuova_email">Nuova email</string>
+    <string name="password">Password</string>
 </resources>

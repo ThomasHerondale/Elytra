@@ -119,7 +119,7 @@ class EditEmailDialog : DialogFragment() {
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.editEmailProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+        binding.editEmailProgress.visibility = if (hide) View.GONE else View.VISIBLE
     }
 
     interface EditEmailHandler {
