@@ -47,4 +47,5 @@
     <string name="compagnie">Compagnie</string>
     <string name="andata_e_ritorno">Andata e ritorno</string>
     <string name="sola_andata">Sola andata</string>
+    <string name="acquista">Acquista</string>
 </resources>
