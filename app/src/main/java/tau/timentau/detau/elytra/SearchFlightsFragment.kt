@@ -74,10 +74,26 @@ class SearchFlightsFragment : Fragment() {
         flightsViewModel.goingFlightsFetchStatus.observe(viewLifecycleOwner) {
             // TODO
             when (it) {
-                is Status.Failed -> Log.e("FL", it.exception.stackTraceToString())
-                is Status.Loading -> Log.e("FL", "Loading")
+                is Status.Failed -> {
+                    showNetworkErrorDialog()
+                    Log.e("FL", it.exception.stackTraceToString())
+                }
+                is Status.Loading -> { }
                 is Status.Success -> {
                     Log.i("FL", "${it.data}")
+                }
+            }
+        }
+
+        flightsViewModel.returnFlightsFetchStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> {
+                    showNetworkErrorDialog()
+                    Log.e("FL", it.exception.stackTraceToString())
+                }
+                Status.Loading -> { }
+                is Status.Success -> {
+                    Log.i("FLR", "${it.data}")
                 }
             }
         }
@@ -101,10 +117,17 @@ class SearchFlightsFragment : Fragment() {
             isFirstClassSelected = true
         }
 
+        val returnDate =
+            if (binding.returnDatetext.isEnabled)
+                binding.returnDatetext.text
+            else
+                null
+
         flightsViewModel.searchFlights(
             binding.departureAptText.text,
             binding.arrivalAptText.text,
             binding.goingDateText.text,
+            returnDate,
             binding.priceSlider.values[0].toDouble(),
             binding.priceSlider.values[1].toDouble(),
             binding.passengersText.text.toInt(),

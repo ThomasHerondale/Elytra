@@ -37,7 +37,8 @@ class FlightsViewModel : ViewModel() {
     fun searchFlights(
         departureApt: String,
         arrivalApt: String,
-        date: String,
+        goingDate: String,
+        returnDate: String?,
         minPrice: Double,
         maxPrice: Double,
         passengersCount: Int,
@@ -53,7 +54,7 @@ class FlightsViewModel : ViewModel() {
             Repository.getFlights(
                 departureAptCode,
                 arrivalAptCode,
-                date.parseToDate(),
+                goingDate.parseToDate(),
                 minPrice to maxPrice,
                 passengersCount,
                 economy,
@@ -67,9 +68,10 @@ class FlightsViewModel : ViewModel() {
         if (roundTrip) {
             performStateful(_returnFlightsFetchStatus) {
                 Repository.getFlights(
-                    arrivalApt,
-                    departureApt, // scambia le destinazioni
-                    date.parseToDate(),
+                    arrivalAptCode,
+                    departureAptCode, // scambia le destinazioni
+                    // se è selezionata andata e ritorno, deve esserci una data
+                    returnDate!!.parseToDate(),
                     minPrice to maxPrice,
                     passengersCount,
                     economy,
