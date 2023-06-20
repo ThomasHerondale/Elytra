@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
@@ -70,6 +71,25 @@ class FlightsFragment : Fragment() {
             }
         }
 
+        // ottieni i nomi delle compagnie selezionate dall'utente
+        val selectedCompanies = mutableListOf<String>()
+        val checkedChipsIds = binding.companyChips.checkedChipIds
+        binding.companyChips.children.forEach { it as Chip
+            if (it.id in checkedChipsIds)
+                selectedCompanies.add(it.tag as String)
+        }
+
+        var isEconomySelected = binding.economyChip.isChecked
+        var isBusinessSelected = binding.businessChip.isChecked
+        var isFirstClassSelected = binding.firstClassChip.isChecked
+
+        // se non è stato selezionato un filtraggio, considera tutte le classi
+        if (!isEconomySelected && !isBusinessSelected && !isFirstClassSelected) {
+            isEconomySelected = true
+            isBusinessSelected = true
+            isFirstClassSelected = true
+        }
+
         flightsViewModel.searchFlights(
             binding.departureAptText.text,
             binding.arrivalAptText.text,
@@ -77,9 +97,10 @@ class FlightsFragment : Fragment() {
             binding.priceSlider.values[0].toDouble(),
             binding.priceSlider.values[1].toDouble(),
             binding.passengersText.text.toInt(),
-            economy = binding.economyChip.isChecked,
-            business = binding.businessChip.isChecked,
-            firstClass = binding.firstClassChip.isChecked
+            isEconomySelected,
+            isBusinessSelected,
+            isFirstClassSelected,
+            selectedCompanies
         )
     }
 
@@ -159,6 +180,7 @@ class FlightsFragment : Fragment() {
             // crea e aggiungi le chip al layout
             for (company in companies) {
                 val chip = Chip(requireContext())
+                chip.tag = company.name
                 chip.text = company.name
                 chip.chipIcon = company.logo.toDrawable(resources)
                 chip.isCheckable = true

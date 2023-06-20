@@ -193,7 +193,8 @@ object Repository {
         passengersCount: Int,
         economy: Boolean,
         business: Boolean,
-        firstClass: Boolean): Deferred<List<Flight>> {
+        firstClass: Boolean,
+        selectedCompanies: List<String>): Deferred<List<Flight>> {
 
          return coroutineScope.async {
              if (!(economy || business || firstClass))
@@ -202,57 +203,60 @@ object Repository {
              // ottieni prima le informazioni sulle compagnie
              val companies = getCompanies().await()
 
-                // ottieni le informazioni sugli aeroporti
-                val airports = getAirports().await()
+             // ottieni le informazioni sugli aeroporti
+             val airports = getAirports().await()
 
-                val (minPrice, maxPrice) = priceRange
+             val (minPrice, maxPrice) = priceRange
 
-                val flightsDTOs = mutableListOf<FlightDTO>()
+             val flightsDTOs = mutableListOf<FlightDTO>()
 
-                // aggiungi i voli richiesti
-                if (economy) {
-                    flightsDTOs.addAll(
-                        getFlightsForServiceClass(
-                            departureApt,
-                            arrivalApt,
-                            date,
-                            minPrice,
-                            maxPrice,
-                            passengersCount,
-                            "economy"
-                        )
+             // aggiungi i voli richiesti
+             if (economy) {
+                 flightsDTOs.addAll(
+                     getFlightsForServiceClass(
+                         departureApt,
+                         arrivalApt,
+                         date,
+                         minPrice,
+                         maxPrice,
+                         passengersCount,
+                         "economy",
+                         selectedCompanies
+                     )
+                 )
+             }
+
+             if (business) {
+                flightsDTOs.addAll(
+                    getFlightsForServiceClass(
+                        departureApt,
+                        arrivalApt,
+                        date,
+                        minPrice,
+                        maxPrice,
+                        passengersCount,
+                        "business",
+                        selectedCompanies
                     )
-                }
+                )
+            }
 
-                if (business) {
-                    flightsDTOs.addAll(
-                        getFlightsForServiceClass(
-                            departureApt,
-                            arrivalApt,
-                            date,
-                            minPrice,
-                            maxPrice,
-                            passengersCount,
-                            "business"
-                        )
+             if (firstClass) {
+                flightsDTOs.addAll(
+                    getFlightsForServiceClass(
+                        departureApt,
+                        arrivalApt,
+                        date,
+                        minPrice,
+                        maxPrice,
+                        passengersCount,
+                        "firstClass",
+                        selectedCompanies
                     )
-                }
+                )
+            }
 
-                if (firstClass) {
-                    flightsDTOs.addAll(
-                        getFlightsForServiceClass(
-                            departureApt,
-                            arrivalApt,
-                            date,
-                            minPrice,
-                            maxPrice,
-                            passengersCount,
-                            "firstClass"
-                        )
-                    )
-                }
-
-            flightsDTOs.map { it.toFlight(companies, airports) }
+             flightsDTOs.map { it.toFlight(companies, airports) }
         }
     }
 
@@ -263,8 +267,19 @@ object Repository {
         minPrice: Double,
         maxPrice: Double,
         passengersCount: Int,
-        serviceClass: String
+        serviceClass: String,
+        selectedCompanies: List<String>
     ): List<FlightDTO> {
+
+        val companiesSectionBuilder = StringBuilder()
+        selectedCompanies.forEach { companiesSectionBuilder.append("'$it', ") }
+
+        val companiesStr =
+            if (companiesSectionBuilder.isEmpty())
+                ""
+            else
+                "AND f.company IN (${companiesSectionBuilder.removeSuffix(", ")})"
+
         return DatabaseDAO.selectList<FlightDTO>("""
             SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, 
                 f.gateClosingTime, f.departureTime, f.arrivalTime, f.duration, 
@@ -276,7 +291,7 @@ object Repository {
                 f.arrivalApt = '$arrivalApt' AND
                 f.date = '${date.toDateString()}' AND
                 fp.${serviceClass}Price BETWEEN $minPrice AND $maxPrice AND
-                ffs.${serviceClass}Free >= $passengersCount
+                ffs.${serviceClass}Free >= $passengersCount $companiesStr
             """)
     }
 

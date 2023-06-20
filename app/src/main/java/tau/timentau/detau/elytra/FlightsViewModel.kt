@@ -40,7 +40,8 @@ class FlightsViewModel : ViewModel() {
         passengersCount: Int,
         economy: Boolean = false,
         business: Boolean = false,
-        firstClass: Boolean = false
+        firstClass: Boolean = false,
+        selectedCompanies: List<String>
     ) {
         val departureAptCode = departureApt.split(" ")[0]
         val arrivalAptCode = arrivalApt.split(" ")[0]
@@ -53,7 +54,8 @@ class FlightsViewModel : ViewModel() {
                 passengersCount,
                 economy,
                 business,
-                firstClass
+                firstClass,
+                selectedCompanies
             ).await()
         }
     }
