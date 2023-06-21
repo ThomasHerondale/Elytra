@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import tau.timentau.detau.elytra.database.MutableStatus
 import tau.timentau.detau.elytra.database.ObservableStatus
 import tau.timentau.detau.elytra.database.Repository
+import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.model.Airport
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
@@ -21,6 +22,14 @@ class FlightsViewModel : ViewModel() {
 
     private val _returnFlightsFetchStatus = MutableStatus<List<Flight>>()
     val returnFlightsFetchStatus: ObservableStatus<List<Flight>> = _returnFlightsFetchStatus
+
+    inline val goingFlightsList: List<Flight>
+        get() {
+            if (goingFlightsFetchStatus.value !is Status.Success<List<Flight>>)
+                throw IllegalStateException("Flight list not retrieved correctly")
+
+            return (goingFlightsFetchStatus.value as Status.Success<List<Flight>>).data
+        }
 
     fun loadAirports() {
         performStateful(_airportsFetchStatus) {

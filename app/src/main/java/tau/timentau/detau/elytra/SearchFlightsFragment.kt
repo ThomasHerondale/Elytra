@@ -10,6 +10,7 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.datetime.Clock
@@ -18,6 +19,7 @@ import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentSearchFlightsBinding
 import tau.timentau.detau.elytra.model.Company
+import tau.timentau.detau.elytra.model.Flight
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
@@ -72,16 +74,24 @@ class SearchFlightsFragment : Fragment() {
 
     private fun performSearch() {
         flightsViewModel.goingFlightsFetchStatus.observe(viewLifecycleOwner) {
-            // TODO
             when (it) {
                 is Status.Failed -> {
                     showNetworkErrorDialog()
-                    Log.e("FL", it.exception.stackTraceToString())
+                    Log.e(TAG, it.exception.stackTraceToString())
                 }
                 is Status.Loading -> { }
                 is Status.Success -> {
-                    Log.i("FL", "${it.data}")
-                    navHostActivity.navigateTo(SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlights())
+                    setFragmentResultListener(SELECT_GOING_FLIGHT_REQUEST_KEY) { _, f ->
+                        val flight = f.getParcelable<Flight>(FLIGHT_RESULT_KEY)
+                        Log.d("RESULT", "Got result $flight")
+                        if (binding.roundTripSwitch.isChecked)
+                            navHostActivity.navigateTo(
+                                SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(true, flight)
+                            )
+                    }
+                    navHostActivity.navigateTo(
+                        SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight()
+                    )
                 }
             }
         }
@@ -90,12 +100,10 @@ class SearchFlightsFragment : Fragment() {
             when (it) {
                 is Status.Failed -> {
                     showNetworkErrorDialog()
-                    Log.e("FL", it.exception.stackTraceToString())
+                    Log.e(TAG, it.exception.stackTraceToString())
                 }
                 Status.Loading -> { }
-                is Status.Success -> {
-                    Log.i("FLR", "${it.data}")
-                }
+                is Status.Success -> { }
             }
         }
 

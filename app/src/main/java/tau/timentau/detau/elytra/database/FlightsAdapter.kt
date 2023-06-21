@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra.database
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,9 @@ import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FlightViewHolderBinding
 import tau.timentau.detau.elytra.model.Flight
 
-class FlightsAdapter(private val flights: List<Flight>)
+class FlightsAdapter(
+    private val flights: List<Flight>,
+    private val onFlightSelected: (Flight) -> Unit)
     : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,6 +44,17 @@ class FlightsAdapter(private val flights: List<Flight>)
 
             durationLabel.text = flight.duration
         }
+
+        holder.binding.flightViewHolderCard.setOnClickListener {
+            onFlightSelected(flight)
+            Log.d("RESULT", "Called")
+        }
+    }
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        Glide
+            .with(holder.itemView)
+            .clear(holder.binding.companyLogoImg)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

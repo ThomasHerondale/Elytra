@@ -13,15 +13,38 @@
         <action
             android:id="@+id/search_flights_to_select_going_flight"
             app:destination="@id/selectGoingFlight" />
+        <action
+            android:id="@+id/action_flights_to_selectReturnFlight"
+            app:destination="@id/selectReturnFlight" />
     </fragment>
     <fragment
         android:id="@+id/selectGoingFlight"
         android:name="tau.timentau.detau.elytra.SelectFlightFragment"
         android:label="fragment_select_going_flight"
-        tools:layout="@layout/fragment_select_going_flight" >
+        tools:layout="@layout/fragment_select_flight" >
         <argument
             android:name="isReturn"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="goingFlight"
+            app:argType="tau.timentau.detau.elytra.model.Flight"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectReturnFlight"
+        android:name="tau.timentau.detau.elytra.SelectFlightFragment"
+        android:label="fragment_select_going_flight"
+        tools:layout="@layout/fragment_select_flight">
+        <argument
+            android:name="isReturn"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="goingFlight"
+            android:defaultValue="@null"
+            app:argType="tau.timentau.detau.elytra.model.Flight"
+            app:nullable="true" />
     </fragment>
 </navigation>
