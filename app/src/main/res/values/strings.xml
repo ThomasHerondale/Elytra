@@ -73,4 +73,5 @@
     <string name="tuoi_dati">I tuoi dati</string>
     <string name="modifica">Modifica</string>
     <string name="add_mtd_pagamento">Aggiungi un metodo di pagamento</string>
+    <string name="tuoi_pagamenti">I tuoi metodi di pagamento</string>
 </resources>
