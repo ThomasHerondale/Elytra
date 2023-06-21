@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -16,10 +14,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import tau.timentau.detau.elytra.database.FlightsAdapter
 import tau.timentau.detau.elytra.databinding.FragmentSelectFlightBinding
 import tau.timentau.detau.elytra.model.Flight
-
-const val SELECT_GOING_FLIGHT_REQUEST_KEY = "select_going_flight"
-const val SELECT_RETURN_FLIGHT_REQUEST_KEY = "select_return_flight"
-const val FLIGHT_RESULT_KEY = "flight"
 
 class SelectFlightFragment : Fragment() {
 
@@ -79,24 +73,34 @@ class SelectFlightFragment : Fragment() {
             requireContext(), VERTICAL, false
         )
 
+        val flights =
+            if (args.isReturn)
+                flightsViewModel.returnFlightsList
+            else
+                flightsViewModel.goingFlightsList
+
         binding.goingFlightsList.adapter =
-            FlightsAdapter(flightsViewModel.goingFlightsList) {
-                flightSelected(it)
-                findNavController().popBackStack()
-            }
+            FlightsAdapter(flights) { flightSelected(it) }
     }
 
     private fun flightSelected(selectedFlight: Flight) {
-        val requestKey =
-            if (args.isReturn)
-                SELECT_RETURN_FLIGHT_REQUEST_KEY
+        if (args.isReturn) {
+            flightsViewModel.selectReturnFlight(selectedFlight)
+            TODO()
+            // TODO naviga al pagamento
+        } else {
+            flightsViewModel.selectGoingFlight(selectedFlight)
+
+            if (args.isPaymentNext) {
+                // TODO naviga al pagamento
+                TODO()
+            }
             else
-                SELECT_GOING_FLIGHT_REQUEST_KEY
-
-        val result = Bundle().apply {
-            putParcelable(FLIGHT_RESULT_KEY, selectedFlight)
+                navHostActivity.navigateTo(
+                    SelectFlightFragmentDirections.selectGoingFlightToSelectReturnFlight(
+                        isReturn = true, goingFlight = selectedFlight, isPaymentNext = true
+                    )
+                )
         }
-
-        setFragmentResult(requestKey, result)
     }
 }

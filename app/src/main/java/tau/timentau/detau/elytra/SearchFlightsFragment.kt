@@ -5,13 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -19,7 +20,6 @@ import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentSearchFlightsBinding
 import tau.timentau.detau.elytra.model.Company
-import tau.timentau.detau.elytra.model.Flight
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
@@ -73,25 +73,27 @@ class SearchFlightsFragment : Fragment() {
     }
 
     private fun performSearch() {
-        flightsViewModel.goingFlightsFetchStatus.observe(viewLifecycleOwner) {
-            when (it) {
-                is Status.Failed -> {
-                    showNetworkErrorDialog()
-                    Log.e(TAG, it.exception.stackTraceToString())
-                }
-                is Status.Loading -> { }
-                is Status.Success -> { startGoingFlightSelection() }
-            }
-        }
+        val progressDialog = showProgressDialog()
 
-        flightsViewModel.returnFlightsFetchStatus.observe(viewLifecycleOwner) {
+        flightsViewModel.flightsFetchStatus.observe(viewLifecycleOwner) {
             when (it) {
                 is Status.Failed -> {
                     showNetworkErrorDialog()
                     Log.e(TAG, it.exception.stackTraceToString())
                 }
-                Status.Loading -> { }
-                is Status.Success -> { }
+
+                is Status.Loading -> { /* non fare nulla, il dialogo è già mostrato */ }
+
+                is Status.Success -> {
+                    val roundTrip = binding.roundTripSwitch.isChecked
+
+                    navHostActivity.navigateTo(
+                        SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(
+                            isReturn = false, isPaymentNext = !roundTrip
+                        )
+                    )
+                    progressDialog.dismiss()
+                }
             }
         }
 
@@ -133,20 +135,6 @@ class SearchFlightsFragment : Fragment() {
             isFirstClassSelected,
             selectedCompanies,
             binding.returnDatetext.isEnabled
-        )
-    }
-
-    private fun startGoingFlightSelection() {
-        setFragmentResultListener(SELECT_GOING_FLIGHT_REQUEST_KEY) { _, f ->
-            val flight = f.getParcelable<Flight>(FLIGHT_RESULT_KEY)
-            Log.d("RESULT", "Got result $flight")
-            if (binding.roundTripSwitch.isChecked)
-                navHostActivity.navigateTo(
-                    SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(true, flight)
-                )
-        }
-        navHostActivity.navigateTo(
-            SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight()
         )
     }
 
@@ -363,6 +351,16 @@ class SearchFlightsFragment : Fragment() {
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.fetchAptsProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun showProgressDialog(): AlertDialog {
+        return MaterialAlertDialogBuilder(
+            requireContext(),
+            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setView(R.layout.dialog_progress_simple)
+            .setCancelable(false)
+            .show()
     }
 
 }
