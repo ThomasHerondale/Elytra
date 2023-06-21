@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
@@ -23,7 +24,8 @@ import tau.timentau.detau.elytra.firstAccess.SetSecurityQuestionDialog
 class MainActivity :
     AppCompatActivity(),
     SetSecurityQuestionDialog.SetSecurityQuestionHandler,
-    SelectAvatarDialog.SelectAvatarHandler {
+    SelectAvatarDialog.SelectAvatarHandler,
+    NavHostActivity {
 
     private lateinit var binding: ActivityMainBinding
     private val navController by lazy {
@@ -40,6 +42,10 @@ class MainActivity :
         checkForFirstAccess()
 
         setContentView(binding.root)
+    }
+
+    override fun navigateTo(directions: NavDirections) {
+        navController.navigate(directions)
     }
 
     private fun checkForFirstAccess() {

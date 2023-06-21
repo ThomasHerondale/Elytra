@@ -9,7 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.datetime.Clock
@@ -27,7 +27,7 @@ private const val TAG = "FLIGHTS"
 class SearchFlightsFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchFlightsBinding
-    private val flightsViewModel: FlightsViewModel by viewModels()
+    private val flightsViewModel: FlightsViewModel by activityViewModels()
 
     private inline val departureAptField: MaterialAutoCompleteTextView
         get() = binding.departureAptText.editText as MaterialAutoCompleteTextView
@@ -81,6 +81,7 @@ class SearchFlightsFragment : Fragment() {
                 is Status.Loading -> { }
                 is Status.Success -> {
                     Log.i("FL", "${it.data}")
+                    navHostActivity.navigateTo(SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlights())
                 }
             }
         }
