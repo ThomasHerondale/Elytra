@@ -108,7 +108,8 @@ class MainActivity :
     }
 
     override fun toAvatarSelection() {
-        SelectAvatarDialog(true).show(supportFragmentManager, "selectAvatar")
+        val dialog = SelectAvatarDialog.newInstance(isForFirstAccess = true)
+        dialog.show(supportFragmentManager, "selectAvatar")
     }
 
     override fun connectionError(e: Throwable) {
