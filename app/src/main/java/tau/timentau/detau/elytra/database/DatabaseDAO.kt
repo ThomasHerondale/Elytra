@@ -10,6 +10,8 @@ import kotlin.reflect.typeOf
 
 const val QUERYSET_KEY = "queryset"
 
+const val TAG = "DB_QUERY"
+
 object DatabaseDAO {
 
     private val retrofit: Retrofit by lazy {
@@ -29,6 +31,7 @@ object DatabaseDAO {
     val listParser = Gson()
 
     suspend inline fun <reified T> selectList(query: String): List<T> {
+        Log.v(TAG, formatQuery(query))
         val response = dbInterface.select(formatQuery(query))
         // workaround per tipizzare il token senza passare la classe di T per parametro ;)
         val typeToken = object : TypeToken<List<T>>() {}.type
@@ -38,6 +41,7 @@ object DatabaseDAO {
 
     @OptIn(ExperimentalStdlibApi::class)
     suspend inline fun <reified T> selectValue(query: String): T? {
+        Log.v(TAG, formatQuery(query))
         val response = dbInterface.select(formatQuery(query))
         val body = response.body() ?: return null
         val jsonArray = body[QUERYSET_KEY].asJsonArray
