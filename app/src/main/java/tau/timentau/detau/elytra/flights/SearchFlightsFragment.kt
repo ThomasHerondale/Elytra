@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.flights
 
 import android.os.Bundle
 import android.util.Log
@@ -17,9 +17,14 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentSearchFlightsBinding
 import tau.timentau.detau.elytra.model.Company
+import tau.timentau.detau.elytra.navHostActivity
+import tau.timentau.detau.elytra.parseToDate
+import tau.timentau.detau.elytra.showNetworkErrorDialog
+import tau.timentau.detau.elytra.text
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale

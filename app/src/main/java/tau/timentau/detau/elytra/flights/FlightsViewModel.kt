@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra
+package tau.timentau.detau.elytra.flights
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +11,8 @@ import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.model.Airport
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
+import tau.timentau.detau.elytra.parseToDate
+import tau.timentau.detau.elytra.performStateful
 
 class FlightsViewModel : ViewModel() {
 

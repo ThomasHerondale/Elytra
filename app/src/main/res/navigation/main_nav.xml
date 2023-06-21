@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/flights"
-        android:name="tau.timentau.detau.elytra.SearchFlightsFragment"
+        android:name="tau.timentau.detau.elytra.flights.SearchFlightsFragment"
         android:label="@string/voli"
         tools:layout="@layout/fragment_search_flights" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectGoingFlight"
-        android:name="tau.timentau.detau.elytra.SelectFlightFragment"
+        android:name="tau.timentau.detau.elytra.flights.SelectFlightFragment"
         android:label="fragment_select_going_flight"
         tools:layout="@layout/fragment_select_flight" >
         <argument
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectReturnFlight"
-        android:name="tau.timentau.detau.elytra.SelectFlightFragment"
+        android:name="tau.timentau.detau.elytra.flights.SelectFlightFragment"
         android:label="fragment_select_going_flight"
         tools:layout="@layout/fragment_select_flight">
         <argument
