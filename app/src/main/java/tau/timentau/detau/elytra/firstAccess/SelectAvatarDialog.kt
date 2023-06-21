@@ -22,10 +22,9 @@ import tau.timentau.detau.elytra.databinding.DialogSelectAvatarBinding
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 
 private const val TAG = "SELECT_AVATAR"
+const val ARG_IS_FOR_FIRST_ACCESS = "isForFirstAccess"
 
-class SelectAvatarDialog(
-    private val isForFirstAccess: Boolean
-) : DialogFragment() {
+class SelectAvatarDialog : DialogFragment() {
 
     private lateinit var binding: DialogSelectAvatarBinding
     private lateinit var handler: SelectAvatarHandler
@@ -67,6 +66,8 @@ class SelectAvatarDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // forse con questo ci risolviamo il bug più grande della storia
+        val isForFirstAccess = requireArguments().getBoolean(ARG_IS_FOR_FIRST_ACCESS)
 
         // disabilita il pulsante di conferma all'avvio
         binding.selectAvatarDialogBottomButtons.positiveButton.isEnabled = false
@@ -124,6 +125,18 @@ class SelectAvatarDialog(
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.setAvatarProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    companion object {
+        fun newInstance(isForFirstAccess: Boolean): SelectAvatarDialog {
+            val args = Bundle().apply {
+                putBoolean(ARG_IS_FOR_FIRST_ACCESS, isForFirstAccess)
+            }
+
+            return SelectAvatarDialog().apply {
+                arguments = args
+            }
+        }
     }
 
 

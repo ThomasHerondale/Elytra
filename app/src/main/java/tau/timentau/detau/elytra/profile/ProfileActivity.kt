@@ -64,7 +64,8 @@ class ProfileActivity : AppCompatActivity(),
         setupPaymentMethodsUi()
 
         binding.editProfileImgBttn.setOnClickListener {
-            SelectAvatarDialog(false).show(supportFragmentManager, "selectAvatar")
+            val dialog = SelectAvatarDialog.newInstance(isForFirstAccess = false)
+            dialog.show(supportFragmentManager, "selectAvatar")
         }
         binding.editEmailBttn.setOnClickListener {
             EditEmailDialog().show(supportFragmentManager, "editEmail")
