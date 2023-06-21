@@ -6,7 +6,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toLocalDate
 import tau.timentau.detau.elytra.model.Airport
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
@@ -365,7 +364,7 @@ object Repository {
                 company,
                 departureApt,
                 arrivalApt,
-                date.toLocalDate(),
+                date,
                 gateClosingTime,
                 departureTime,
                 arrivalTime,
