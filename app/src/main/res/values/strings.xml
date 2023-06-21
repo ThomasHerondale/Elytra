@@ -61,4 +61,10 @@
     <string name="vecchia_password">Vecchia password</string>
     <string name="nuova_password">Nuova password</string>
     <string name="conferma_new_password">Conferma nuova password</string>
+    <string name="numero_carta">Numero di carta</string>
+    <string name="immagine_circuito">Immagine circuito</string>
+    <string name="scadenza">Scadenza</string>
+    <string name="codice_carta">CVV/CVC</string>
+    <string name="intestatario">Intestatario carta</string>
+    <string name="immagine_profilo">Immagine profilo</string>
 </resources>

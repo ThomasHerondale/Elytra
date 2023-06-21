@@ -38,7 +38,8 @@
         <ImageView
             android:id="@+id/profileImg"
             android:layout_width="120dp"
-            android:layout_height="120dp"/>
+            android:layout_height="120dp"
+            android:contentDescription="@string/immagine_profilo" />
 
         <Button
             android:id="@+id/editProfileImgBttn"
@@ -60,7 +61,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="TextView"
+        android:text="Nome e cognome"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/frameLayout"
         app:layout_constraintTop_toTopOf="@+id/frameLayout" />
 
@@ -187,7 +189,7 @@
 
                     <Button
                         android:id="@+id/addCardBttn"
-                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
