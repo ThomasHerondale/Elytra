@@ -2,6 +2,7 @@ package tau.timentau.detau.elytra.firstAccess
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -60,6 +61,10 @@ class SetSecurityQuestionDialog(securityQuestions: List<String>) : DialogFragmen
         } ?: throw IllegalStateException("No activity to attach dialog")
     }
 
+    override fun onCancel(dialog: DialogInterface) {
+        handler.dialogCancelled()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -116,5 +121,7 @@ class SetSecurityQuestionDialog(securityQuestions: List<String>) : DialogFragmen
         fun toAvatarSelection()
 
         fun connectionError(e: Throwable)
+
+        fun dialogCancelled()
     }
 }
