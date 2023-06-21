@@ -109,10 +109,12 @@ class SelectAvatarDialog(
             GridLayoutManager(context, 1, HORIZONTAL, false)
 
         coroutineScope.launch {
+            showOrHideProgressBar(false)
             val images = handler.fetchAvatars().await()
             Log.i(TAG, "Fetching avatars from database")
 
             adapter.submitList(images.map { AvatarChoice(it) })
+            showOrHideProgressBar(true)
         }
     }
 
