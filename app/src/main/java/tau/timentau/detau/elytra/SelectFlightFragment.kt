@@ -41,6 +41,13 @@ class SelectFlightFragment : Fragment() {
 
         setupFlightsList()
 
+        binding.editGoingFlightBttn.setOnClickListener {
+            // invalida la precedente selezione del volo di andata
+            flightsViewModel.unselectGoingFlight()
+            // torna alla schermata di scelta del volo di andata
+            navHostActivity.popBackStack()
+        }
+
         return binding.root
     }
 

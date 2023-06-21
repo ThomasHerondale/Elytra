@@ -48,6 +48,10 @@ class MainActivity :
         navController.navigate(directions)
     }
 
+    override fun popBackStack() {
+        navController.popBackStack()
+    }
+
     private fun checkForFirstAccess() {
         val progressDialog = showProgressDialog()
 
