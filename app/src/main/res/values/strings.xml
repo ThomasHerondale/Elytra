@@ -39,7 +39,7 @@
     <string name="avatar_impostato">Avatar impostato</string>
     <string name="immagine_impostata">La tua immagine del profile è stata impostata correttamente.</string>
     <string name="profile_title">Profile</string>
-    <string name="logout">logout</string>
+    <string name="logout">Logout</string>
     <string name="modifica_email">Modifica email</string>
     <string name="password_non_corretta">La password inserita non è corretta</string>
     <string name="indirizzo_email_modificato">Indirizzo email modificato</string>
@@ -68,4 +68,9 @@
     <string name="intestatario">Intestatario carta</string>
     <string name="immagine_profilo">Immagine profilo</string>
     <string name="nome_e_cognome">Nome e cognome</string>
+    <string name="sesso">Sesso</string>
+    <string name="data_base">01/01/1970</string>
+    <string name="tuoi_dati">I tuoi dati</string>
+    <string name="modifica">Modifica</string>
+    <string name="add_mtd_pagamento">Aggiungi un metodo di pagamento</string>
 </resources>
