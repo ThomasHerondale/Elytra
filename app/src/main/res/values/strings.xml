@@ -67,4 +67,5 @@
     <string name="codice_carta">CVV/CVC</string>
     <string name="intestatario">Intestatario carta</string>
     <string name="immagine_profilo">Immagine profilo</string>
+    <string name="nome_e_cognome">Nome e cognome</string>
 </resources>

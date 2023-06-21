@@ -58,11 +58,13 @@
 
     <TextView
         android:id="@+id/fullnameLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Nome e cognome"
-        android:textSize="20sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/nome_e_cognome"
+        android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/frameLayout"
         app:layout_constraintTop_toTopOf="@+id/frameLayout" />
 
