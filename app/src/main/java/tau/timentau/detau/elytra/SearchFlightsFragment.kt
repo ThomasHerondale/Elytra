@@ -80,19 +80,7 @@ class SearchFlightsFragment : Fragment() {
                     Log.e(TAG, it.exception.stackTraceToString())
                 }
                 is Status.Loading -> { }
-                is Status.Success -> {
-                    setFragmentResultListener(SELECT_GOING_FLIGHT_REQUEST_KEY) { _, f ->
-                        val flight = f.getParcelable<Flight>(FLIGHT_RESULT_KEY)
-                        Log.d("RESULT", "Got result $flight")
-                        if (binding.roundTripSwitch.isChecked)
-                            navHostActivity.navigateTo(
-                                SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(true, flight)
-                            )
-                    }
-                    navHostActivity.navigateTo(
-                        SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight()
-                    )
-                }
+                is Status.Success -> { startGoingFlightSelection() }
             }
         }
 
@@ -145,6 +133,20 @@ class SearchFlightsFragment : Fragment() {
             isFirstClassSelected,
             selectedCompanies,
             binding.returnDatetext.isEnabled
+        )
+    }
+
+    private fun startGoingFlightSelection() {
+        setFragmentResultListener(SELECT_GOING_FLIGHT_REQUEST_KEY) { _, f ->
+            val flight = f.getParcelable<Flight>(FLIGHT_RESULT_KEY)
+            Log.d("RESULT", "Got result $flight")
+            if (binding.roundTripSwitch.isChecked)
+                navHostActivity.navigateTo(
+                    SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(true, flight)
+                )
+        }
+        navHostActivity.navigateTo(
+            SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight()
         )
     }
 

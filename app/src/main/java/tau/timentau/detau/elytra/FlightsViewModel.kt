@@ -1,8 +1,13 @@
 package tau.timentau.detau.elytra
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.database.MutableStatus
 import tau.timentau.detau.elytra.database.ObservableStatus
+import tau.timentau.detau.elytra.database.OperationStatus
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.model.Airport
@@ -22,6 +27,9 @@ class FlightsViewModel : ViewModel() {
 
     private val _returnFlightsFetchStatus = MutableStatus<List<Flight>>()
     val returnFlightsFetchStatus: ObservableStatus<List<Flight>> = _returnFlightsFetchStatus
+
+    private val _flightsFetchStatus = MutableLiveData<OperationStatus>()
+    val flightsFetchStatus: LiveData<OperationStatus> = _flightsFetchStatus
 
     inline val goingFlightsList: List<Flight>
         get() {
@@ -88,6 +96,70 @@ class FlightsViewModel : ViewModel() {
                     firstClass,
                     selectedCompanies
                 ).await()
+            }
+        }
+    }
+
+    fun searchFlightsTest(
+        departureApt: String,
+        arrivalApt: String,
+        goingDate: String,
+        returnDate: String?,
+        minPrice: Double,
+        maxPrice: Double,
+        passengersCount: Int,
+        economy: Boolean = false,
+        business: Boolean = false,
+        firstClass: Boolean = false,
+        selectedCompanies: List<String>,
+        roundTrip: Boolean
+    ) {
+        val departureAptCode = departureApt.split(" ")[0]
+        val arrivalAptCode = arrivalApt.split(" ")[0]
+
+        _flightsFetchStatus.value = Status.Loading
+
+        viewModelScope.launch {
+            try {
+                val goingFlights = Repository.getFlights(
+                    departureAptCode,
+                    arrivalAptCode,
+                    goingDate.parseToDate(),
+                    minPrice to maxPrice,
+                    passengersCount,
+                    economy,
+                    business,
+                    firstClass,
+                    selectedCompanies
+                ).await()
+
+                var returnFlights: List<Flight>? = null
+
+                // cerca anche i voli di ritorno se l'utente lo desidera
+                if (roundTrip) {
+                    returnFlights = Repository.getFlights(
+                        arrivalAptCode,
+                        departureAptCode, // scambia le destinazioni
+                        // se è selezionata andata e ritorno, deve esserci una data
+                        returnDate!!.parseToDate(),
+                        minPrice to maxPrice,
+                        passengersCount,
+                        economy,
+                        business,
+                        firstClass,
+                        selectedCompanies
+                    ).await()
+                }
+
+                _goingFlightsFetchStatus.value = Status.Success(goingFlights)
+
+                if (roundTrip)
+                    // don't worry, se entriamo qui returnFlights non è sicuramente nullo ;)
+                    _returnFlightsFetchStatus.value = Status.success(returnFlights!!)
+
+                _flightsFetchStatus.value = Status.success()
+            } catch (e: Exception) {
+                _flightsFetchStatus.value = Status.Failed(e)
             }
         }
     }
