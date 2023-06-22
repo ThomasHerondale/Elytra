@@ -95,8 +95,9 @@ class SelectFlightFragment : Fragment() {
         if (args.isReturn) {
             flightsViewModel.selectReturnFlight(selectedFlight)
             navHostActivity.navigateTo(
-                SelectFlightFragmentDirections.selectGoingFlightToCustomizeFlight(
-                    flightsViewModel.passengersCount
+                SelectFlightFragmentDirections.selectGoingFlightToCustomizeTrip(
+                    flightsViewModel.passengersCount,
+                    isRoundTrip = true
                 )
             )
         // altrimenti abbiamo selezionato il volo di andata
@@ -106,8 +107,9 @@ class SelectFlightFragment : Fragment() {
             // se il viaggio è di sola andata, vai alla personalizzazione
             if (args.isPaymentNext) {
                 navHostActivity.navigateTo(
-                    SelectFlightFragmentDirections.selectGoingFlightToCustomizeFlight(
-                        flightsViewModel.passengersCount
+                    SelectFlightFragmentDirections.selectGoingFlightToCustomizeTrip(
+                        flightsViewModel.passengersCount,
+                        isRoundTrip = false
                     )
                 )
             }

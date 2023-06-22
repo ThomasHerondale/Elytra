@@ -6,34 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".flights.CustomizeFlightFragment">
 
-    <EditText
-        android:id="@+id/passengerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@null"
-        android:padding="8dp"
-        android:text="@string/passegero_n"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Passegero 1" />
-
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/flightLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/volo_di_andata"
         app:layout_constraintStart_toStartOf="@+id/goingFlightCard"
-        app:layout_constraintTop_toBottomOf="@+id/passengerText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/customizedPriceLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
-        app:layout_constraintTop_toTopOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/flightLabel"
         tools:text="€ 130,00" />
 
     <androidx.cardview.widget.CardView
@@ -47,7 +33,7 @@
         app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+        app:layout_constraintTop_toBottomOf="@+id/flightLabel">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -178,26 +164,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/passengersCountLabel"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/serviceClassLabel"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/serviceClassLabel"
                 app:layout_constraintTop_toBottomOf="@+id/serviceClassLabel"
                 tools:text="€ 130,00" />
-
-            <TextView
-                android:id="@+id/passengersCountLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/priceLabel"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/priceLabel"
-                app:layout_constraintTop_toBottomOf="@+id/priceLabel"
-                tools:text="2 passegeri" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
