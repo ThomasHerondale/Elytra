@@ -27,7 +27,7 @@ class SelectFlightFragment : Fragment() {
 
         /* se il fragment è marcato come selettore del volo di ritorno, ma non è stato
          * fornito alcun volo di ritorno */
-        if (args.isReturn && args.goingFlight == null)
+        if (args.isReturn && flightsViewModel.selectedGoingFlight == null)
             throw IllegalArgumentException("No going flight provided for return flight selection")
     }
 
@@ -55,7 +55,7 @@ class SelectFlightFragment : Fragment() {
     private fun setupGoingFlightCard() {
         binding.goingFlightGroup.visibility = View.VISIBLE
 
-        val flight = args.goingFlight!! // don't worry, ne happy :D
+        val flight = flightsViewModel.selectedGoingFlight!! // don't worry, ne happy :D
 
         Glide
             .with(binding.companyLogoImg)
@@ -94,8 +94,6 @@ class SelectFlightFragment : Fragment() {
     private fun flightSelected(selectedFlight: Flight) {
         if (args.isReturn) {
             flightsViewModel.selectReturnFlight(selectedFlight)
-            TODO()
-            // TODO naviga al pagamento
         } else {
             flightsViewModel.selectGoingFlight(selectedFlight)
 
@@ -106,7 +104,7 @@ class SelectFlightFragment : Fragment() {
             else
                 navHostActivity.navigateTo(
                     SelectFlightFragmentDirections.selectGoingFlightToSelectReturnFlight(
-                        isReturn = true, goingFlight = selectedFlight, isPaymentNext = true
+                        isReturn = true, isPaymentNext = true
                     )
                 )
         }

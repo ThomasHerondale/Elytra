@@ -24,42 +24,15 @@
             app:argType="boolean"
             android:defaultValue="false" />
         <argument
-            android:name="goingFlight"
-            app:argType="tau.timentau.detau.elytra.model.Flight"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
             android:name="isPaymentNext"
             app:argType="boolean"
             android:defaultValue="false" />
-        <action
-            android:id="@+id/select_going_flight_to_select_return_flight"
-            app:destination="@id/selectReturnFlight" />
         <action
             android:id="@+id/select_going_flight_to_customize_flight"
             app:destination="@id/customizeFlightFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/selectReturnFlight"
-        android:name="tau.timentau.detau.elytra.flights.SelectFlightFragment"
-        android:label="fragment_select_going_flight"
-        tools:layout="@layout/fragment_select_flight">
-        <argument
-            android:name="isReturn"
-            android:defaultValue="true"
-            app:argType="boolean" />
-        <argument
-            android:name="goingFlight"
-            android:defaultValue="@null"
-            app:argType="tau.timentau.detau.elytra.model.Flight"
-            app:nullable="true" />
-        <argument
-            android:name="isPaymentNext"
-            app:argType="boolean"
-            android:defaultValue="false" />
         <action
-            android:id="@+id/select_return_flight_to_customize_flight"
-            app:destination="@id/customizeFlightFragment" />
+            android:id="@+id/select_going_flight_to_select_return_flight"
+            app:destination="@id/selectGoingFlight" />
     </fragment>
     <fragment
         android:id="@+id/customizeFlightFragment"
