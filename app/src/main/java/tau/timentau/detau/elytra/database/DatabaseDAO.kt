@@ -56,6 +56,7 @@ object DatabaseDAO {
     }
 
     suspend inline fun insert(query: String) {
+        Log.v(TAG, formatQuery(query))
         val response = dbInterface.insert(formatQuery(query))
         val body = response.body() ?: throw NetworkException("Server did not respond on insert")
         val message = body[QUERYSET_KEY].asString
@@ -64,6 +65,7 @@ object DatabaseDAO {
     }
 
     suspend inline fun update(query: String) {
+        Log.v(TAG, formatQuery(query))
         val response = dbInterface.update(formatQuery(query))
         val body = response.body() ?: throw NetworkException("Server did not respond on update")
         val message = body[QUERYSET_KEY].asString
