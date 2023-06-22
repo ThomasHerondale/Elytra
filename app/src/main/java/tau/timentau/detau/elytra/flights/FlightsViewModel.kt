@@ -36,11 +36,13 @@ class FlightsViewModel : ViewModel() {
     val passengersCount: Int
         get() = _passengersCount ?: throw IllegalStateException("Passengers count not set")
 
+    private var _selectedGoingFlight: Flight? = null
+    val selectedGoingFlight: Flight
+        get() = _selectedGoingFlight ?: throw IllegalStateException("Going flight not set")
 
-    var selectedGoingFlight: Flight? = null
-        private set
-    var selectedReturnFlight: Flight? = null
-        private set
+    private var _selectedReturnFlight: Flight? = null
+    val selectedReturnFlight: Flight
+        get() = _selectedReturnFlight ?: throw IllegalStateException("Return flight not set")
 
     inline val goingFlightsList: List<Flight>
         get() {
@@ -129,18 +131,18 @@ class FlightsViewModel : ViewModel() {
     }
 
     fun selectGoingFlight(flight: Flight) {
-        selectedGoingFlight = flight
+        _selectedGoingFlight = flight
     }
 
     fun unselectGoingFlight() {
-        selectedGoingFlight = null
+        _selectedGoingFlight = null
     }
 
     fun selectReturnFlight(flight: Flight) {
-        selectedReturnFlight = flight
+        _selectedReturnFlight = flight
     }
 
     fun unselectReturnFlight() {
-        selectedReturnFlight = null
+        _selectedReturnFlight = null
     }
 }
