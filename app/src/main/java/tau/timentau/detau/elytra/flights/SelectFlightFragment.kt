@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import tau.timentau.detau.elytra.database.FlightsAdapter
 import tau.timentau.detau.elytra.databinding.FragmentSelectFlightBinding
 import tau.timentau.detau.elytra.model.Flight
 import tau.timentau.detau.elytra.navHostActivity
@@ -88,7 +87,7 @@ class SelectFlightFragment : Fragment() {
                 flightsViewModel.goingFlightsList
 
         binding.goingFlightsList.adapter =
-            FlightsAdapter(flights) { flightSelected(it) }
+            FlightsAdapter(flights, flightsViewModel.passengersCount) { flightSelected(it) }
     }
 
     private fun flightSelected(selectedFlight: Flight) {

@@ -31,8 +31,11 @@ class FlightsViewModel : ViewModel() {
     private val _flightsFetchStatus = MutableLiveData<OperationStatus>()
     val flightsFetchStatus: LiveData<OperationStatus> = _flightsFetchStatus
 
-    var passengersCount: Int? = null
-        private set
+    private var _passengersCount: Int? = null
+    // vista non nullabile
+    val passengersCount: Int
+        get() = _passengersCount ?: throw IllegalStateException("Passengers count not set")
+
 
     var selectedGoingFlight: Flight? = null
         private set
@@ -121,7 +124,7 @@ class FlightsViewModel : ViewModel() {
             // don't worry, se entriamo qui returnFlights non è sicuramente nullo ;)
                 _returnFlightsFetchStatus.value = Status.success(returnFlights!!)
 
-            this.passengersCount = passengersCount
+            _passengersCount = passengersCount
         }
     }
 

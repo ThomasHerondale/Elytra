@@ -1,4 +1,4 @@
-package tau.timentau.detau.elytra.database
+package tau.timentau.detau.elytra.flights
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import tau.timentau.detau.elytra.model.Flight
 
 class FlightsAdapter(
     private val flights: List<Flight>,
+    private val passengersCount: Int,
     private val onFlightSelected: (Flight) -> Unit)
     : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
 
@@ -43,6 +44,14 @@ class FlightsAdapter(
             arrivalAptLabel.text = flight.arrivalApt.name
 
             durationLabel.text = flight.duration
+
+            priceLabel.text = holder.itemView.context.
+                getString(R.string.prezzo_str, flight.price * passengersCount)
+
+            passengersCountLabel.text = holder.itemView.context
+                .getString(R.string.passegeri_str, passengersCount)
+
+            serviceClassLabel.text = flight.serviceClass.stringValue
         }
 
         holder.binding.flightViewHolderCard.setOnClickListener {
