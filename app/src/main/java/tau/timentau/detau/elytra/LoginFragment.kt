@@ -94,6 +94,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.loginProgress.visibility = if (hide) View.GONE else View.VISIBLE
+        binding.loginProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
     }
 }
