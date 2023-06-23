@@ -23,11 +23,6 @@ class SelectFlightFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        /* se il fragment è marcato come selettore del volo di ritorno, ma non è stato
-         * fornito alcun volo di ritorno */
-        if (args.isReturn && flightsViewModel.selectedGoingFlight == null)
-            throw IllegalArgumentException("No going flight provided for return flight selection")
     }
 
     override fun onCreateView(

@@ -214,16 +214,16 @@
         app:layout_constraintTop_toBottomOf="@+id/smallBagSizeLabel"
         tools:text="Già incluso nel prezzo" />
 
-    <Button
-        android:id="@+id/addSmallBagBttn"
+    <CheckBox
+        android:id="@+id/smallBagCheck"
+        style="@style/Widget.Material3.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checkable="true"
+        android:checked="true"
+        android:clickable="false"
         app:layout_constraintBottom_toBottomOf="@+id/smallBagImg"
-        app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
-        app:layout_constraintStart_toStartOf="@+id/smallBagLabel"
-        app:toggleCheckedStateOnClick="true"
-        tools:text="Aggiunto" />
+        app:layout_constraintEnd_toEndOf="@+id/alreadyIncludedLabel"
+        app:layout_constraintStart_toStartOf="@+id/smallBagSizeLabel" />
 
     <ImageView
         android:id="@+id/handLuggageImg"
@@ -263,16 +263,13 @@
         app:layout_constraintTop_toBottomOf="@+id/handLuggageSizeLabel"
         tools:text="€ 17,90" />
 
-    <Button
-        android:id="@+id/addHandLuggageBttn"
+    <CheckBox
+        android:id="@+id/handLuggageCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checkable="true"
         app:layout_constraintBottom_toBottomOf="@+id/handLuggageImg"
         app:layout_constraintEnd_toEndOf="@+id/handLuggagePriceLabel"
-        app:layout_constraintStart_toStartOf="@+id/handLuggageLabel"
-        app:toggleCheckedStateOnClick="true"
-        tools:text="Aggiunto" />
+        app:layout_constraintStart_toStartOf="@+id/handLuggageSizeLabel" />
 
     <ImageView
         android:id="@+id/cargoLuggageImg"
@@ -312,15 +309,12 @@
         app:layout_constraintTop_toBottomOf="@+id/cargoLuggageSizeLabel"
         tools:text="€ 39,90" />
 
-    <Button
-        android:id="@+id/addCargoLuggageBttn"
+    <CheckBox
+        android:id="@+id/cargoLuggageCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checkable="true"
         app:layout_constraintBottom_toBottomOf="@+id/cargoLuggageImg"
         app:layout_constraintEnd_toEndOf="@+id/cargoLuggagePriceLabel"
-        app:layout_constraintStart_toStartOf="@+id/cargoLuggageLabel"
-        app:toggleCheckedStateOnClick="true"
-        tools:text="Aggiunto" />
+        app:layout_constraintStart_toStartOf="@+id/cargoLuggageSizeLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
