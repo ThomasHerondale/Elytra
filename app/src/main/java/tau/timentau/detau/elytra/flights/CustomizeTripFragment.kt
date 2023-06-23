@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentCustomizeTripBinding
+import tau.timentau.detau.elytra.text
 
 class CustomizeTripFragment : Fragment() {
 
@@ -39,10 +40,18 @@ class CustomizeTripFragment : Fragment() {
                 )
         }
 
+        binding.passengerText.editText?.setText(
+            tripCustomizationViewModel.getPassengerName(navArgs.passengerIndex)
+        )
+
         setupGoingFlightSection()
 
         if (navArgs.isRoundTrip)
             setupReturnFlightSection()
+
+        binding.nextStepBttn.setOnClickListener {
+            tripCustomizationViewModel.setPassengerName(navArgs.passengerIndex, binding.passengerText.text)
+        }
 
         return binding.root
     }

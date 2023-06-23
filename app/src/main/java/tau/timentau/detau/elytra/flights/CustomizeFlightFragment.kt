@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentCustomizeFlightBinding
+import tau.timentau.detau.elytra.model.CARGO_LUGGAGE_PRICE
 import tau.timentau.detau.elytra.model.Flight
+import tau.timentau.detau.elytra.model.HAND_LUGGAGE_PRICE
 import tau.timentau.detau.elytra.model.PassengerData
 
 private const val ARG_FLIGHT = "flight"
@@ -38,6 +40,12 @@ class CustomizeFlightFragment : Fragment() {
             throw IllegalStateException("Passenger index has not been provided")
         val isReturn = arguments?.getBoolean(ARG_IS_RETURN) ?:
             throw IllegalStateException("Could not determine if flight is for return")
+
+        binding.handLuggagePriceLabel.text =
+            getString(R.string.prezzo_str, HAND_LUGGAGE_PRICE)
+
+        binding.cargoLuggagePriceLabel.text =
+            getString(R.string.prezzo_str, CARGO_LUGGAGE_PRICE)
 
         binding.handLuggageCheck.setOnCheckedChangeListener { _, isChecked ->
             viewModel.addOrRemoveHandLuggage(passengerIdx, isChecked, isReturn)
