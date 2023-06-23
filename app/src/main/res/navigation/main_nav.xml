@@ -49,5 +49,13 @@
             android:name="isRoundTrip"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/customize_trip_to_payment"
+            app:destination="@id/paymentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="tau.timentau.detau.elytra.flights.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" />
 </navigation>
