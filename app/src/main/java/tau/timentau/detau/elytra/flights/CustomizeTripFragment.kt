@@ -67,7 +67,9 @@ class CustomizeTripFragment : Fragment() {
             }
 
             if (isLastPassenger) {
-                TODO() // al riepilogo
+                navHostActivity.navigateTo(
+                    CustomizeTripFragmentDirections.customizeTripToPayment()
+                )
             } else {
                 navHostActivity.navigateTo(
                     CustomizeTripFragmentDirections.customizeTripToCustomizeTrip(
