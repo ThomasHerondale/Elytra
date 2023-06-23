@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentCustomizeTripBinding
@@ -16,7 +15,7 @@ class CustomizeTripFragment : Fragment() {
     private lateinit var binding: FragmentCustomizeTripBinding
     private val navArgs: CustomizeTripFragmentArgs by navArgs()
     private val flightsViewModel: FlightsViewModel by activityViewModels()
-    private val tripCustomizationViewModel: TripCustomizationViewModel by viewModels()
+    private val tripCustomizationViewModel: TripCustomizationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +39,7 @@ class CustomizeTripFragment : Fragment() {
     private fun setupGoingFlightSection() {
         val fragment = CustomizeFlightFragment.newInstance(
             flightsViewModel.selectedGoingFlight,
+            navArgs.passengerIndex,
             isReturn = false
         )
 
@@ -52,6 +52,7 @@ class CustomizeTripFragment : Fragment() {
     private fun setupReturnFlightSection() {
         val fragment = CustomizeFlightFragment.newInstance(
             flightsViewModel.selectedReturnFlight,
+            navArgs.passengerIndex,
             isReturn = true
         )
 

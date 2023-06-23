@@ -15,6 +15,16 @@ class TripCustomizationViewModel : ViewModel() {
                 PassengerData("Passegero ${i + 1}")
             )
         }
+    }
+
+    fun addOrRemoveHandLuggage(passengerIdx: Int, selected: Boolean) {
+        passengerData[passengerIdx].handLuggage = selected
+
+        println(passengerData)
+    }
+
+    fun addOrRemoveCargoLuggage(passengerIdx: Int, selected: Boolean) {
+        passengerData[passengerIdx].cargoLuggage = selected
 
         println(passengerData)
     }
