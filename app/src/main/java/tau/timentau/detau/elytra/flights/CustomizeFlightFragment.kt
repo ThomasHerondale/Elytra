@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentCustomizeFlightBinding
 import tau.timentau.detau.elytra.model.Flight
+import tau.timentau.detau.elytra.model.PassengerData
 
 private const val ARG_FLIGHT = "flight"
 private const val ARG_IS_RETURN = "isReturn"
@@ -20,6 +22,10 @@ class CustomizeFlightFragment : Fragment() {
     private lateinit var binding: FragmentCustomizeFlightBinding
     private val viewModel: TripCustomizationViewModel by activityViewModels()
 
+    // no android studio, non è vero che conviene trasformarla in lambda, altrimenti il compilatore
+    // usa un solo oggetto lambda e android si lamenterà del fatto che l'observer è stato già
+    // settato
+    @Suppress("ObjectLiteralToLambda")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -27,18 +33,36 @@ class CustomizeFlightFragment : Fragment() {
         binding = FragmentCustomizeFlightBinding.inflate(inflater)
 
         setupFlightInfo()
+
         val passengerIdx = arguments?.getInt(ARG_PASSENGER_INDEX) ?:
             throw IllegalStateException("Passenger index has not been provided")
+        val isReturn = arguments?.getBoolean(ARG_IS_RETURN) ?:
+            throw IllegalStateException("Could not determine if flight is for return")
 
         binding.handLuggageCheck.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.addOrRemoveHandLuggage(passengerIdx, isChecked)
+            viewModel.addOrRemoveHandLuggage(passengerIdx, isChecked, isReturn)
         }
 
         binding.cargoLuggageCheck.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.addOrRemoveCargoLuggage(passengerIdx, isChecked)
+            viewModel.addOrRemoveCargoLuggage(passengerIdx, isChecked, isReturn)
         }
 
-        return binding.root
+        // rispondi ai cambiamenti nei prezzi
+        viewModel.passengerData.observe(
+            viewLifecycleOwner,
+            object : Observer<List<PassengerData>> {
+                // non fare questioni sull'oggetto anonimo, vedi sopra ^^^
+                override fun onChanged(value: List<PassengerData>) {
+                    // ottieni il prezzo compreso di aggiunte (bagagli)
+                    val customizedPrice = viewModel.getCustomizedPrice(passengerIdx, isReturn)
+
+                    binding.customizedPriceLabel.text =
+                        getString(R.string.prezzo_str, customizedPrice)
+                }
+            }
+        )
+
+            return binding.root
     }
 
     private fun setupFlightInfo() {
