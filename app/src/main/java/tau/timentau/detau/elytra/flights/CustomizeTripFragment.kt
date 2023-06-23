@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentCustomizeTripBinding
+import tau.timentau.detau.elytra.navHostActivity
 import tau.timentau.detau.elytra.text
 
 class CustomizeTripFragment : Fragment() {
@@ -50,9 +51,26 @@ class CustomizeTripFragment : Fragment() {
             setupReturnFlightSection()
 
         binding.nextStepBttn.setOnClickListener {
-            tripCustomizationViewModel.setPassengerName(
-                navArgs.passengerIndex, binding.passengerText.text
-            )
+            // Se il campo non è stato svuotato, imposta il nome del passegero
+            if (binding.passengerText.text.isNotBlank()) {
+                tripCustomizationViewModel.setPassengerName(
+                    navArgs.passengerIndex, binding.passengerText.text
+                )
+            }
+
+            // gli indici partono da 0!
+            val isLastPassenger = navArgs.passengerIndex + 1 == flightsViewModel.passengersCount
+
+            if (isLastPassenger) {
+                TODO() // al riepilogo
+            } else {
+                navHostActivity.navigateTo(
+                    CustomizeTripFragmentDirections.customizeTripToCustomizeTrip(
+                        navArgs.passengerIndex + 1,
+                        isRoundTrip = navArgs.isRoundTrip
+                    )
+                )
+            }
         }
 
         return binding.root

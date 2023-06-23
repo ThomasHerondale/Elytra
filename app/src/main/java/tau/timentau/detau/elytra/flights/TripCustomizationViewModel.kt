@@ -59,9 +59,12 @@ class TripCustomizationViewModel : ViewModel() {
         _passengerData.value = passengerData
     }
 
-    fun getPassengerName(passengerIdx: Int) =
-        _passengerData.value?.get(passengerIdx)?.name ?:
-            throw IllegalArgumentException("Unknown passenger")
+    fun getPassengerName(passengerIdx: Int): String {
+        val data = _passengerData.value?.find { it.index == passengerIdx + 1}
+            ?: throw IllegalArgumentException("Unknown passenger")
+
+        return data.name
+    }
 
     fun setPassengerName(passengerIdx: Int, newName: String) {
         viewModelScope.launch {
