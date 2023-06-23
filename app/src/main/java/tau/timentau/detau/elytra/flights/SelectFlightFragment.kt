@@ -96,7 +96,7 @@ class SelectFlightFragment : Fragment() {
             flightsViewModel.selectReturnFlight(selectedFlight)
             navHostActivity.navigateTo(
                 SelectFlightFragmentDirections.selectGoingFlightToCustomizeTrip(
-                    flightsViewModel.passengersCount,
+                    0,
                     isRoundTrip = true
                 )
             )
@@ -108,7 +108,7 @@ class SelectFlightFragment : Fragment() {
             if (args.isPaymentNext) {
                 navHostActivity.navigateTo(
                     SelectFlightFragmentDirections.selectGoingFlightToCustomizeTrip(
-                        flightsViewModel.passengersCount,
+                        0,
                         isRoundTrip = false
                     )
                 )

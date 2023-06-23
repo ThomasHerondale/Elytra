@@ -24,6 +24,11 @@ class CustomizeTripFragment : Fragment() {
     ): View {
         binding = FragmentCustomizeTripBinding.inflate(inflater)
 
+        /* se questo fragment fa riferimento al primo passegero, inizializza le preferenze sui
+        passegeri */
+        if (navArgs.passengerIndex == 0)
+            tripCustomizationViewModel.initializePassengerData(flightsViewModel.passengersCount)
+
         setupGoingFlightSection()
 
         if (navArgs.isRoundTrip)

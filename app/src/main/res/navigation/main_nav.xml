@@ -43,7 +43,7 @@
             android:id="@+id/customize_trip_to_customize_trip"
             app:destination="@id/customizeTripFragment" />
         <argument
-            android:name="remainingPassengers"
+            android:name="passengerIndex"
             app:argType="integer" />
         <argument
             android:name="isRoundTrip"
