@@ -30,12 +30,19 @@ class CustomizeFlightFragment : Fragment() {
     ): View {
         binding = FragmentCustomizeFlightBinding.inflate(inflater)
 
+        val isReturn = arguments?.getBoolean(ARG_IS_RETURN) ?:
+            throw IllegalStateException("Could not determine if flight is for return")
+
+        binding.flightLabel.text =
+            if (isReturn)
+                getString(R.string.volo_di_ritorno)
+            else
+                getString(R.string.volo_di_andata)
+
         setupFlightInfo()
 
         val passengerIdx = arguments?.getInt(ARG_PASSENGER_INDEX) ?:
             throw IllegalStateException("Passenger index has not been provided")
-        val isReturn = arguments?.getBoolean(ARG_IS_RETURN) ?:
-            throw IllegalStateException("Could not determine if flight is for return")
 
         setupPriceInfo(passengerIdx, isReturn)
 

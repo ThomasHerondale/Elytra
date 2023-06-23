@@ -50,7 +50,6 @@
     <string name="prezzo_str">€%1$.2f</string>
     <string name="passegeri_str">%1$d passegeri</string>
     <string name="volo_di_andata">Volo di andata</string>
+    <string name="volo_di_ritorno">Volo di ritorno</string>
     <string name="passegero_n">Passegero %1$d</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
