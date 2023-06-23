@@ -50,7 +50,9 @@ class CustomizeTripFragment : Fragment() {
             setupReturnFlightSection()
 
         binding.nextStepBttn.setOnClickListener {
-            tripCustomizationViewModel.setPassengerName(navArgs.passengerIndex, binding.passengerText.text)
+            tripCustomizationViewModel.setPassengerName(
+                navArgs.passengerIndex, binding.passengerText.text
+            )
         }
 
         return binding.root
