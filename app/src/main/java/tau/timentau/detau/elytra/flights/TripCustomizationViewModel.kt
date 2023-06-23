@@ -13,6 +13,10 @@ class TripCustomizationViewModel : ViewModel() {
     private val _passengerData = MutableLiveData<List<PassengerData>>()
     val passengerData: LiveData<List<PassengerData>> = _passengerData
 
+    fun isPassengerDataInitialized(): Boolean {
+        return _passengerData.value != null
+    }
+
     fun initializePassengerData(passengersCount: Int, flight: Flight) {
         if (passengerData.value != null)
             throw IllegalArgumentException("Passenger data already initialized.")
@@ -116,5 +120,13 @@ class TripCustomizationViewModel : ViewModel() {
         } ?: throw IllegalArgumentException("Unknown passenger")
 
         return data.price
+    }
+
+    fun getPassengerData(passengerIdx: Int, forReturn: Boolean): PassengerData {
+        val data = _passengerData.value?.find {
+            it.index == passengerIdx + 1 && it.forReturn == forReturn
+        } ?: throw IllegalArgumentException("Unknown passenger")
+
+        return data
     }
 }

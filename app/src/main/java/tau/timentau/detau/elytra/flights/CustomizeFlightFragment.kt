@@ -24,10 +24,6 @@ class CustomizeFlightFragment : Fragment() {
     private lateinit var binding: FragmentCustomizeFlightBinding
     private val viewModel: TripCustomizationViewModel by activityViewModels()
 
-    // no android studio, non è vero che conviene trasformarla in lambda, altrimenti il compilatore
-    // usa un solo oggetto lambda e android si lamenterà del fatto che l'observer è stato già
-    // settato
-    @Suppress("ObjectLiteralToLambda")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -40,6 +36,11 @@ class CustomizeFlightFragment : Fragment() {
             throw IllegalStateException("Passenger index has not been provided")
         val isReturn = arguments?.getBoolean(ARG_IS_RETURN) ?:
             throw IllegalStateException("Could not determine if flight is for return")
+
+        setupPriceInfo(passengerIdx, isReturn)
+
+        if (viewModel.isPassengerDataInitialized())
+            setupChoices(passengerIdx, isReturn)
 
         binding.handLuggagePriceLabel.text =
             getString(R.string.prezzo_str, HAND_LUGGAGE_PRICE)
@@ -54,21 +55,6 @@ class CustomizeFlightFragment : Fragment() {
         binding.cargoLuggageCheck.setOnCheckedChangeListener { _, isChecked ->
             viewModel.addOrRemoveCargoLuggage(passengerIdx, isChecked, isReturn)
         }
-
-        // rispondi ai cambiamenti nei prezzi
-        viewModel.passengerData.observe(
-            viewLifecycleOwner,
-            object : Observer<List<PassengerData>> {
-                // non fare questioni sull'oggetto anonimo, vedi sopra ^^^
-                override fun onChanged(value: List<PassengerData>) {
-                    // ottieni il prezzo compreso di aggiunte (bagagli)
-                    val customizedPrice = viewModel.getCustomizedPrice(passengerIdx, isReturn)
-
-                    binding.customizedPriceLabel.text =
-                        getString(R.string.prezzo_str, customizedPrice)
-                }
-            }
-        )
 
             return binding.root
     }
@@ -96,6 +82,37 @@ class CustomizeFlightFragment : Fragment() {
             serviceClassLabel.text = flight.serviceClass.stringValue
             priceLabel.text = getString(R.string.prezzo_str, flight.price)
         }
+    }
+
+    // no android studio, non è vero che conviene trasformarla in lambda, altrimenti il compilatore
+    // usa un solo oggetto lambda e android si lamenterà del fatto che l'observer è stato già
+    // settato
+    @Suppress("ObjectLiteralToLambda")
+    private fun setupPriceInfo(passengerIdx: Int, isReturn: Boolean) {
+        binding.customizedPriceLabel.text =
+            getString(R.string.prezzo_str, viewModel.getCustomizedPrice(passengerIdx, isReturn))
+
+        // rispondi ai cambiamenti nei prezzi
+        viewModel.passengerData.observe(
+            viewLifecycleOwner,
+            object : Observer<List<PassengerData>> {
+                // non fare questioni sull'oggetto anonimo, vedi sopra ^^^
+                override fun onChanged(value: List<PassengerData>) {
+                    // ottieni il prezzo compreso di aggiunte (bagagli)
+                    val customizedPrice = viewModel.getCustomizedPrice(passengerIdx, isReturn)
+
+                    binding.customizedPriceLabel.text =
+                        getString(R.string.prezzo_str, customizedPrice)
+                }
+            }
+        )
+    }
+
+    private fun setupChoices(passengerIdx: Int, isReturn: Boolean) {
+        val passengerData = viewModel.getPassengerData(passengerIdx, isReturn)
+
+        binding.handLuggageCheck.isChecked = passengerData.handLuggage
+        binding.cargoLuggageCheck.isChecked = passengerData.cargoLuggage
     }
 
     companion object {

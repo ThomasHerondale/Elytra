@@ -27,7 +27,7 @@ class CustomizeTripFragment : Fragment() {
 
         /* se questo fragment fa riferimento al primo passegero, inizializza le preferenze sui
         passegeri */
-        if (navArgs.passengerIndex == 0) {
+        if (!tripCustomizationViewModel.isPassengerDataInitialized()) {
             if (navArgs.isRoundTrip)
                 tripCustomizationViewModel.initializePassengerDataForRoundTrip(
                     flightsViewModel.passengersCount,
