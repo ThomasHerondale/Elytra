@@ -52,4 +52,6 @@
     <string name="volo_di_andata">Volo di andata</string>
     <string name="volo_di_ritorno">Volo di ritorno</string>
     <string name="passegero_n">Passegero %1$d</string>
+    <string name="prossimo_passegero">Prossimo passegero</string>
+    <string name="procedi_al_pagamento">Procedi al pagamento</string>
 </resources>

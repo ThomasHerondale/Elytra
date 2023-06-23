@@ -25,20 +25,20 @@ class CustomizeTripFragment : Fragment() {
     ): View {
         binding = FragmentCustomizeTripBinding.inflate(inflater)
 
-        /* se questo fragment fa riferimento al primo passegero, inizializza le preferenze sui
-        passegeri */
+        // inizializza le preferenze dei passegeri, se non lo sono già state
         if (!tripCustomizationViewModel.isPassengerDataInitialized()) {
-            if (navArgs.isRoundTrip)
+            if (navArgs.isRoundTrip) {
                 tripCustomizationViewModel.initializePassengerDataForRoundTrip(
                     flightsViewModel.passengersCount,
                     flightsViewModel.selectedGoingFlight,
                     flightsViewModel.selectedReturnFlight
                 )
-            else
+            } else {
                 tripCustomizationViewModel.initializePassengerData(
                     flightsViewModel.passengersCount,
                     flightsViewModel.selectedGoingFlight
                 )
+            }
         }
 
         binding.passengerText.editText?.setText(
@@ -50,6 +50,14 @@ class CustomizeTripFragment : Fragment() {
         if (navArgs.isRoundTrip)
             setupReturnFlightSection()
 
+        // gli indici partono da 0!
+        val isLastPassenger = navArgs.passengerIndex + 1 == flightsViewModel.passengersCount
+
+        if (isLastPassenger)
+            binding.nextStepBttn.text = getString(R.string.procedi_al_pagamento)
+        else
+            binding.nextStepBttn.text = getString(R.string.prossimo_passegero)
+
         binding.nextStepBttn.setOnClickListener {
             // Se il campo non è stato svuotato, imposta il nome del passegero
             if (binding.passengerText.text.isNotBlank()) {
@@ -57,9 +65,6 @@ class CustomizeTripFragment : Fragment() {
                     navArgs.passengerIndex, binding.passengerText.text
                 )
             }
-
-            // gli indici partono da 0!
-            val isLastPassenger = navArgs.passengerIndex + 1 == flightsViewModel.passengersCount
 
             if (isLastPassenger) {
                 TODO() // al riepilogo
