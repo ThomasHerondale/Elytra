@@ -20,7 +20,9 @@ import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.DialogSetSecurityQuestionBinding
 import tau.timentau.detau.elytra.text
 
-class SetSecurityQuestionDialog(securityQuestions: List<String>) : DialogFragment() {
+private const val ARG_SECURITY_QUESTIONS = "securityQuestions"
+
+class SetSecurityQuestionDialog : DialogFragment() {
 
     private lateinit var binding: DialogSetSecurityQuestionBinding
     private lateinit var handler: SetSecurityQuestionHandler
@@ -32,7 +34,6 @@ class SetSecurityQuestionDialog(securityQuestions: List<String>) : DialogFragmen
     private val coroutineScope = CoroutineScope(Dispatchers.Main + coroutineExceptionHandler)
 
 
-    private val questions = securityQuestions.toTypedArray()
     private var selectedQuestion: String? = null
 
     private inline val questionBox: MaterialAutoCompleteTextView
@@ -70,6 +71,9 @@ class SetSecurityQuestionDialog(securityQuestions: List<String>) : DialogFragmen
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val questions = requireArguments()
+            .getStringArrayList(ARG_SECURITY_QUESTIONS)!!.toTypedArray()
 
         // disabilita il pulsante di conferma all'avvio
         enableOrDisableConfirmButton(true)
@@ -112,6 +116,19 @@ class SetSecurityQuestionDialog(securityQuestions: List<String>) : DialogFragmen
             selectedQuestion != null && // abilita solo se la domanda è stata selezionata
             binding.setAnswerText.text.isNotBlank() // abilita solo se la risposta non è vuota
 
+    }
+
+    companion object {
+        fun newInstance(securityQuestions: List<String>): SetSecurityQuestionDialog {
+            val args = Bundle().apply {
+                putStringArrayList(ARG_SECURITY_QUESTIONS, securityQuestions as ArrayList<String>)
+            }
+
+            return SetSecurityQuestionDialog().apply {
+                arguments = args
+                println(arguments)
+            }
+        }
     }
 
     interface SetSecurityQuestionHandler {
