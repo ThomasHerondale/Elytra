@@ -72,13 +72,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/goingDateText"
-        android:layout_width="122dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="12dp"
         android:hint="@string/andata"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
+        android:minWidth="120dp"
         app:layout_constraintEnd_toStartOf="@+id/returnDatetext"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -96,12 +97,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/returnDatetext"
-        android:layout_width="122dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:hint="@string/ritorno"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
+        android:minWidth="120dp"
         app:layout_constraintEnd_toStartOf="@+id/passengersText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/goingDateText"
@@ -118,13 +120,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passengersText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:hint="@string/passeggeri"
         android:visibility="visible"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
+        android:minWidth="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/returnDatetext"
