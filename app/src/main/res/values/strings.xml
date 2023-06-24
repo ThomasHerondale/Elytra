@@ -49,4 +49,10 @@
     <string name="sola_andata">Sola andata</string>
     <string name="prezzo_str">€%1$.2f</string>
     <string name="passegeri_str">%1$d passegeri</string>
+    <string name="partenza">Partenza</string>
+    <string name="destinazione">Destinazione</string>
+    <string name="andata">Andata il</string>
+    <string name="ritorno">Ritorno il</string>
+    <string name="passeggeri">Passeggeri</string>
+    <string name="cerca_voli">Cerca voli</string>
 </resources>
