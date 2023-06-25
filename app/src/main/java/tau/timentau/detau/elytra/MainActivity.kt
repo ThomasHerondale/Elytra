@@ -20,6 +20,7 @@ import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.firstAccess.SetSecurityQuestionDialog
+import tau.timentau.detau.elytra.profile.ProfileActivity
 
 class MainActivity :
     AppCompatActivity(),
@@ -40,6 +41,13 @@ class MainActivity :
         binding.mainNavBar.setupWithNavController(navController)
 
         checkForFirstAccess()
+
+        binding.topAppBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.profile -> toProfile()
+                else -> throw IllegalStateException("Unknown menu item")
+            }
+        }
 
         setContentView(binding.root)
     }
@@ -90,6 +98,11 @@ class MainActivity :
             .show()
     }
 
+    private fun toProfile(): Boolean {
+        startActivity(Intent(this, ProfileActivity::class.java))
+        return true
+    }
+
     private fun networkErrorOnFirstAccess() {
         MaterialAlertDialogBuilder(
             this,
@@ -113,7 +126,8 @@ class MainActivity :
     }
 
     override fun toAvatarSelection() {
-        SelectAvatarDialog().show(supportFragmentManager, "selectAvatar")
+        val dialog = SelectAvatarDialog.newInstance(isForFirstAccess = true)
+        dialog.show(supportFragmentManager, "selectAvatar")
     }
 
     override fun connectionError(e: Throwable) {

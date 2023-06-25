@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra.model
 
+import android.graphics.Bitmap
 import java.util.Date
 
 data class User(
@@ -7,11 +8,26 @@ data class User(
     val fullName: String,
     val birthDate: Date,
     val sex: Sex,
-    // todo avatar
-)
+    val passwordLength: Int,
+    val avatar: Bitmap
+) {
 
-enum class Sex(name: String) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as User
+
+        return email == other.email
+    }
+
+    override fun hashCode(): Int {
+        return email.hashCode()
+    }
+}
+
+enum class Sex(val stringVal: String) {
     MALE("Uomo"),
     FEMALE("Donna"),
-    OTHER("Altro")
+    OTHER("Altro");
 }

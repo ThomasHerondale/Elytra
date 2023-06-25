@@ -22,6 +22,7 @@ import tau.timentau.detau.elytra.databinding.DialogSelectAvatarBinding
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 
 private const val TAG = "SELECT_AVATAR"
+const val ARG_IS_FOR_FIRST_ACCESS = "isForFirstAccess"
 
 class SelectAvatarDialog : DialogFragment() {
 
@@ -65,11 +66,18 @@ class SelectAvatarDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // forse con questo ci risolviamo il bug più grande della storia
+        val isForFirstAccess = requireArguments().getBoolean(ARG_IS_FOR_FIRST_ACCESS)
 
         // disabilita il pulsante di conferma all'avvio
         binding.selectAvatarDialogBottomButtons.positiveButton.isEnabled = false
 
-        binding.selectAvatarDialogBottomButtons.negativeButton.text = getString(R.string.non_ora)
+        binding.selectAvatarDialogBottomButtons.negativeButton.text =
+            if (isForFirstAccess)
+                getString(R.string.non_ora)
+            else
+                getString(R.string.annulla)
+
         binding.selectAvatarDialogBottomButtons.negativeButton.setOnClickListener {
             dismiss()
         }
@@ -102,10 +110,12 @@ class SelectAvatarDialog : DialogFragment() {
             GridLayoutManager(context, 1, HORIZONTAL, false)
 
         coroutineScope.launch {
+            showOrHideProgressBar(false)
             val images = handler.fetchAvatars().await()
             Log.i(TAG, "Fetching avatars from database")
 
             adapter.submitList(images.map { AvatarChoice(it) })
+            showOrHideProgressBar(true)
         }
     }
 
@@ -115,6 +125,18 @@ class SelectAvatarDialog : DialogFragment() {
 
     private fun showOrHideProgressBar(hide: Boolean) {
         binding.setAvatarProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
+
+    companion object {
+        fun newInstance(isForFirstAccess: Boolean): SelectAvatarDialog {
+            val args = Bundle().apply {
+                putBoolean(ARG_IS_FOR_FIRST_ACCESS, isForFirstAccess)
+            }
+
+            return SelectAvatarDialog().apply {
+                arguments = args
+            }
+        }
     }
 
 
