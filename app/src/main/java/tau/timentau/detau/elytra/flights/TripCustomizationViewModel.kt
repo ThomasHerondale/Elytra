@@ -129,4 +129,16 @@ class TripCustomizationViewModel : ViewModel() {
 
         return data
     }
+
+    fun getFlightTotalPrice(forReturn: Boolean): Double {
+        return _passengerData.value?.sumOf {
+            if (it.forReturn == forReturn)
+                it.price
+            else
+                0.0
+        } ?: throw IllegalStateException("Passenger data not initialized")
+    }
+
+    fun getTripTotalPrice() =
+        getFlightTotalPrice(false) + getFlightTotalPrice(true)
 }
