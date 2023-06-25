@@ -53,6 +53,7 @@ class SelectFlightFragment : Fragment() {
 
     private fun setupGoingFlightCard() {
         binding.goingFlightGroup.visibility = View.VISIBLE
+        binding.voliRitorno.text = getString(R.string.volo_ritorno)
 
         val flight = args.goingFlight!! // don't worry, ne happy :D
 

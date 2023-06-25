@@ -9,13 +9,15 @@
         android:id="@+id/flightViewHolderCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:cardCornerRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/md_theme_light_primaryContainer">
 
             <ImageView
                 android:id="@+id/companyLogoImg"
@@ -140,9 +142,11 @@
             <TextView
                 android:id="@+id/priceLabel"
                 android:layout_width="wrap_content"
+                android:textColor="@color/md_theme_light_tertiary"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
+                android:textStyle="bold"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/passengersCountLabel"
                 app:layout_constraintEnd_toEndOf="@+id/serviceClassLabel"
