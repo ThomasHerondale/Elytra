@@ -76,8 +76,8 @@ class MainActivity :
     }
 
     private fun startFirstAccessProcedure(securityQuestions: List<String>) {
-        SetSecurityQuestionDialog(securityQuestions)
-            .show(supportFragmentManager, "setSecurityQuestion")
+        val dialog = SetSecurityQuestionDialog.newInstance(securityQuestions)
+        dialog.show(supportFragmentManager, "setSecurityQuestion")
     }
 
     private fun showProgressDialog(): AlertDialog {
