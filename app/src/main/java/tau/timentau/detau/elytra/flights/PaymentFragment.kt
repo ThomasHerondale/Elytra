@@ -32,7 +32,12 @@ class PaymentFragment : Fragment() {
         binding.totalText.text = getString(R.string.prezzo_str, totalPrice)
         binding.feesText.text = getString(R.string.prezzo_str, SERVICE_FEES)
 
-        binding.paymentText.text = getString(R.string.prezzo_str, totalPrice + SERVICE_FEES)
+        binding.paymentText.text =
+            getString(R.string.prezzo_str, totalPrice + SERVICE_FEES)
+
+        binding.selectPaymentMethodBttn.setOnClickListener {
+            SelectPaymentMethodDialog().show(parentFragmentManager, "selectPaymentMethod")
+        }
 
         return binding.root
     }

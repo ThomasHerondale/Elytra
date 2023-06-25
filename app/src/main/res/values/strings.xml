@@ -72,4 +72,7 @@
     <string name="carta_associata_profilo">La tua carta è stata associata correttamente al tuo profilo.</string>
     <string name="logout_title">Logout</string>
     <string name="sicuro_del_logout">Sei sicuro di voler effettuare il logout?</string>
+    <string name="pagamento_in_corso">Pagamento in corso</string>
+    <string name="pagamento_effettuato">Pagamento effettuato</string>
+    <string name="importo_saldato_correttamente">L\'importo è stato saldato correttamente. Troverai i tuoi biglietti nella sezione prenotazioni.</string>
 </resources>
