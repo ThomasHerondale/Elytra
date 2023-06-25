@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/searchAccomodationsFragment">
+    app:startDestination="@id/accomodations">
 
     <fragment
-        android:id="@+id/searchAccomodationsFragment"
+        android:id="@+id/accomodations"
         android:name="tau.timentau.detau.elytra.accomodations.SearchAccomodationsFragment"
         android:label="fragment_search_accomodations"
         tools:layout="@layout/fragment_search_accomodations" />
