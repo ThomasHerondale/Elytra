@@ -73,6 +73,9 @@ class SelectFlightFragment : Fragment() {
             arrivalAptLabel.text = flight.arrivalApt.name
 
             durationLabel.text = flight.duration
+
+            serviceClassLabel.text = flight.serviceClass.name.lowercase()
+            priceLabel.text = "€ "+flight.price.toString()
         }
     }
 
