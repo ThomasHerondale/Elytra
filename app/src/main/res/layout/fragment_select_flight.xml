@@ -31,6 +31,17 @@
         app:layout_constraintStart_toStartOf="@+id/goingFlightCard"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/editGoingFlightBttn"
+        style="@style/Widget.Material3.Button.TextButton.Dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/modifica"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/voliAndata"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/voliRitorno"
         android:layout_width="wrap_content"
@@ -43,16 +54,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goingFlightCard" />
 
-    <Button
-        android:id="@+id/editGoingFlightBttn"
-        style="@style/Widget.Material3.Button.TextButton.Dialog"
+    <TextView
+        android:id="@+id/dataVolo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="@string/modifica"
+        android:layout_marginEnd="32dp"
         android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/voliAndata"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/voliRitorno"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/voliRitorno"
+        tools:text="31/31/2050" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/goingFlightCard"
@@ -117,6 +130,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:maxEms="4"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/departureTimeLabel"
@@ -170,6 +185,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:maxEms="4"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textAlignment="center"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/departureAptLabel"
