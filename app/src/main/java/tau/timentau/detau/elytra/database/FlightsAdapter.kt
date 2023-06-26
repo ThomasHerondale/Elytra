@@ -13,6 +13,7 @@ import tau.timentau.detau.elytra.model.Flight
 
 class FlightsAdapter(
     private val flights: List<Flight>,
+    private val passengersCount: Int,
     private val onFlightSelected: (Flight) -> Unit)
     : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
 
@@ -44,8 +45,10 @@ class FlightsAdapter(
 
             durationLabel.text = flight.duration
 
-            serviceClassLabel.text = flight.serviceClass.name.lowercase()
-            priceLabel.text = "€ "+flight.price.toString()
+            serviceClassLabel.text = flight.serviceClass.stringValue
+            priceLabel.text = holder.itemView.context.getString(R.string.prezzo_str, flight.price)
+            passengersCountLabel.text =
+                holder.itemView.context.getString(R.string.passegeri_str, passengersCount)
         }
 
         holder.binding.flightViewHolderCard.setOnClickListener {

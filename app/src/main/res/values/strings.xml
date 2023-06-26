@@ -47,6 +47,8 @@
     <string name="compagnie">Compagnie</string>
     <string name="andata_e_ritorno">Andata e ritorno</string>
     <string name="sola_andata">Sola andata</string>
+    <string name="prezzo_str">€%1$.2f</string>
+    <string name="passegeri_str">%1$d passegeri</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="modifica">Modifica</string>
     <string name="volo_ritorno">Seleziona il volo di ritorno</string>

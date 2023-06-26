@@ -29,6 +29,11 @@ class FlightsViewModel : ViewModel() {
     private val _flightsFetchStatus = MutableLiveData<OperationStatus>()
     val flightsFetchStatus: LiveData<OperationStatus> = _flightsFetchStatus
 
+    private var _passengersCount: Int? = null
+    // vista non nullabile
+    val passengersCount: Int
+        get() = _passengersCount ?: throw IllegalStateException("Passengers count not set")
+
     var selectedGoingFlight: Flight? = null
         private set
     var selectedReturnFlight: Flight? = null
@@ -115,6 +120,8 @@ class FlightsViewModel : ViewModel() {
             if (roundTrip)
             // don't worry, se entriamo qui returnFlights non è sicuramente nullo ;)
                 _returnFlightsFetchStatus.value = Status.success(returnFlights!!)
+
+            _passengersCount = passengersCount
         }
     }
 
