@@ -51,6 +51,11 @@ fun LocalDate.toDateString(): String {
     return dbDateFormatter.format(date!!)
 }
 
+fun String.toReadableDateString(): String {
+    val date = dbDateFormatter.parse(this)
+    return date!!.toReadable()
+}
+
 fun Date.toReadable(): String = readableDateFormatter.format(this)
 
 fun hiddenPasswordString(length: Int) = "•".repeat(length)
