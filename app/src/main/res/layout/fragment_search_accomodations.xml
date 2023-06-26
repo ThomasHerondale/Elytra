@@ -14,6 +14,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,8 +23,19 @@
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:hint="hint"
+            android:inputType="text|textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:id="@+id/cityFetchProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintEnd_toEndOf="@+id/cityText"
+        app:layout_constraintStart_toStartOf="@+id/cityText"
+        app:layout_constraintTop_toBottomOf="@+id/cityText" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dateRangeText"
@@ -33,14 +46,18 @@
         android:layout_marginEnd="16dp"
         app:endIconDrawable="@drawable/ic_calendar_24"
         app:endIconMode="custom"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityText">
+        app:layout_constraintTop_toBottomOf="@+id/cityFetchProgress">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:focusable="false"
+            android:hint="hint"
+            android:inputType="datetime|date" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,6 +65,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ratingBar"
@@ -56,7 +75,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:hint="hint"
+            android:inputType="number"
+            android:maxLength="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <RatingBar
@@ -65,20 +86,28 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:numStars="5"
-        android:stepSize="0.5"
+        android:stepSize="1"
         app:layout_constraintBottom_toBottomOf="@+id/hostCountText"
         app:layout_constraintEnd_toStartOf="@+id/hostCountText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/hostCountText" />
+
+    <TextView
+        android:id="@+id/ratingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/ratingBar"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/categoryChips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hostCountText">
+        app:layout_constraintTop_toBottomOf="@+id/ratingText">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/hotelChip"
@@ -121,4 +150,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categoryChips"
         app:values="@array/price_slider_init" />
+
+    <Button
+        android:id="@+id/searchAccomodationsBttn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceSlider" />
 </androidx.constraintlayout.widget.ConstraintLayout>

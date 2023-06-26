@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import tau.timentau.detau.elytra.database.Status
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.util.Date
 import java.util.Locale
 
@@ -52,6 +53,9 @@ fun LocalDate.toDateString(): String {
 }
 
 fun Date.toReadable(): String = readableDateFormatter.format(this)
+
+fun fromMilliToReadable(milliseconds: Long) =
+    Date.from(Instant.ofEpochMilli(milliseconds)).toReadable()
 
 fun hiddenPasswordString(length: Int) = "•".repeat(length)
 
