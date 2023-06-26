@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="price_slider_init">
+        <item>100.0</item>
+        <item>300.0</item>
+    </array>
+</resources>
