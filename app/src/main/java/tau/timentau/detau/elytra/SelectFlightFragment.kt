@@ -73,8 +73,10 @@ class SelectFlightFragment : Fragment() {
 
             durationLabel.text = flight.duration
 
-            serviceClassLabel.text = flight.serviceClass.name.lowercase()
-            priceLabel.text = "€ "+flight.price.toString()
+            serviceClassLabel.text = flight.serviceClass.stringValue
+            priceLabel.text = getString(R.string.prezzo_str, flight.price)
+            passengersCountLabel.text =
+                getString(R.string.passegeri_str, flightsViewModel.passengersCount)
         }
     }
 
@@ -90,7 +92,7 @@ class SelectFlightFragment : Fragment() {
                 flightsViewModel.goingFlightsList
 
         binding.goingFlightsList.adapter =
-            FlightsAdapter(flights) { flightSelected(it) }
+            FlightsAdapter(flights, flightsViewModel.passengersCount) { flightSelected(it) }
     }
 
     private fun flightSelected(selectedFlight: Flight) {
