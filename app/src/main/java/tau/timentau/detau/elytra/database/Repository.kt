@@ -6,6 +6,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
+import tau.timentau.detau.elytra.model.Accomodation
 import tau.timentau.detau.elytra.model.City
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
@@ -163,6 +164,35 @@ object Repository {
             DatabaseDAO.selectList<City>("""
                 SELECT *
                 FROM cities
+            """)
+        }
+    }
+
+    suspend fun getAccomodations(
+        city: String,
+        minPrice: Double,
+        maxPrice: Double,
+        rating: Int,
+        selectedCategories: List<String>
+    ): Deferred<List<Accomodation>> {
+
+        val categoriesSectionBuilder = StringBuilder()
+        selectedCategories.forEach {categoriesSectionBuilder.append("'$it', ")}
+
+        val categoriesStr =
+            if (categoriesSectionBuilder.isEmpty())
+                ""
+            else
+                "AND a.category IN (${categoriesSectionBuilder.removeSuffix(", ")})"
+
+        return coroutineScope.async {
+            DatabaseDAO.selectList<Accomodation>("""
+                SELECT a.id, a.name, a.description, a.category,  c.name as city, 
+                    a.address, a.price, a.rating
+                FROM accomodations a JOIN cities c on a.city = c.id
+                WHERE c.name = '$city' AND
+                    a.price BETWEEN $minPrice AND $maxPrice AND
+                    a.rating >= $rating $categoriesStr
             """)
         }
     }

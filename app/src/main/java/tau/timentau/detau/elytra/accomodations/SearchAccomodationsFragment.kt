@@ -1,25 +1,36 @@
 package tau.timentau.detau.elytra.accomodations
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentSearchAccomodationsBinding
 import tau.timentau.detau.elytra.fromMilliToReadable
+import tau.timentau.detau.elytra.model.AccomodationCategory
+import tau.timentau.detau.elytra.model.AccomodationCategory.APARTMENT
+import tau.timentau.detau.elytra.model.AccomodationCategory.CAMPING
+import tau.timentau.detau.elytra.model.AccomodationCategory.HOSTEL
+import tau.timentau.detau.elytra.model.AccomodationCategory.HOTEL
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 import tau.timentau.detau.elytra.text
 import java.text.NumberFormat
 import java.util.Calendar
 import java.util.Currency
 import java.util.Locale
+
+private const val TAG = "SEARCH_ACCOMODATIONS"
 
 class SearchAccomodationsFragment : Fragment() {
 
@@ -51,11 +62,47 @@ class SearchAccomodationsFragment : Fragment() {
 
         binding.searchAccomodationsBttn.setOnClickListener {
             if (validateFields()) {
-
+                performSearch()
             }
         }
 
         return binding.root
+    }
+
+    private fun performSearch() {
+        val dialog = showProgressDialog()
+
+        accomodationsViewModel.accomodationFetchStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> {
+                    Log.e(TAG, it.exception.stackTraceToString())
+                    showNetworkErrorDialog()
+                }
+                is Status.Loading -> { }
+                is Status.Success -> {
+                    dialog.cancel()
+                    Log.i("TAG", it.data.toString())
+                }
+            }
+        }
+
+        val selectedCategories = mutableListOf<AccomodationCategory>()
+        binding.categoryChips.checkedChipIds.forEach {
+            when (it) {
+                R.id.hotelChip -> selectedCategories.add(HOTEL)
+                R.id.hostelChip -> selectedCategories.add(HOSTEL)
+                R.id.apartmentChip -> selectedCategories.add(APARTMENT)
+                R.id.campingChip -> selectedCategories.add(CAMPING)
+            }
+        }
+
+        accomodationsViewModel.getAccomodations(
+            binding.cityText.text,
+            binding.priceSlider.values[0].toDouble(),
+            binding.priceSlider.values[1].toDouble(),
+            binding.ratingBar.rating.toInt(),
+            selectedCategories
+        )
     }
 
     private fun validateFields() =
@@ -151,6 +198,16 @@ class SearchAccomodationsFragment : Fragment() {
 
         dialog.show(parentFragmentManager, "pickRange")
 
+    }
+
+    private fun showProgressDialog(): AlertDialog {
+        return MaterialAlertDialogBuilder(
+            requireContext(),
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setView(R.layout.dialog_progress_simple)
+            .setCancelable(false)
+            .show()
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
