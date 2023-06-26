@@ -16,15 +16,13 @@ class TripCustomizationViewModel : ViewModel() {
     fun updateFlightData(flight: Flight, forReturn: Boolean) {
         val newData = mutableListOf<PassengerData>().also { it.addAll(passengerData.value!!) }
 
-        newData.map {
+        _passengerData.value = newData.map {
             // rimpiazza i dati relativi al volo di andata o di ritorno
             if (it.forReturn == forReturn)
                 PassengerData(it.index, flight, forReturn)
             else
                 it
         }
-
-        _passengerData.value = newData
     }
 
     fun isPassengerDataInitialized(): Boolean {

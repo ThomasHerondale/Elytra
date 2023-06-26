@@ -103,8 +103,6 @@ class CustomizeTripFragment : Fragment() {
             isReturn = true
         )
 
-        println("Fuori: ${flightsViewModel.selectedReturnFlight.price}")
-
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.returnFlightFragContainer, fragment, "customizeReturnFlight")

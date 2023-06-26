@@ -36,8 +36,6 @@ class CustomizeFlightFragment : Fragment() {
         val flight = requireArguments().getParcelable<Flight>(ARG_FLIGHT)
             ?: throw IllegalArgumentException("Referred flight not provided.")
 
-        println("Dentro ${flight.price}")
-
         binding.flightLabel.text =
             if (isReturn)
                 getString(R.string.volo_di_ritorno)
