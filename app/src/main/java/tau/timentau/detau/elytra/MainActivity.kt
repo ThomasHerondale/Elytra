@@ -20,11 +20,13 @@ import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.firstAccess.SetSecurityQuestionDialog
+import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog
 
 class MainActivity :
     AppCompatActivity(),
     SetSecurityQuestionDialog.SetSecurityQuestionHandler,
     SelectAvatarDialog.SelectAvatarHandler,
+    SelectPaymentMethodDialog.SelectPaymentMethodHandler,
     NavHostActivity {
 
     private lateinit var binding: ActivityMainBinding
@@ -131,6 +133,10 @@ class MainActivity :
 
     override suspend fun avatarSelected(id: Int) {
         Repository.setAvatar(loggedEmail, id)
+    }
+
+    override fun paymentDone() {
+        TODO()
     }
 
     override fun toAvatarSetConfirm() =

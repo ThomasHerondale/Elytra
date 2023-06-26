@@ -31,6 +31,10 @@ class AccomodationsViewModel : ViewModel() {
     val selectedEndDate: LocalDate
         get() = _selectedEndDate ?: throw IllegalStateException("End date not selected")
 
+    private var _selectedAccomodation: Accomodation? = null
+    val selectedAccomodation: Accomodation
+        get() = _selectedAccomodation ?: throw IllegalStateException("Accomodation not selected")
+
     inline val cities: List<City>
         get() = (citiesFetchStatus.value as Status.Success<List<City>>?)?.data
             ?: throw IllegalStateException("Cities not retrieved correctly")
@@ -69,4 +73,11 @@ class AccomodationsViewModel : ViewModel() {
     }
 
     fun getStayingDuration() = selectedEndDate.minus(selectedStartDate).days
+
+    fun getTotalPrice(hostCount: Int) =
+        hostCount * getStayingDuration() * selectedAccomodation.price
+
+    fun selectAccomodation(accomodation: Accomodation) {
+        _selectedAccomodation = accomodation
+    }
 }

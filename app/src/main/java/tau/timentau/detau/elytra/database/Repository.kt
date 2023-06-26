@@ -9,6 +9,8 @@ import kotlinx.datetime.LocalDate
 import tau.timentau.detau.elytra.model.Accomodation
 import tau.timentau.detau.elytra.model.AccomodationCategory
 import tau.timentau.detau.elytra.model.City
+import tau.timentau.detau.elytra.model.PaymentCircuit
+import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
@@ -160,6 +162,55 @@ object Repository {
         """)
     }
 
+    suspend fun changeEmail(oldEmail: String, newEmail: String) {
+        DatabaseDAO.update("""
+            UPDATE users
+            SET email = '$newEmail'
+            WHERE email = '$oldEmail'
+        """)
+        println("updated")
+    }
+
+    suspend fun getPaymentMethods(email: String): Deferred<List<PaymentMethod>> {
+        return coroutineScope.async {
+            val paymentMethodDTOs = DatabaseDAO.selectList<PaymentMethodDTO>("""
+                SELECT *
+                FROM payment_methods
+                WHERE userEmail = '$email'
+            """)
+
+            val circuits = getPaymentCircuits().await()
+
+
+            paymentMethodDTOs.map {
+                // ottieni il circuito completo della carta
+                val circuit = circuits.find { circuit -> circuit.name == it.circuit } ?:
+                throw IllegalArgumentException("Unknown circuit")
+
+                it.toPaymentMethod(circuit)
+            }
+        }
+    }
+
+    suspend fun getPaymentCircuits(): Deferred<List<PaymentCircuit>> {
+        return coroutineScope.async {
+            // ottieni i dati dei circuiti
+            val circuitsDTOs = DatabaseDAO.selectList<PaymentCircuitDTO>(
+                """
+                    SELECT *
+                    FROM payment_circuits
+                """
+            )
+
+            val circuits = circuitsDTOs.map {
+                val logo = DatabaseDAO.getImage(it.logo)
+                it.toPaymentCircuit(logo)
+            }
+
+            circuits
+        }
+    }
+
     suspend fun getCities(): Deferred<List<City>> {
         return coroutineScope.async {
             DatabaseDAO.selectList<City>("""
@@ -241,5 +292,36 @@ object Repository {
     ) {
         fun toAccomodation(image: Bitmap) =
             Accomodation(id, name, description, category, city, address, image, price, rating)
+    }
+
+    private class PaymentMethodDTO(
+        val number: String,
+        val userEmail: String,
+        val circuit: String,
+        val expiryDate: Date,
+        val safetyCode: String,
+        val ownerFullName: String
+    ) {
+        fun toPaymentMethod(circuit: PaymentCircuit) =
+            PaymentMethod(
+                number,
+                circuit,
+                expiryDate,
+                safetyCode,
+                ownerFullName
+            )
+    }
+
+    private class PaymentCircuitDTO(
+        val name: String,
+        val logo: String,
+        val startDigit: String
+    ) {
+        fun toPaymentCircuit(logo: Bitmap) =
+            PaymentCircuit(
+                name,
+                logo,
+                startDigit[0]
+            )
     }
 }

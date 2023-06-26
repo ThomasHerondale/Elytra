@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import tau.timentau.detau.elytra.databinding.FragmentSelectAccomodationBinding
+import tau.timentau.detau.elytra.navHostActivity
 
 class SelectAccomodationFragment : Fragment() {
 
@@ -38,7 +39,12 @@ class SelectAccomodationFragment : Fragment() {
             navArgs.hostCount,
             navArgs.nightCount
         ) {
-
+            accomodationsViewModel.selectAccomodation(it)
+            navHostActivity.navigateTo(
+                SelectAccomodationFragmentDirections.selectAccomodationToPayment(
+                    navArgs.hostCount
+                )
+            )
         }
     }
 }

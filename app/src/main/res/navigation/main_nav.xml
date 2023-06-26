@@ -25,5 +25,17 @@
         <argument
             android:name="hostCount"
             app:argType="integer" />
+        <action
+            android:id="@+id/select_accomodation_to_payment"
+            app:destination="@id/paymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="tau.timentau.detau.elytra.accomodations.PaymentFragment"
+        android:label="PaymentFragment" >
+        <argument
+            android:name="hostCount"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 </navigation>
