@@ -54,19 +54,26 @@ class LoginFragment : Fragment() {
     }
 
     private fun attemptLogin(email: String, password: String) {
-        if (email.isBlank() || password.isBlank())
-            return
+        binding.emailText.error = null
+        binding.pwdText.error = null
+        if (password.isBlank()) {
+            binding.pwdText.error = "Campo obbligatorio"
+        }
+        if (email.isNotEmail()) {
+            binding.emailText.error = "Inserire un'email corretta"
+        }
+        if (!email.isNotEmail() && password.isNotBlank()) {
+            showOrHideProgressBar(false)
+            Log.v(TAG, "Checking existence for ($email, $password)")
 
-        showOrHideProgressBar(false)
-        Log.v(TAG, "Checking existence for ($email, $password)")
-
-        coroutineScope.launch {
-            val userExists = Repository.userExists(email, password).await()
-            showOrHideProgressBar(true)
-            if (userExists)
+            coroutineScope.launch {
+                val userExists = Repository.userExists(email, password).await()
+                showOrHideProgressBar(true)
+                if (userExists)
                     (requireActivity() as StartActivity).login(email)
-            else
-                loginIncorrect()
+                else
+                    loginIncorrect()
+            }
         }
     }
 

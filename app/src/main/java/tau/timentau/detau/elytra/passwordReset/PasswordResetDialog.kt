@@ -110,6 +110,8 @@ class PasswordResetDialog : DialogFragment() {
 
         if (confirm != password)
             binding.resetConfirmText.error = getString(R.string.conferma_invalida)
+        else if (confirm.isBlank())
+            binding.resetConfirmText.error = getString(R.string.inserisci_risposta)
         else
             binding.resetConfirmText.error = null
 
@@ -117,7 +119,7 @@ class PasswordResetDialog : DialogFragment() {
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.resetProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+        binding.resetProgress.visibility = if (hide) View.GONE else View.VISIBLE
     }
 
     interface PasswordResetHandler {

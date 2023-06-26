@@ -27,7 +27,17 @@
     <string name="password_reimpostata">Password reimpostata</string>
     <string name="password_reset_conferma">La tua password è stata reimpostata correttamente.</string>
     <string name="inserisci_email">Inserisci indirizzo email</string>
+    <string name="password_dimenticata">Password dimenticata</string>
     <string name="email_non_associata_msg">Inserisci un indirizzo email associato ad un account</string>
+    <string name="password">Password</string>
+    <string name="no_account_string">Non hai un account?</string>
+    <string name="register">Registrati</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="nome_cognome">Nome e cognome</string>
+    <string name="confirm_password">Conferma password</string>
+    <string name="data_nascita">Data di nascita</string>
+    <string name="risposta">Risposta</string>
     <string name="profile">profile</string>
     <string name="discover">Discover</string>
     <string name="voli">Voli</string>

@@ -192,7 +192,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.registerProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+        binding.registerProgress.visibility = if (hide) View.GONE else View.VISIBLE
     }
 
     private fun selectedSex(): Sex {

@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.DialogInsertEmailBinding
+import tau.timentau.detau.elytra.isNotEmail
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 import tau.timentau.detau.elytra.text
 
@@ -71,13 +72,16 @@ class InsertEmailDialog : DialogFragment() {
             .setOnClickListener {
                 val email = binding.mailForResetText.text
                 // non inviare richieste con email vuote
-                if (email.isNotBlank()) {
+                if (email.isNotBlank() && !email.isNotEmail()) {
                     showOrHideProgressBar(false)
 
                     coroutineScope.launch {
                         emailConfirmed()
                     }
                         .invokeOnCompletion { showOrHideProgressBar(true) }
+                }
+                if (email.isNotEmail()){
+                    binding.mailForResetText.error = "Inserire mail valida"
                 }
             }
 
@@ -108,7 +112,7 @@ class InsertEmailDialog : DialogFragment() {
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.mailCheckProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+        binding.mailCheckProgress.visibility = if (hide) View.GONE else View.VISIBLE
     }
 
     private fun enableOrDisableConfirmButton(disable: Boolean) {
