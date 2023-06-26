@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
 import tau.timentau.detau.elytra.model.Accomodation
+import tau.timentau.detau.elytra.model.AccomodationCategory
 import tau.timentau.detau.elytra.model.City
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
@@ -186,14 +187,22 @@ object Repository {
                 "AND a.category IN (${categoriesSectionBuilder.removeSuffix(", ")})"
 
         return coroutineScope.async {
-            DatabaseDAO.selectList<Accomodation>("""
-                SELECT a.id, a.name, a.description, a.category,  c.name as city, 
-                    a.address, a.price, a.rating
+            val accomodationDTOs = DatabaseDAO.selectList<AccomodationDTO>("""
+                SELECT a.id, a.name, a.description, a.category, c.name as city, 
+                    a.address, a.image, a.price, a.rating
                 FROM accomodations a JOIN cities c on a.city = c.id
                 WHERE c.name = '$city' AND
                     a.price BETWEEN $minPrice AND $maxPrice AND
                     a.rating >= $rating $categoriesStr
             """)
+
+            val accomodations = mutableListOf<Accomodation>()
+            accomodationDTOs.forEach {
+                val image = DatabaseDAO.getImage(it.image)
+                accomodations.add(it.toAccomodation(image))
+            }
+
+            accomodations
         }
     }
 
@@ -218,4 +227,19 @@ object Repository {
         val id: Int,
         val path: String
     )
+
+    private data class AccomodationDTO(
+        val id: String,
+        val name: String,
+        val description: String,
+        val category: AccomodationCategory,
+        val city: String,
+        val address: String,
+        val image: String,
+        val price: Double,
+        val rating: Double
+    ) {
+        fun toAccomodation(image: Bitmap) =
+            Accomodation(id, name, description, category, city, address, image, price, rating)
+    }
 }

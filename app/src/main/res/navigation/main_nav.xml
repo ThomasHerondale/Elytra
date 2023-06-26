@@ -9,5 +9,21 @@
         android:id="@+id/accomodations"
         android:name="tau.timentau.detau.elytra.accomodations.SearchAccomodationsFragment"
         android:label="fragment_search_accomodations"
-        tools:layout="@layout/fragment_search_accomodations" />
+        tools:layout="@layout/fragment_search_accomodations" >
+        <action
+            android:id="@+id/accomodations_to_selectAccomodation"
+            app:destination="@id/selectAccomodationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectAccomodationFragment"
+        android:name="tau.timentau.detau.elytra.accomodations.SelectAccomodationFragment"
+        android:label="fragment_select_accomodation"
+        tools:layout="@layout/fragment_select_accomodation">
+        <argument
+            android:name="nightCount"
+            app:argType="integer" />
+        <argument
+            android:name="hostCount"
+            app:argType="integer" />
+    </fragment>
 </navigation>

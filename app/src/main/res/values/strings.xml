@@ -45,4 +45,5 @@
     <string name="cinque_stelle">Cinque stelle</string>
     <string name="inserisci_citta_valida">Inserisci una città valida</string>
     <string name="seleziona_periodo">Seleziona il periodo di permanenza</string>
+    <string name="prezzo_str">€%1$.2f</string>
 </resources>
