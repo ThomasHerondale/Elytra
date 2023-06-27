@@ -65,7 +65,7 @@
     <string name="prossimo_passegero">Prossimo passegero</string>
     <string name="procedi_al_pagamento">Procedi al pagamento</string>
     <string name="profile_title">Profile</string>
-    <string name="logout">logout</string>
+    <string name="logout">Logout</string>
     <string name="modifica_email">Modifica email</string>
     <string name="password_non_corretta">La password inserita non è corretta</string>
     <string name="indirizzo_email_modificato">Indirizzo email modificato</string>
@@ -92,4 +92,21 @@
     <string name="cinque_stelle">Cinque stelle</string>
     <string name="inserisci_citta_valida">Inserisci una città valida</string>
     <string name="seleziona_periodo">Seleziona il periodo di permanenza</string>
+    <string name="nuova_email">Nuova email</string>
+    <string name="vecchia_password">Vecchia password</string>
+    <string name="nuova_password">Nuova password</string>
+    <string name="conferma_new_password">Conferma nuova password</string>
+    <string name="numero_carta">Numero di carta</string>
+    <string name="immagine_circuito">Immagine circuito</string>
+    <string name="scadenza">Scadenza</string>
+    <string name="codice_carta">CVV/CVC</string>
+    <string name="intestatario">Intestatario carta</string>
+    <string name="immagine_profilo">Immagine profilo</string>
+    <string name="nome_e_cognome">Nome e cognome</string>
+    <string name="sesso">Sesso</string>
+    <string name="data_base">01/01/1970</string>
+    <string name="tuoi_dati">I tuoi dati</string>
+    <string name="modifica">Modifica</string>
+    <string name="add_mtd_pagamento">Aggiungi un metodo di pagamento</string>
+    <string name="tuoi_pagamenti">I tuoi metodi di pagamento</string>
 </resources>

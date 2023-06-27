@@ -223,7 +223,7 @@ class ProfileActivity : AppCompatActivity(),
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.removeCardProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+        binding.removeCardProgress.visibility = if (hide) View.GONE else View.VISIBLE
     }
 
     private fun logoutConfirmed() {

@@ -66,9 +66,9 @@ class EditEmailDialog : DialogFragment() {
 
         binding.editEmailDialogBottomButtons.negativeButton.setOnClickListener { dismiss() }
         binding.editEmailDialogBottomButtons.positiveButton.setOnClickListener {
-            showOrHideProgressBar(false)
 
             if (validateMailField()) {
+                showOrHideProgressBar(false)
                 coroutineScope.launch {
                     // se i dati sono corretti, richiedi la modifica
                     if (validateFields()) {
@@ -119,7 +119,7 @@ class EditEmailDialog : DialogFragment() {
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.editEmailProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+        binding.editEmailProgress.visibility = if (hide) View.GONE else View.VISIBLE
     }
 
     interface EditEmailHandler {

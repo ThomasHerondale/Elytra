@@ -45,7 +45,7 @@ class EditPasswordDialog : DialogFragment() {
             binding = DialogEditPasswordBinding.inflate(layoutInflater)
 
             builder
-                .setTitle(getString(R.string.domanda_sicurezza))
+                .setTitle(getString(R.string.reimposta_password))
                 .setView(binding.root)
                 .create()
                 .also {
@@ -116,7 +116,7 @@ class EditPasswordDialog : DialogFragment() {
     }
 
     private fun showOrHideProgressBar(hide: Boolean) {
-        binding.editPwdProgress.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+        binding.editPwdProgress.visibility = if (hide) View.GONE else View.VISIBLE
     }
 
     interface EditPasswordHandler {
