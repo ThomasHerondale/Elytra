@@ -72,6 +72,11 @@ class SelectFlightFragment : Fragment() {
             arrivalAptLabel.text = flight.arrivalApt.name
 
             durationLabel.text = flight.duration
+
+            serviceClassLabel.text = flight.serviceClass.stringValue
+            priceLabel.text = getString(R.string.prezzo_str, flight.price)
+            passengersCountLabel.text =
+                getString(R.string.passegeri_str, flightsViewModel.passengersCount)
         }
     }
 

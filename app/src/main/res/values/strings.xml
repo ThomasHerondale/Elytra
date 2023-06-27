@@ -60,4 +60,7 @@
     <string name="alloggi">Alloggi</string>
     <string name="prezzo_str">€%1$.2f</string>
     <string name="passegeri_str">%1$d passegeri</string>
+    <string name="prezzo_str">€%1$.2f</string>
+    <string name="passegeri_str">%1$d passegeri</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
