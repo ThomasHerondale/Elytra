@@ -6,20 +6,18 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
-import tau.timentau.detau.elytra.model.PaymentCircuit
-import tau.timentau.detau.elytra.model.PaymentMethod
+import tau.timentau.detau.elytra.model.Accomodation
+import tau.timentau.detau.elytra.model.AccomodationCategory
 import tau.timentau.detau.elytra.model.Airport
+import tau.timentau.detau.elytra.model.City
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
+import tau.timentau.detau.elytra.model.PaymentCircuit
+import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.ServiceClass
 import tau.timentau.detau.elytra.model.ServiceClass.BUSINESS
 import tau.timentau.detau.elytra.model.ServiceClass.ECONOMY
 import tau.timentau.detau.elytra.model.ServiceClass.FIRST_CLASS
-import tau.timentau.detau.elytra.model.Accomodation
-import tau.timentau.detau.elytra.model.AccomodationCategory
-import tau.timentau.detau.elytra.model.City
-import tau.timentau.detau.elytra.model.PaymentCircuit
-import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
@@ -172,55 +170,6 @@ object Repository {
             SET avatar = $dbId
             WHERE email = '$email'
         """)
-    }
-
-    suspend fun changeEmail(oldEmail: String, newEmail: String) {
-        DatabaseDAO.update("""
-            UPDATE users
-            SET email = '$newEmail'
-            WHERE email = '$oldEmail'
-        """)
-        println("updated")
-    }
-
-    suspend fun getPaymentMethods(email: String): Deferred<List<PaymentMethod>> {
-        return coroutineScope.async {
-            val paymentMethodDTOs = DatabaseDAO.selectList<PaymentMethodDTO>("""
-                SELECT *
-                FROM payment_methods
-                WHERE userEmail = '$email'
-            """)
-
-            val circuits = getPaymentCircuits().await()
-
-
-            paymentMethodDTOs.map {
-                // ottieni il circuito completo della carta
-                val circuit = circuits.find { circuit -> circuit.name == it.circuit } ?:
-                throw IllegalArgumentException("Unknown circuit")
-
-                it.toPaymentMethod(circuit)
-            }
-        }
-    }
-
-    suspend fun getPaymentCircuits(): Deferred<List<PaymentCircuit>> {
-        return coroutineScope.async {
-            // ottieni i dati dei circuiti
-            val circuitsDTOs = DatabaseDAO.selectList<PaymentCircuitDTO>(
-                """
-                    SELECT *
-                    FROM payment_circuits
-                """
-            )
-
-            val circuits = circuitsDTOs.map {
-                val logo = DatabaseDAO.getImage(it.logo)
-                it.toPaymentCircuit(logo)
-            }
-
-            circuits
-        }
     }
 
     suspend fun changeEmail(oldEmail: String, newEmail: String) {

@@ -7,21 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import tau.timentau.detau.elytra.R
-import tau.timentau.detau.elytra.databinding.FragmentPaymentBinding
+import tau.timentau.detau.elytra.databinding.FragmentPaymentAccomodationsBinding
 import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog
 
 private const val SERVICE_FEES = 25.90
 
 class PaymentFragment : Fragment() {
 
-    private lateinit var binding: FragmentPaymentBinding
+    private lateinit var binding: FragmentPaymentAccomodationsBinding
     private val accomodationsViewModel: AccomodationsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentPaymentBinding.inflate(inflater)
+        binding = FragmentPaymentAccomodationsBinding.inflate(inflater)
 
         val totalPrice = accomodationsViewModel.getTotalPrice()
 

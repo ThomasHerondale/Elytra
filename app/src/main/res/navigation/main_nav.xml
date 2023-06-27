@@ -57,7 +57,7 @@
         android:id="@+id/paymentFragment"
         android:name="tau.timentau.detau.elytra.flights.PaymentFragment"
         android:label="fragment_payment"
-        tools:layout="@layout/fragment_payment" >
+        tools:layout="@layout/fragment_payment_accomodations" >
         <action
             android:id="@+id/payment_to_flights"
             app:destination="@id/flights"

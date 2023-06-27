@@ -7,20 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import tau.timentau.detau.elytra.R
-import tau.timentau.detau.elytra.databinding.FragmentPaymentBinding
+import tau.timentau.detau.elytra.databinding.FragmentPaymentFlightsBinding
 
 private const val SERVICE_FEES = 16.70
 
 class PaymentFragment : Fragment() {
 
-    private lateinit var binding: FragmentPaymentBinding
+    private lateinit var binding: FragmentPaymentFlightsBinding
     private val viewModel: TripCustomizationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentPaymentBinding.inflate(inflater)
+        binding = FragmentPaymentFlightsBinding.inflate(inflater)
 
         binding.goingFlightTotalText.text =
             getString(R.string.prezzo_str, viewModel.getFlightTotalPrice(false))
