@@ -6,18 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.navArgs
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentPaymentBinding
 import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog
 
-private const val SERVICE_FEES = 16.70
+private const val SERVICE_FEES = 25.90
 
 class PaymentFragment : Fragment() {
 
     private lateinit var binding: FragmentPaymentBinding
-    private val navArgs: PaymentFragmentArgs by navArgs()
-    private val viewModel: AccomodationsViewModel by activityViewModels()
+    private val accomodationsViewModel: AccomodationsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,10 +23,7 @@ class PaymentFragment : Fragment() {
     ): View {
         binding = FragmentPaymentBinding.inflate(inflater)
 
-        if (navArgs.hostCount == -1)
-            throw IllegalArgumentException("Host count not provided to payment")
-
-        val totalPrice = viewModel.getTotalPrice(navArgs.hostCount)
+        val totalPrice = accomodationsViewModel.getTotalPrice()
 
         binding.totalText.text = getString(R.string.prezzo_str, totalPrice)
         binding.feesText.text = getString(R.string.prezzo_str, SERVICE_FEES)

@@ -257,6 +257,23 @@ object Repository {
         }
     }
 
+    suspend fun insertBooking(
+        email: String,
+        accomodation: Accomodation,
+        checkInDate: LocalDate,
+        checkOutDate: LocalDate,
+        hostCount: Int,
+        nightCount: Int,
+        price: Double
+    ) {
+        DatabaseDAO.insert("""
+            INSERT INTO bookings(user, accomodation, checkInDate, checkOutDate, 
+                hostCount, nightCount, price)
+            VALUE ('$email', '${accomodation.id}', '${checkInDate.toDateString()}',
+            '${checkOutDate.toDateString()}', $hostCount, $nightCount, $price)
+        """)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,

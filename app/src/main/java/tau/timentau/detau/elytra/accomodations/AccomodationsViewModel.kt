@@ -1,8 +1,11 @@
 package tau.timentau.detau.elytra.accomodations
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
+import tau.timentau.detau.elytra.Session
 import tau.timentau.detau.elytra.database.MutableStatus
 import tau.timentau.detau.elytra.database.ObservableStatus
 import tau.timentau.detau.elytra.database.Repository
@@ -35,6 +38,10 @@ class AccomodationsViewModel : ViewModel() {
     val selectedAccomodation: Accomodation
         get() = _selectedAccomodation ?: throw IllegalStateException("Accomodation not selected")
 
+    private var _hostCount: Int? = null
+    val hostCount: Int
+        get() = _hostCount ?: throw IllegalStateException("Host count not set")
+
     inline val cities: List<City>
         get() = (citiesFetchStatus.value as Status.Success<List<City>>?)?.data
             ?: throw IllegalStateException("Cities not retrieved correctly")
@@ -66,15 +73,33 @@ class AccomodationsViewModel : ViewModel() {
             ).await()
         }
     }
+
+    fun insertBooking() {
+        viewModelScope.launch {
+            Repository.insertBooking(
+                Session.loggedEmail,
+                selectedAccomodation,
+                selectedStartDate,
+                selectedEndDate,
+                hostCount,
+                getStayingDuration(),
+                getTotalPrice()
+            )
+        }
+    }
     
     fun setPeriod(period: Pair<Date, Date>) {
         _selectedStartDate = period.first.toLocalDate()
         _selectedEndDate = period.second.toLocalDate()
     }
 
+    fun setHostCount(hostCount: Int) {
+        _hostCount = hostCount
+    }
+
     fun getStayingDuration() = selectedEndDate.minus(selectedStartDate).days
 
-    fun getTotalPrice(hostCount: Int) =
+    fun getTotalPrice() =
         hostCount * getStayingDuration() * selectedAccomodation.price
 
     fun selectAccomodation(accomodation: Accomodation) {

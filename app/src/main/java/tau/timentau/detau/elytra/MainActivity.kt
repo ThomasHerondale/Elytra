@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.Session.loggedEmail
+import tau.timentau.detau.elytra.accomodations.AccomodationsViewModel
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
@@ -33,6 +35,7 @@ class MainActivity :
     private val navController by lazy {
         (binding.mainFragmentContainer.getFragment() as NavHostFragment).navController
     }
+    private val accomodationsViewModel: AccomodationsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,7 +139,7 @@ class MainActivity :
     }
 
     override fun paymentDone() {
-        TODO()
+        accomodationsViewModel.insertBooking()
     }
 
     override fun toAvatarSetConfirm() =

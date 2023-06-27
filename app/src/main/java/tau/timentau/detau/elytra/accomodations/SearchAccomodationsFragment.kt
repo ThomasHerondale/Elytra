@@ -104,6 +104,8 @@ class SearchAccomodationsFragment : Fragment() {
             }
         }
 
+        accomodationsViewModel.setHostCount(binding.hostCountText.text.toInt())
+
         accomodationsViewModel.getAccomodations(
             binding.cityText.text,
             binding.priceSlider.values[0].toDouble(),
