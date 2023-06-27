@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentSelectFlightBinding
 import tau.timentau.detau.elytra.model.Flight
 import tau.timentau.detau.elytra.navHostActivity
