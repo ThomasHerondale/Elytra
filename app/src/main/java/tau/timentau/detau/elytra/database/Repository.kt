@@ -6,6 +6,8 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.LocalDate
+import tau.timentau.detau.elytra.model.PaymentCircuit
+import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.Airport
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
@@ -24,7 +26,7 @@ object Repository {
 
     suspend fun userExists(email: String, password: String): Deferred<Boolean> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<Boolean>("""
+            DatabaseDAO.selectPrimitiveValue<Boolean>("""
                 SELECT EXISTS(
                     SELECT *
                     FROM users
@@ -44,13 +46,15 @@ object Repository {
                 WHERE email = '$email';
             """) ?: throw IllegalStateException("Could not retrieve data")
 
-            userDTO.toUser()
+            val userAvatar = DatabaseDAO.getImage(userDTO.avatar)
+
+            userDTO.toUser(userAvatar)
         }
     }
 
     suspend fun isMailUsed(email: String): Deferred<Boolean> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<Boolean>("""
+            DatabaseDAO.selectPrimitiveValue<Boolean>("""
                 SELECT EXISTS(
                     SELECT *
                     FROM users
@@ -76,7 +80,7 @@ object Repository {
 
     suspend fun getSecurityQuestion(email: String): Deferred<String> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<String>("""
+            DatabaseDAO.selectPrimitiveValue<String>("""
                 SELECT security_questions.question as string
                 FROM users JOIN security_questions on users.question = security_questions.id
                 WHERE users.email = '$email' 
@@ -86,7 +90,7 @@ object Repository {
 
     suspend fun isAnswerCorrect(email: String, answer: String): Deferred<Boolean> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<Boolean>("""
+            DatabaseDAO.selectPrimitiveValue<Boolean>("""
                 SELECT EXISTS(
                     SELECT *
                     FROM users
@@ -115,7 +119,7 @@ object Repository {
 
     suspend fun isFirstAccess(email: String): Deferred<Boolean> {
         return coroutineScope.async {
-            DatabaseDAO.selectValue<Boolean>("""
+            DatabaseDAO.selectPrimitiveValue<Boolean>("""
                 SELECT (question IS NULL) as boolean
                 FROM users
                 WHERE email = '$email'
@@ -141,6 +145,7 @@ object Repository {
             val paths = DatabaseDAO.selectList<AvatarDTO>("""
                 SELECT *
                 FROM avatar_images
+                WHERE id <> 1
             """).map { it.path }
 
             val images = mutableListOf<Bitmap>()
@@ -156,11 +161,87 @@ object Repository {
     }
 
     suspend fun setAvatar(email: String, id: Int) {
-        val dbId = id + 1 // gli indici generati partono da 1
+        val dbId = id + 2 // gli indici generati partono da 1, e salta il primo che è di default
         DatabaseDAO.update("""
             UPDATE users
             SET avatar = $dbId
             WHERE email = '$email'
+        """)
+    }
+
+    suspend fun changeEmail(oldEmail: String, newEmail: String) {
+        DatabaseDAO.update("""
+            UPDATE users
+            SET email = '$newEmail'
+            WHERE email = '$oldEmail'
+        """)
+        println("updated")
+    }
+
+    suspend fun getPaymentMethods(email: String): Deferred<List<PaymentMethod>> {
+        return coroutineScope.async {
+            val paymentMethodDTOs = DatabaseDAO.selectList<PaymentMethodDTO>("""
+                SELECT *
+                FROM payment_methods
+                WHERE userEmail = '$email'
+            """)
+
+            val circuits = getPaymentCircuits().await()
+
+
+            paymentMethodDTOs.map {
+                // ottieni il circuito completo della carta
+                val circuit = circuits.find { circuit -> circuit.name == it.circuit } ?:
+                throw IllegalArgumentException("Unknown circuit")
+
+                it.toPaymentMethod(circuit)
+            }
+        }
+    }
+
+    suspend fun getPaymentCircuits(): Deferred<List<PaymentCircuit>> {
+        return coroutineScope.async {
+            // ottieni i dati dei circuiti
+            val circuitsDTOs = DatabaseDAO.selectList<PaymentCircuitDTO>(
+                """
+                    SELECT *
+                    FROM payment_circuits
+                """
+            )
+
+            val circuits = circuitsDTOs.map {
+                val logo = DatabaseDAO.getImage(it.logo)
+                it.toPaymentCircuit(logo)
+            }
+
+            circuits
+        }
+    }
+
+    suspend fun removePaymentMethod(number: String) {
+        DatabaseDAO.remove("""
+            DELETE
+            FROM payment_methods
+            WHERE number = '$number'
+        """)
+    }
+
+    suspend fun createPaymentMethod(
+        email: String,
+        number: String,
+        circuit: PaymentCircuit,
+        expiryDate: LocalDate,
+        safetyCode: String,
+        ownerFullName: String
+    ) {
+        // rimuovi gli spazi
+        val cardNumber = number.replace(Regex("\\s"), "")
+
+        DatabaseDAO.insert("""
+            INSERT
+            INTO payment_methods(number, userEmail, circuit, expiryDate, safetyCode, ownerFullName)
+            VALUE ('$cardNumber', '$email', '${circuit.name}', '${expiryDate.toDateString()}',
+                '$safetyCode', '$ownerFullName')
         """)
     }
 
@@ -314,7 +395,15 @@ object Repository {
         val question: String,
         val answer: String
     ) {
-        fun toUser() = User(email, fullName, birthDate, sex)
+        fun toUser(avatar: Bitmap) =
+            User(
+                email,
+                fullName,
+                birthDate,
+                sex,
+                password.length,
+                avatar
+            )
     }
 
     private class QuestionDTO(
@@ -373,5 +462,36 @@ object Repository {
                 serviceClass
             )
         }
+    }
+
+    private class PaymentMethodDTO(
+        val number: String,
+        val userEmail: String,
+        val circuit: String,
+        val expiryDate: Date,
+        val safetyCode: String,
+        val ownerFullName: String
+    ) {
+        fun toPaymentMethod(circuit: PaymentCircuit) =
+            PaymentMethod(
+                number,
+                circuit,
+                expiryDate,
+                safetyCode,
+                ownerFullName
+            )
+    }
+
+    private class PaymentCircuitDTO(
+        val name: String,
+        val logo: String,
+        val startDigit: String
+    ) {
+        fun toPaymentCircuit(logo: Bitmap) =
+            PaymentCircuit(
+                name,
+                logo,
+                startDigit[0]
+            )
     }
 }

@@ -28,23 +28,40 @@
             app:argType="boolean"
             android:defaultValue="false" />
         <action
-            android:id="@+id/select_going_flight_to_customize_flight"
-            app:destination="@id/customizeFlightFragment" />
+            android:id="@+id/select_going_flight_to_customize_trip"
+            app:destination="@id/customizeTripFragment" />
         <action
             android:id="@+id/select_going_flight_to_select_return_flight"
             app:destination="@id/selectGoingFlight" />
     </fragment>
     <fragment
-        android:id="@+id/customizeFlightFragment"
-        android:name="tau.timentau.detau.elytra.flights.CustomizeFlightFragment"
+        android:id="@+id/customizeTripFragment"
+        android:name="tau.timentau.detau.elytra.flights.CustomizeTripFragment"
         android:label="fragment_customize_flight"
-        tools:layout="@layout/fragment_customize_flight" >
+        tools:layout="@layout/fragment_customize_trip">
+        <action
+            android:id="@+id/customize_trip_to_customize_trip"
+            app:destination="@id/customizeTripFragment" />
         <argument
-            android:name="isPaymentNext"
+            android:name="passengerIndex"
+            app:argType="integer" />
+        <argument
+            android:name="isRoundTrip"
             app:argType="boolean"
             android:defaultValue="false" />
         <action
-            android:id="@+id/customize_flight_to_customize_flight"
-            app:destination="@id/customizeFlightFragment" />
+            android:id="@+id/customize_trip_to_payment"
+            app:destination="@id/paymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="tau.timentau.detau.elytra.flights.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" >
+        <action
+            android:id="@+id/payment_to_flights"
+            app:destination="@id/flights"
+            app:popUpTo="@id/flights"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

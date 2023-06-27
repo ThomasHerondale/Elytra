@@ -23,11 +23,6 @@ class SelectFlightFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        /* se il fragment è marcato come selettore del volo di ritorno, ma non è stato
-         * fornito alcun volo di ritorno */
-        if (args.isReturn && flightsViewModel.selectedGoingFlight == null)
-            throw IllegalArgumentException("No going flight provided for return flight selection")
     }
 
     override fun onCreateView(
@@ -96,15 +91,29 @@ class SelectFlightFragment : Fragment() {
     }
 
     private fun flightSelected(selectedFlight: Flight) {
+        // se abbiamo selezionato il volo di ritorno, vai alla personalizzazione
         if (args.isReturn) {
             flightsViewModel.selectReturnFlight(selectedFlight)
+            navHostActivity.navigateTo(
+                SelectFlightFragmentDirections.selectGoingFlightToCustomizeTrip(
+                    0,
+                    isRoundTrip = true
+                )
+            )
+        // altrimenti abbiamo selezionato il volo di andata
         } else {
             flightsViewModel.selectGoingFlight(selectedFlight)
 
+            // se il viaggio è di sola andata, vai alla personalizzazione
             if (args.isPaymentNext) {
-                // TODO naviga al pagamento
-                TODO()
+                navHostActivity.navigateTo(
+                    SelectFlightFragmentDirections.selectGoingFlightToCustomizeTrip(
+                        0,
+                        isRoundTrip = false
+                    )
+                )
             }
+            // altrimenti, vai alla selezione del volo di ritorno
             else
                 navHostActivity.navigateTo(
                     SelectFlightFragmentDirections.selectGoingFlightToSelectReturnFlight(
