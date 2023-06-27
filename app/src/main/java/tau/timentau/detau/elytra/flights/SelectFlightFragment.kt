@@ -49,6 +49,7 @@ class SelectFlightFragment : Fragment() {
 
     private fun setupGoingFlightCard() {
         binding.goingFlightGroup.visibility = View.VISIBLE
+        binding.voliRitorno.text = getString(R.string.volo_ritorno)
 
         val flight = flightsViewModel.selectedGoingFlight!! // don't worry, ne happy :D
 
@@ -86,6 +87,9 @@ class SelectFlightFragment : Fragment() {
                 flightsViewModel.returnFlightsList
             else
                 flightsViewModel.goingFlightsList
+
+        // ottieni la data da uno dei voli della lista. Che schifo è proprio poco elegante così
+        binding.dataVolo.text = flights.first().date.toReadableDateString()
 
         binding.goingFlightsList.adapter =
             FlightsAdapter(flights, flightsViewModel.passengersCount) { flightSelected(it) }

@@ -91,7 +91,8 @@
             android:layout_height="wrap_content"
             android:inputType="datetime|date"
             android:maxEms="10"
-            android:maxLength="10" />
+            android:maxLength="10"
+            android:text="21/07/2023" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +115,8 @@
             android:layout_height="wrap_content"
             android:inputType="datetime|date"
             android:maxEms="10"
-            android:maxLength="10" />
+            android:maxLength="10"
+            android:text="25/07/2023" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -106,7 +106,6 @@
     <string name="sesso">Sesso</string>
     <string name="data_base">01/01/1970</string>
     <string name="tuoi_dati">I tuoi dati</string>
-    <string name="modifica">Modifica</string>
     <string name="add_mtd_pagamento">Aggiungi un metodo di pagamento</string>
     <string name="tuoi_pagamenti">I tuoi metodi di pagamento</string>
     <string name="partenza">Partenza</string>
@@ -115,4 +114,8 @@
     <string name="ritorno">Ritorno il</string>
     <string name="passeggeri">Passeggeri</string>
     <string name="cerca_voli">Cerca voli</string>
+    <string name="modifica">Modifica</string>
+    <string name="volo_ritorno">Seleziona il volo di ritorno</string>
+    <string name="volo_andata">Il tuo volo di andata</string>
+    <string name="seleziona_volo">Seleziona volo</string>
 </resources>
