@@ -87,4 +87,10 @@
     <string name="pagamento_effettuato">Pagamento effettuato</string>
     <string name="importo_saldato_correttamente">L\'importo è stato saldato correttamente. Troverai i tuoi biglietti nella sezione prenotazioni.</string>
     <string name="alloggi">Alloggi</string>
+    <string name="range_date_str">%1$s - %2$s</string>
+    <string name="una_stella_o_piu">Una stella o più</string>
+    <string name="stelle_o_piu">%1$d stelle o più</string>
+    <string name="cinque_stelle">Cinque stelle</string>
+    <string name="inserisci_citta_valida">Inserisci una città valida</string>
+    <string name="seleziona_periodo">Seleziona il periodo di permanenza</string>
 </resources>

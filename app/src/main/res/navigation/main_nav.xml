@@ -64,4 +64,10 @@
             app:popUpTo="@id/flights"
             app:popUpToInclusive="true" />
     </fragment>
+
+    <fragment
+        android:id="@+id/accomodations"
+        android:name="tau.timentau.detau.elytra.accomodations.SearchAccomodationsFragment"
+        android:label="fragment_search_accomodations"
+        tools:layout="@layout/fragment_search_accomodations" />
 </navigation>

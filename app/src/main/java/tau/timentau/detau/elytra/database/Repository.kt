@@ -15,6 +15,8 @@ import tau.timentau.detau.elytra.model.ServiceClass
 import tau.timentau.detau.elytra.model.ServiceClass.BUSINESS
 import tau.timentau.detau.elytra.model.ServiceClass.ECONOMY
 import tau.timentau.detau.elytra.model.ServiceClass.FIRST_CLASS
+import tau.timentau.detau.elytra.model.Accomodation
+import tau.timentau.detau.elytra.model.City
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
@@ -383,6 +385,44 @@ object Repository {
                 fp.${serviceClass}Price BETWEEN $minPrice AND $maxPrice AND
                 ffs.${serviceClass}Free >= $passengersCount $companiesStr
             """)
+    }
+
+    suspend fun getCities(): Deferred<List<City>> {
+        return coroutineScope.async {
+            DatabaseDAO.selectList<City>("""
+                SELECT *
+                FROM cities
+            """)
+        }
+    }
+
+    suspend fun getAccomodations(
+        city: String,
+        minPrice: Double,
+        maxPrice: Double,
+        rating: Int,
+        selectedCategories: List<String>
+    ): Deferred<List<Accomodation>> {
+
+        val categoriesSectionBuilder = StringBuilder()
+        selectedCategories.forEach {categoriesSectionBuilder.append("'$it', ")}
+
+        val categoriesStr =
+            if (categoriesSectionBuilder.isEmpty())
+                ""
+            else
+                "AND a.category IN (${categoriesSectionBuilder.removeSuffix(", ")})"
+
+        return coroutineScope.async {
+            DatabaseDAO.selectList<Accomodation>("""
+                SELECT a.id, a.name, a.description, a.category,  c.name as city, 
+                    a.address, a.price, a.rating
+                FROM accomodations a JOIN cities c on a.city = c.id
+                WHERE c.name = '$city' AND
+                    a.price BETWEEN $minPrice AND $maxPrice AND
+                    a.rating >= $rating $categoriesStr
+            """)
+        }
     }
 
     private class UserDTO(
