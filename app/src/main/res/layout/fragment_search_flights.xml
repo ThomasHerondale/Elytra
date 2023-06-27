@@ -12,8 +12,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
+        android:hint="@string/partenza"
         app:layout_constraintEnd_toStartOf="@+id/fetchAptsProgress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,9 +22,7 @@
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:inputType="none"
-            android:text="AMS Amsterdam-Shnipol" />
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ProgressBar
@@ -46,7 +45,7 @@
         style="@style/Widget.Material3.Button.IconButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="24dp"
         app:icon="@drawable/ic_swap_horiz_24"
         app:layout_constraintBottom_toTopOf="@+id/arrivalAptText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +59,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:hint="@string/destinazione"
         app:layout_constraintEnd_toEndOf="@+id/departureAptText"
         app:layout_constraintStart_toStartOf="@+id/departureAptText"
         app:layout_constraintTop_toBottomOf="@+id/departureAptText">
@@ -67,31 +67,31 @@
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:inputType="none"
-            android:text="FCO Roma Fiumicino" />
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/goingDateText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="12dp"
+        android:hint="@string/andata"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
+        android:minWidth="120dp"
         app:layout_constraintEnd_toStartOf="@+id/returnDatetext"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="@+id/arrivalAptText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/arrivalAptText"
         app:layout_constraintTop_toBottomOf="@+id/arrivalAptText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
             android:inputType="datetime|date"
             android:maxEms="10"
-            android:text="21/07/2023" />
+            android:maxLength="10" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,10 +99,11 @@
         android:id="@+id/returnDatetext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginEnd="12dp"
+        android:hint="@string/ritorno"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/goingDateText"
+        android:minWidth="120dp"
         app:layout_constraintEnd_toStartOf="@+id/passengersText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/goingDateText"
@@ -111,22 +112,23 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
             android:inputType="datetime|date"
             android:maxEms="10"
-            android:text="25/07/2023" />
+            android:maxLength="10" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passengersText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/passeggeri"
+        android:visibility="visible"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/returnDatetext"
-        app:layout_constraintEnd_toEndOf="@+id/fetchAptsProgress"
+        android:minWidth="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/returnDatetext"
         app:layout_constraintTop_toTopOf="@+id/returnDatetext">
@@ -134,18 +136,18 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
             android:inputType="number"
             android:maxLength="1"
-            android:maxLines="1"
-            android:text="2" />
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/serviceClassChips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/goingDateText"
         app:layout_constraintTop_toBottomOf="@+id/goingDateText">
 
@@ -176,11 +178,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:stepSize="10.0"
         android:valueFrom="0.0"
         android:valueTo="700.0"
-        android:stepSize="10.0"
         app:labelBehavior="visible"
-        app:layout_constraintEnd_toEndOf="@+id/fetchAptsProgress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/serviceClassChips"
         app:layout_constraintTop_toBottomOf="@+id/serviceClassChips"
         app:values="@array/price_slider_init" />
@@ -189,9 +193,11 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/priceSlider"
         app:layout_constraintTop_toBottomOf="@+id/priceSlider">
 
@@ -223,10 +229,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="24dp"
         android:checked="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/goingDateText"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tripKindLabel"
@@ -242,7 +251,8 @@
         android:id="@+id/searchFlightsBttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        app:icon="@drawable/ic_search_24"
+        android:text="@string/cerca_voli"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tripKindLabel"
         app:layout_constraintTop_toTopOf="@+id/roundTripSwitch" />

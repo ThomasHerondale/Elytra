@@ -109,4 +109,10 @@
     <string name="modifica">Modifica</string>
     <string name="add_mtd_pagamento">Aggiungi un metodo di pagamento</string>
     <string name="tuoi_pagamenti">I tuoi metodi di pagamento</string>
+    <string name="partenza">Partenza</string>
+    <string name="destinazione">Destinazione</string>
+    <string name="andata">Andata il</string>
+    <string name="ritorno">Ritorno il</string>
+    <string name="passeggeri">Passeggeri</string>
+    <string name="cerca_voli">Cerca voli</string>
 </resources>
