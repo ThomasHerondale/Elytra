@@ -17,14 +17,16 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentSearchAccomodationsBinding
-import tau.timentau.detau.elytra.fromMilliToReadable
+import tau.timentau.detau.elytra.fromMilliToDate
 import tau.timentau.detau.elytra.model.AccomodationCategory
 import tau.timentau.detau.elytra.model.AccomodationCategory.APARTMENT
 import tau.timentau.detau.elytra.model.AccomodationCategory.CAMPING
 import tau.timentau.detau.elytra.model.AccomodationCategory.HOSTEL
 import tau.timentau.detau.elytra.model.AccomodationCategory.HOTEL
+import tau.timentau.detau.elytra.navHostActivity
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 import tau.timentau.detau.elytra.text
+import tau.timentau.detau.elytra.toReadable
 import java.text.NumberFormat
 import java.util.Calendar
 import java.util.Currency
@@ -81,7 +83,13 @@ class SearchAccomodationsFragment : Fragment() {
                 is Status.Loading -> { }
                 is Status.Success -> {
                     dialog.cancel()
-                    Log.i("TAG", it.data.toString())
+
+                    navHostActivity.navigateTo(
+                        SearchAccomodationsFragmentDirections.accomodationsToSelectAccomodation(
+                            accomodationsViewModel.getStayingDuration(),
+                            binding.hostCountText.text.toInt()
+                        )
+                    )
                 }
             }
         }
@@ -95,6 +103,8 @@ class SearchAccomodationsFragment : Fragment() {
                 R.id.campingChip -> selectedCategories.add(CAMPING)
             }
         }
+
+        accomodationsViewModel.setHostCount(binding.hostCountText.text.toInt())
 
         accomodationsViewModel.getAccomodations(
             binding.cityText.text,
@@ -185,13 +195,16 @@ class SearchAccomodationsFragment : Fragment() {
             .build()
 
         dialog.addOnPositiveButtonClickListener {
-            val startDate = fromMilliToReadable(it.first)
-            val endDate = fromMilliToReadable(it.second)
+            val startDate = fromMilliToDate(it.first)
+            val endDate = fromMilliToDate(it.second)
+
+            accomodationsViewModel.setPeriod(startDate to endDate)
+
             binding.dateRangeText.editText?.setText(
                 getString(
                     R.string.range_date_str,
-                    startDate,
-                    endDate
+                    startDate.toReadable(),
+                    endDate.toReadable()
                 )
             )
         }

@@ -16,7 +16,10 @@ import tau.timentau.detau.elytra.model.ServiceClass.BUSINESS
 import tau.timentau.detau.elytra.model.ServiceClass.ECONOMY
 import tau.timentau.detau.elytra.model.ServiceClass.FIRST_CLASS
 import tau.timentau.detau.elytra.model.Accomodation
+import tau.timentau.detau.elytra.model.AccomodationCategory
 import tau.timentau.detau.elytra.model.City
+import tau.timentau.detau.elytra.model.PaymentCircuit
+import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.Sex
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
@@ -169,6 +172,55 @@ object Repository {
             SET avatar = $dbId
             WHERE email = '$email'
         """)
+    }
+
+    suspend fun changeEmail(oldEmail: String, newEmail: String) {
+        DatabaseDAO.update("""
+            UPDATE users
+            SET email = '$newEmail'
+            WHERE email = '$oldEmail'
+        """)
+        println("updated")
+    }
+
+    suspend fun getPaymentMethods(email: String): Deferred<List<PaymentMethod>> {
+        return coroutineScope.async {
+            val paymentMethodDTOs = DatabaseDAO.selectList<PaymentMethodDTO>("""
+                SELECT *
+                FROM payment_methods
+                WHERE userEmail = '$email'
+            """)
+
+            val circuits = getPaymentCircuits().await()
+
+
+            paymentMethodDTOs.map {
+                // ottieni il circuito completo della carta
+                val circuit = circuits.find { circuit -> circuit.name == it.circuit } ?:
+                throw IllegalArgumentException("Unknown circuit")
+
+                it.toPaymentMethod(circuit)
+            }
+        }
+    }
+
+    suspend fun getPaymentCircuits(): Deferred<List<PaymentCircuit>> {
+        return coroutineScope.async {
+            // ottieni i dati dei circuiti
+            val circuitsDTOs = DatabaseDAO.selectList<PaymentCircuitDTO>(
+                """
+                    SELECT *
+                    FROM payment_circuits
+                """
+            )
+
+            val circuits = circuitsDTOs.map {
+                val logo = DatabaseDAO.getImage(it.logo)
+                it.toPaymentCircuit(logo)
+            }
+
+            circuits
+        }
     }
 
     suspend fun changeEmail(oldEmail: String, newEmail: String) {
@@ -414,15 +466,40 @@ object Repository {
                 "AND a.category IN (${categoriesSectionBuilder.removeSuffix(", ")})"
 
         return coroutineScope.async {
-            DatabaseDAO.selectList<Accomodation>("""
-                SELECT a.id, a.name, a.description, a.category,  c.name as city, 
-                    a.address, a.price, a.rating
+            val accomodationDTOs = DatabaseDAO.selectList<AccomodationDTO>("""
+                SELECT a.id, a.name, a.description, a.category, c.name as city, 
+                    a.address, a.image, a.price, a.rating
                 FROM accomodations a JOIN cities c on a.city = c.id
                 WHERE c.name = '$city' AND
                     a.price BETWEEN $minPrice AND $maxPrice AND
                     a.rating >= $rating $categoriesStr
             """)
+
+            val accomodations = mutableListOf<Accomodation>()
+            accomodationDTOs.forEach {
+                val image = DatabaseDAO.getImage(it.image)
+                accomodations.add(it.toAccomodation(image))
+            }
+
+            accomodations
         }
+    }
+
+    suspend fun insertBooking(
+        email: String,
+        accomodation: Accomodation,
+        checkInDate: LocalDate,
+        checkOutDate: LocalDate,
+        hostCount: Int,
+        nightCount: Int,
+        price: Double
+    ) {
+        DatabaseDAO.insert("""
+            INSERT INTO bookings(user, accomodation, checkInDate, checkOutDate, 
+                hostCount, nightCount, price)
+            VALUE ('$email', '${accomodation.id}', '${checkInDate.toDateString()}',
+            '${checkOutDate.toDateString()}', $hostCount, $nightCount, $price)
+        """)
     }
 
     private class UserDTO(
@@ -533,5 +610,20 @@ object Repository {
                 logo,
                 startDigit[0]
             )
+    }
+
+    private data class AccomodationDTO(
+        val id: String,
+        val name: String,
+        val description: String,
+        val category: AccomodationCategory,
+        val city: String,
+        val address: String,
+        val image: String,
+        val price: Double,
+        val rating: Double
+    ) {
+        fun toAccomodation(image: Bitmap) =
+            Accomodation(id, name, description, category, city, address, image, price, rating)
     }
 }

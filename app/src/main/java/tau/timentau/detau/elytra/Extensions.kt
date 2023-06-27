@@ -45,6 +45,8 @@ fun String.parseToDate(): LocalDate {
     return LocalDate.parse("${tokens[0]}-${tokens[1]}-${tokens[2]}")
 }
 
+fun Date.toLocalDate() = this.toReadable().parseToDate()
+
 fun ChipGroup.noChipSelected() = checkedChipId == View.NO_ID
 
 fun LocalDate.toDateString(): String {
@@ -56,6 +58,9 @@ fun Date.toReadable(): String = readableDateFormatter.format(this)
 
 fun fromMilliToReadable(milliseconds: Long) =
     Date.from(Instant.ofEpochMilli(milliseconds)).toReadable()
+
+fun fromMilliToDate(milliseconds: Long) =
+    Date.from(Instant.ofEpochMilli(milliseconds))
 
 fun hiddenPasswordString(length: Int) = "•".repeat(length)
 
