@@ -38,4 +38,15 @@
     <string name="confirm_password">Conferma password</string>
     <string name="data_nascita">Data di nascita</string>
     <string name="risposta">Risposta</string>
+    <string name="profile">profile</string>
+    <string name="discover">Discover</string>
+    <string name="voli">Voli</string>
+    <string name="prenotazioni">Prenotazioni</string>
+    <string name="imposs_connettersi_al_server_torna_al_login">
+        Impossibile connettersi al server di Elytra, effettua nuovamente il login o riprova più tardi.
+    </string>
+    <string name="non_ora">Non ora</string>
+    <string name="avatar_impostato">Avatar impostato</string>
+    <string name="immagine_impostata">La tua immagine del profile è stata impostata correttamente.</string>
+    <string name="alloggi">Alloggi</string>
 </resources>

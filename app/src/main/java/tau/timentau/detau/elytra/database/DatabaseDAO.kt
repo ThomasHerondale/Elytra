@@ -1,5 +1,7 @@
 package tau.timentau.detau.elytra.database
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -71,6 +73,15 @@ object DatabaseDAO {
         val message = body[QUERYSET_KEY].asString
 
         if (message != "update executed!") throw NetworkException("Update not succesful")
+    }
+
+    suspend inline fun getImage(path: String): Bitmap {
+        val response = dbInterface.get(path)
+        val body = response.body() ?: throw NetworkException("Server did not respond on request")
+
+        val bytes = body.bytes()
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?:
+            throw IllegalArgumentException("Could not decode bitmap received from server")
     }
 
     fun formatQuery(query: String): String {

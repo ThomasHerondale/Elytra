@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/discover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_travel_explore_24"
+        android:title="@string/discover" />
+    <item
+        android:id="@+id/flights"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_flight_takeoff_24"
+        android:title="@string/voli" />
+    <item
+        android:id="@+id/accomodations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_hotel_24"
+        android:title="@string/alloggi" />
+    <item
+        android:id="@+id/bookings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_book_online_24"
+        android:title="@string/prenotazioni" />
+</menu>

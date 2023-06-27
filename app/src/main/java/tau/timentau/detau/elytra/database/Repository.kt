@@ -1,5 +1,6 @@
 package tau.timentau.detau.elytra.database
 
+import android.graphics.Bitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -115,6 +116,47 @@ object Repository {
         }
     }
 
+    suspend fun setupSecurityQuestion(email: String, question: String, answer: String) {
+        DatabaseDAO.update("""
+            UPDATE users u
+            SET u.question = (
+                SELECT sq.id
+                FROM security_questions sq
+                WHERE sq.question = '$question'
+                ),
+                u.answer = '$answer'
+            WHERE u.email = '$email'
+        """)
+    }
+
+    suspend fun getAvatars(): Deferred<List<Bitmap>> {
+        return coroutineScope.async {
+            val paths = DatabaseDAO.selectList<AvatarDTO>("""
+                SELECT *
+                FROM avatar_images
+            """).map { it.path }
+
+            val images = mutableListOf<Bitmap>()
+
+            for (path in paths) {
+                images.add(
+                    DatabaseDAO.getImage(path)
+                )
+            }
+
+            images
+        }
+    }
+
+    suspend fun setAvatar(email: String, id: Int) {
+        val dbId = id + 1 // gli indici generati partono da 1
+        DatabaseDAO.update("""
+            UPDATE users
+            SET avatar = $dbId
+            WHERE email = '$email'
+        """)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
@@ -128,7 +170,12 @@ object Repository {
         fun toUser() = User(email, fullName, birthDate, sex)
     }
 
-    private data class QuestionDTO(
+    private class QuestionDTO(
         val question: String
+    )
+
+    private class AvatarDTO(
+        val id: Int,
+        val path: String
     )
 }
