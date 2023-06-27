@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/flights">
+
+    <fragment
+        android:id="@+id/flights"
+        android:name="tau.timentau.detau.elytra.flights.SearchFlightsFragment"
+        android:label="@string/voli"
+        tools:layout="@layout/fragment_search_flights" >
+        <action
+            android:id="@+id/search_flights_to_select_going_flight"
+            app:destination="@id/selectGoingFlight" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectGoingFlight"
+        android:name="tau.timentau.detau.elytra.flights.SelectFlightFragment"
+        android:label="fragment_select_going_flight"
+        tools:layout="@layout/fragment_select_flight" >
+        <argument
+            android:name="isReturn"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="isPaymentNext"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/select_going_flight_to_customize_flight"
+            app:destination="@id/customizeFlightFragment" />
+        <action
+            android:id="@+id/select_going_flight_to_select_return_flight"
+            app:destination="@id/selectGoingFlight" />
+    </fragment>
+    <fragment
+        android:id="@+id/customizeFlightFragment"
+        android:name="tau.timentau.detau.elytra.flights.CustomizeFlightFragment"
+        android:label="fragment_customize_flight"
+        tools:layout="@layout/fragment_customize_flight" >
+        <argument
+            android:name="isPaymentNext"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/customize_flight_to_customize_flight"
+            app:destination="@id/customizeFlightFragment" />
+    </fragment>
+</navigation>

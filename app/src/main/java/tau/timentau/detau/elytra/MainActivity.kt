@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -21,17 +24,32 @@ import tau.timentau.detau.elytra.firstAccess.SetSecurityQuestionDialog
 class MainActivity :
     AppCompatActivity(),
     SetSecurityQuestionDialog.SetSecurityQuestionHandler,
-    SelectAvatarDialog.SelectAvatarHandler {
+    SelectAvatarDialog.SelectAvatarHandler,
+    NavHostActivity {
 
     private lateinit var binding: ActivityMainBinding
+    private val navController by lazy {
+        (binding.mainFragmentContainer.getFragment() as NavHostFragment).navController
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
+        // inizializza la barra di navigazione
+        binding.mainNavBar.setupWithNavController(navController)
+
         checkForFirstAccess()
 
         setContentView(binding.root)
+    }
+
+    override fun navigateTo(directions: NavDirections) {
+        navController.navigate(directions)
+    }
+
+    override fun popBackStack() {
+        navController.popBackStack()
     }
 
     private fun checkForFirstAccess() {

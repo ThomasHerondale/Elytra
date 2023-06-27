@@ -48,5 +48,16 @@
     <string name="non_ora">Non ora</string>
     <string name="avatar_impostato">Avatar impostato</string>
     <string name="immagine_impostata">La tua immagine del profile è stata impostata correttamente.</string>
+    <string name="seleziona_aeroporto">Seleziona un aeroporto</string>
+    <string name="dest_part_coincidono">Destinazione e partenza coincidono</string>
+    <string name="inserisci_data_futura">Inserisci una data nel futuro</string>
+    <string name="economy">Economy</string>
+    <string name="business">Business</string>
+    <string name="prima_classe">Prima classe</string>
+    <string name="compagnie">Compagnie</string>
+    <string name="andata_e_ritorno">Andata e ritorno</string>
+    <string name="sola_andata">Sola andata</string>
     <string name="alloggi">Alloggi</string>
+    <string name="prezzo_str">€%1$.2f</string>
+    <string name="passegeri_str">%1$d passegeri</string>
 </resources>
