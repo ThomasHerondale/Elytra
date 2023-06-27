@@ -9,6 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.reflect.javaType
 import kotlin.reflect.typeOf
 
+const val QUERYSET_KEY = "queryset"
+
 const val TAG = "DB_QUERY"
 
 object DatabaseDAO {
@@ -22,9 +24,12 @@ object DatabaseDAO {
 
     val dbInterface: DatabaseAPI by lazy { retrofit.create(DatabaseAPI::class.java) }
 
-    val parser: Gson = GsonBuilder()
+    val valueParser: Gson = GsonBuilder()
         .registerTypeAdapter(Boolean::class.java, BooleanTypeAdapter())
+        .registerTypeAdapter(String::class.java, StringTypeAdapter())
         .create()
+
+    val listParser = Gson()
 
     suspend inline fun <reified T> selectList(query: String): List<T> {
         Log.v(TAG, formatQuery(query))
@@ -32,7 +37,7 @@ object DatabaseDAO {
         // workaround per tipizzare il token senza passare la classe di T per parametro ;)
         val typeToken = object : TypeToken<List<T>>() {}.type
 
-        return parser.fromJson(response.body()?.get("queryset"), typeToken) ?: listOf()
+        return listParser.fromJson(response.body()?.get(QUERYSET_KEY), typeToken) ?: listOf()
     }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -40,9 +45,32 @@ object DatabaseDAO {
         Log.v(TAG, formatQuery(query))
         val response = dbInterface.select(formatQuery(query))
         val body = response.body() ?: return null
-        val typeToken = typeOf<T>().javaType
+        val jsonArray = body[QUERYSET_KEY].asJsonArray
 
-        return parser.fromJson(body["queryset"], typeToken)
+        // l'oggetto json dovrebbe contenere un solo valore
+        if (jsonArray.size() != 1)
+            throw IllegalStateException("Query didn't return single value")
+
+        val typeToken = typeOf<T>().javaType
+        return valueParser.fromJson(jsonArray[0], typeToken)
+    }
+
+    suspend inline fun insert(query: String) {
+        Log.v(TAG, formatQuery(query))
+        val response = dbInterface.insert(formatQuery(query))
+        val body = response.body() ?: throw NetworkException("Server did not respond on insert")
+        val message = body[QUERYSET_KEY].asString
+
+        if (message != "insert executed!") throw NetworkException("Insert not succesful")
+    }
+
+    suspend inline fun update(query: String) {
+        Log.v(TAG, formatQuery(query))
+        val response = dbInterface.update(formatQuery(query))
+        val body = response.body() ?: throw NetworkException("Server did not respond on update")
+        val message = body[QUERYSET_KEY].asString
+
+        if (message != "update executed!") throw NetworkException("Update not succesful")
     }
 
     fun formatQuery(query: String): String {
