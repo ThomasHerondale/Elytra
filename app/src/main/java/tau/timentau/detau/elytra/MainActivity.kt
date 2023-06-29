@@ -185,27 +185,38 @@ class MainActivity :
                             customizationViewModel.getTripTotalPrice()
                         )
                     }
+                    navigateTo(
+                        PaymentFragmentDirections.flightPaymentToDiscover()
+                    )
                 }
 
-                ACCOMODATION -> Repository.insertBooking(
-                    loggedEmail,
-                    accomodationsViewModel.selectedAccomodation,
-                    accomodationsViewModel.selectedStartDate,
-                    accomodationsViewModel.selectedEndDate,
-                    accomodationsViewModel.hostCount,
-                    accomodationsViewModel.getStayingDuration(),
-                    accomodationsViewModel.getTotalPrice()
-                )
+                ACCOMODATION -> {
+                    Repository.insertBooking(
+                        loggedEmail,
+                        accomodationsViewModel.selectedAccomodation,
+                        accomodationsViewModel.selectedStartDate,
+                        accomodationsViewModel.selectedEndDate,
+                        accomodationsViewModel.hostCount,
+                        accomodationsViewModel.getStayingDuration(),
+                        accomodationsViewModel.getTotalPrice()
+                    )
+                    navigateTo(
+                        tau.timentau.detau.elytra.accomodations.PaymentFragmentDirections
+                            .accomodationPaymentToDiscover()
+                    )
+                }
 
-                CUSTOMIZATION -> Repository.recustomizeTicket(
-                    recustomizationViewModel.ticket.id,
-                    recustomizationViewModel.passengerData.value!!
-                )
+                CUSTOMIZATION -> {
+                    Repository.recustomizeTicket(
+                        recustomizationViewModel.ticket.id,
+                        recustomizationViewModel.passengerData.value!!,
+                        recustomizationViewModel.addonPrice
+                    )
+                    navigateTo(
+                        tau.timentau.detau.elytra.bookings.PaymentFragmentDirections.recustomizePaymentToDiscover()
+                    )
+                }
             }
-        }.invokeOnCompletion {
-            navigateTo(
-                PaymentFragmentDirections.paymentToFlights()
-            )
         }
     }
 

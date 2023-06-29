@@ -508,13 +508,14 @@ object Repository {
     suspend fun recustomizeTicket(
         id: Int,
         passengerData: List<PassengerData>,
+        addonPrice: Double,
     ) {
         val json = parser.toJson(passengerData)
 
         DatabaseDAO.update(
             """
             UPDATE tickets
-            SET passengersInfo = '$json'
+            SET passengersInfo = '$json', price = price + $addonPrice
             WHERE id = $id
         """
         )
