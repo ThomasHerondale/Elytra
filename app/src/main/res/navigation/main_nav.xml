@@ -139,4 +139,8 @@
             android:name="price"
             app:argType="float" />
     </fragment>
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="tau.timentau.detau.elytra.DiscoverFragment"
+        android:label="DiscoverFragment" />
 </navigation>
