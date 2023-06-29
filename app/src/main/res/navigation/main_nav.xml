@@ -92,10 +92,15 @@
     <fragment
         android:id="@+id/accomodationsPaymentFragment"
         android:name="tau.timentau.detau.elytra.accomodations.PaymentFragment"
-        android:label="PaymentFragment" >
+        android:label="PaymentFragment">
         <argument
             android:name="hostCount"
             app:argType="integer"
             android:defaultValue="-1" />
     </fragment>
+    <fragment
+        android:id="@+id/bookings"
+        android:name="tau.timentau.detau.elytra.bookings.BookingsFragment"
+        android:label="BookingsFragment"
+        tools:layout="@layout/fragment_bookings" />
 </navigation>

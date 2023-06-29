@@ -1,6 +1,8 @@
 package tau.timentau.detau.elytra.database
 
 import android.graphics.Bitmap
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +14,7 @@ import tau.timentau.detau.elytra.model.Airport
 import tau.timentau.detau.elytra.model.City
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
+import tau.timentau.detau.elytra.model.PassengerData
 import tau.timentau.detau.elytra.model.PaymentCircuit
 import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.ServiceClass
@@ -19,6 +22,7 @@ import tau.timentau.detau.elytra.model.ServiceClass.BUSINESS
 import tau.timentau.detau.elytra.model.ServiceClass.ECONOMY
 import tau.timentau.detau.elytra.model.ServiceClass.FIRST_CLASS
 import tau.timentau.detau.elytra.model.Sex
+import tau.timentau.detau.elytra.model.Ticket
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
 import java.util.Date
@@ -441,14 +445,59 @@ object Repository {
         checkOutDate: LocalDate,
         hostCount: Int,
         nightCount: Int,
-        price: Double
+        price: Double,
     ) {
-        DatabaseDAO.insert("""
+        DatabaseDAO.insert(
+            """
             INSERT INTO bookings(user, accomodation, checkInDate, checkOutDate, 
                 hostCount, nightCount, price)
             VALUE ('$email', '${accomodation.id}', '${checkInDate.toDateString()}',
             '${checkOutDate.toDateString()}', $hostCount, $nightCount, $price)
-        """)
+        """
+        )
+    }
+
+    suspend fun getTickets(email: String): Deferred<List<Ticket>> {
+        return coroutineScope.async {
+            val ticketsDTOs = DatabaseDAO.selectList<TicketDTO>(
+                """
+            SELECT id, flight, serviceClass, passengersCount, passengersInfo, price, makingDate
+            FROM tickets
+            WHERE user = '$email'
+        """
+            )
+
+            val tickets = mutableListOf<Ticket>()
+
+            for (ticketDTO in ticketsDTOs) {
+                val flight = getFlight(ticketDTO.flight, ticketDTO.serviceClass)
+
+                tickets.add(ticketDTO.toTicket(flight))
+            }
+
+            tickets
+        }
+
+    }
+
+    private suspend fun getFlight(id: String, serviceClass: ServiceClass): Flight {
+        // ottieni prima le informazioni sulle compagnie
+        val companies = getCompanies().await()
+
+        // ottieni le informazioni sugli aeroporti
+        val airports = getAirports().await()
+
+        val flightDTO = DatabaseDAO.selectValue<FlightDTO>(
+            """
+            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, f.gateClosingTime,
+                f.departureTime, f.arrivalTime, f.duration, 
+                fp.${serviceClass.name.lowercase()}Price as price
+            FROM flights f JOIN flights_prices fp ON f.id = fp.id
+            WHERE f.id = '$id'
+        """
+        )
+
+        return flightDTO!!.toFlight(companies, airports, serviceClass)
     }
 
     private class UserDTO(
@@ -459,7 +508,7 @@ object Repository {
         val avatar: String,
         val password: String,
         val question: String,
-        val answer: String
+        val answer: String,
     ) {
         fun toUser(avatar: Bitmap) =
             User(
@@ -570,9 +619,38 @@ object Repository {
         val address: String,
         val image: String,
         val price: Double,
-        val rating: Double
+        val rating: Double,
     ) {
         fun toAccomodation(image: Bitmap) =
             Accomodation(id, name, description, category, city, address, image, price, rating)
+    }
+
+    private data class TicketDTO(
+        val id: Int,
+        val flight: String,
+        val serviceClass: ServiceClass,
+        val passengersCount: Int,
+        val passengersInfo: String,
+        val price: Double,
+        val makingDate: String,
+    ) {
+        fun toTicket(flight: Flight): Ticket {
+            val typeToken = TypeToken.getParameterized(List::class.java, PassengerData::class.java)
+            val passengersData: List<PassengerData> =
+                parser.fromJson(passengersInfo, typeToken.type)
+
+            return Ticket(
+                id,
+                flight,
+                passengersCount,
+                passengersData,
+                price,
+                makingDate
+            )
+        }
+
+        companion object {
+            val parser = Gson()
+        }
     }
 }

@@ -31,6 +31,9 @@ import java.util.Locale
 private val dbDateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 private val readableDateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.ITALY)
 
+private val dbTimeFormatter = SimpleDateFormat("HH:mm:ss", Locale.US)
+private val readableTimeFormatter = SimpleDateFormat("HH:mm", Locale.ITALY)
+
 val TextInputLayout.text: String
     get() = editText?.text.toString()
 
@@ -57,6 +60,11 @@ fun LocalDate.toDateString(): String {
 fun String.toReadableDateString(): String {
     val date = dbDateFormatter.parse(this)
     return date!!.toReadable()
+}
+
+fun String.toReadableTimeString(): String {
+    val time = dbTimeFormatter.parse(this)
+    return readableTimeFormatter.format(time!!)
 }
 
 fun Date.toReadable(): String = readableDateFormatter.format(this)
