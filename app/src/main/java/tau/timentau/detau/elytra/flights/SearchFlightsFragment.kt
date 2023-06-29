@@ -146,11 +146,16 @@ class SearchFlightsFragment : Fragment() {
     private fun setupAirportFields() {
         flightsViewModel.airportsFetchStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
-                is Status.Failed -> showNetworkErrorDialog()
+                is Status.Failed -> {
+                    Log.e(TAG, status.exception.stackTraceToString())
+                    showNetworkErrorDialog()
+                }
+
                 is Status.Loading -> {
                     showOrHideProgressBar(false)
                     Log.d(TAG, "Fetching flights from database")
                 }
+
                 is Status.Success -> {
                     val airportDropdownItems = status.data.map { it.toString() }.toTypedArray()
                     departureAptField.setSimpleItems(airportDropdownItems)

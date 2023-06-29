@@ -15,16 +15,13 @@ import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentSelectFlightBinding
 import tau.timentau.detau.elytra.model.Flight
 import tau.timentau.detau.elytra.navHostActivity
+import tau.timentau.detau.elytra.toReadableDateString
 
 class SelectFlightFragment : Fragment() {
 
     private lateinit var binding: FragmentSelectFlightBinding
     private val args: SelectFlightFragmentArgs by navArgs()
     private val flightsViewModel: FlightsViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

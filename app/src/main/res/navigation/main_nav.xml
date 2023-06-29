@@ -51,10 +51,10 @@
             android:defaultValue="false" />
         <action
             android:id="@+id/customize_trip_to_payment"
-            app:destination="@id/paymentFragment" />
+            app:destination="@id/flightsPaymentFragment" />
     </fragment>
     <fragment
-        android:id="@+id/paymentFragment"
+        android:id="@+id/flightsPaymentFragment"
         android:name="tau.timentau.detau.elytra.flights.PaymentFragment"
         android:label="fragment_payment"
         tools:layout="@layout/fragment_payment_accomodations" >
@@ -87,10 +87,10 @@
             app:argType="integer" />
         <action
             android:id="@+id/select_accomodation_to_payment"
-            app:destination="@id/paymentFragment" />
+            app:destination="@id/accomodationsPaymentFragment" />
     </fragment>
     <fragment
-        android:id="@+id/paymentFragment"
+        android:id="@+id/accomodationsPaymentFragment"
         android:name="tau.timentau.detau.elytra.accomodations.PaymentFragment"
         android:label="PaymentFragment" >
         <argument
