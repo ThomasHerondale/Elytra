@@ -145,4 +145,6 @@ class FlightsViewModel : ViewModel() {
     fun unselectReturnFlight() {
         _selectedReturnFlight = null
     }
+
+    fun isRoundTrip() = _selectedReturnFlight != null
 }

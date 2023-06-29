@@ -153,4 +153,14 @@ class TripCustomizationViewModel : ViewModel() {
 
     fun getTripTotalPrice() =
         getFlightTotalPrice(false) + getFlightTotalPrice(true)
+
+    fun getGoingPassengerData(): List<PassengerData> {
+        return passengerData.value?.filter { !it.forReturn }
+            ?: throw IllegalStateException("Going passenger data not set")
+    }
+
+    fun getReturnPassengerData(): List<PassengerData> {
+        return passengerData.value?.filter { it.forReturn }
+            ?: throw IllegalStateException("Return passenger data not set")
+    }
 }

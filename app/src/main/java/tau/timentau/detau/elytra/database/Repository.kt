@@ -7,7 +7,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.model.Accomodation
 import tau.timentau.detau.elytra.model.AccomodationCategory
 import tau.timentau.detau.elytra.model.Airport
@@ -30,6 +33,7 @@ import java.util.Date
 object Repository {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val parser = Gson()
 
     suspend fun userExists(email: String, password: String): Deferred<Boolean> {
         return coroutineScope.async {
@@ -480,6 +484,42 @@ object Repository {
 
     }
 
+    suspend fun insertTicket(
+        email: String,
+        flight: Flight,
+        passengersCount: Int,
+        passengerData: List<PassengerData>,
+        price: Double,
+    ) {
+        val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+
+        val json = parser.toJson(passengerData)
+
+        DatabaseDAO.insert(
+            """
+            INSERT INTO tickets(user, flight, serviceClass, passengersCount, passengersInfo,
+                price, makingDate)
+            VALUES ('$email', '${flight.id}', '${flight.serviceClass}', $passengersCount,
+                '$json', $price, '${today.toDateString()}')
+        """
+        )
+    }
+
+    suspend fun recustomizeTicket(
+        id: Int,
+        passengerData: List<PassengerData>,
+    ) {
+        val json = parser.toJson(passengerData)
+
+        DatabaseDAO.update(
+            """
+            UPDATE tickets
+            SET passengersInfo = '$json'
+            WHERE id = $id
+        """
+        )
+    }
+
     private suspend fun getFlight(id: String, serviceClass: ServiceClass): Flight {
         // ottieni prima le informazioni sulle compagnie
         val companies = getCompanies().await()
@@ -647,10 +687,6 @@ object Repository {
                 price,
                 makingDate
             )
-        }
-
-        companion object {
-            val parser = Gson()
         }
     }
 }

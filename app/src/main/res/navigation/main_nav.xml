@@ -52,6 +52,10 @@
         <action
             android:id="@+id/customize_trip_to_payment"
             app:destination="@id/flightsPaymentFragment" />
+        <argument
+            android:name="isInitial"
+            app:argType="boolean"
+            android:defaultValue="true" />
     </fragment>
     <fragment
         android:id="@+id/flightsPaymentFragment"
@@ -102,5 +106,37 @@
         android:id="@+id/bookings"
         android:name="tau.timentau.detau.elytra.bookings.BookingsFragment"
         android:label="BookingsFragment"
-        tools:layout="@layout/fragment_bookings" />
+        tools:layout="@layout/fragment_bookings">
+        <action
+            android:id="@+id/bookings_to_recustomize_flight"
+            app:destination="@id/recustomizeFlightFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recustomizeFlightFragment"
+        android:name="tau.timentau.detau.elytra.bookings.RecustomizeFlightFragment"
+        android:label="RecustomizeFlightFragment">
+        <argument
+            android:name="flight"
+            app:argType="tau.timentau.detau.elytra.model.Flight" />
+        <argument
+            android:name="passengerIdx"
+            app:argType="integer" />
+        <argument
+            android:name="passengersCount"
+            app:argType="integer" />
+        <action
+            android:id="@+id/recustomize_flight_to_recustomize_flight"
+            app:destination="@id/recustomizeFlightFragment" />
+        <action
+            android:id="@+id/recustomize_to_payment"
+            app:destination="@id/recustomizationPaymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recustomizationPaymentFragment"
+        android:name="tau.timentau.detau.elytra.bookings.PaymentFragment"
+        android:label="PaymentFragment">
+        <argument
+            android:name="price"
+            app:argType="float" />
+    </fragment>
 </navigation>

@@ -19,6 +19,8 @@ import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.DialogSelectPaymentMethodBinding
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 
+private const val ARG_PAYMENT_SUBJECT = "paymentSubject"
+
 class SelectPaymentMethodDialog : DialogFragment() {
 
     private lateinit var binding: DialogSelectPaymentMethodBinding
@@ -107,6 +109,8 @@ class SelectPaymentMethodDialog : DialogFragment() {
     }
 
     private fun showConfirmDialog() {
+        val subject = requireArguments().get(ARG_PAYMENT_SUBJECT) as PaymentSubject
+
         MaterialAlertDialogBuilder(
             requireContext(),
             R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
@@ -115,7 +119,7 @@ class SelectPaymentMethodDialog : DialogFragment() {
             .setMessage(getString(tau.timentau.detau.elytra.R.string.importo_saldato_correttamente))
             .setIcon(tau.timentau.detau.elytra.R.drawable.ic_check_circle_24)
             .setPositiveButton(tau.timentau.detau.elytra.R.string.okay) { _, _ ->
-                handler.paymentDone()
+                handler.paymentDone(subject)
             }
             .show()
     }
@@ -131,6 +135,21 @@ class SelectPaymentMethodDialog : DialogFragment() {
 
     interface SelectPaymentMethodHandler {
 
-        fun paymentDone()
+        fun paymentDone(subject: PaymentSubject)
+    }
+
+    enum class PaymentSubject() {
+        FLIGHT, ACCOMODATION, CUSTOMIZATION
+    }
+
+    companion object {
+        fun newInstance(subject: PaymentSubject): SelectPaymentMethodDialog {
+            val fragment = SelectPaymentMethodDialog()
+            fragment.arguments = Bundle().apply {
+                putSerializable(ARG_PAYMENT_SUBJECT, subject)
+            }
+
+            return fragment
+        }
     }
 }

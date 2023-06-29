@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentBookingsBinding
+import tau.timentau.detau.elytra.navHostActivity
 
 class BookingsFragment : Fragment() {
 
     private lateinit var binding: FragmentBookingsBinding
     private val viewModel: BookingsViewModel by viewModels()
+    private val customizationViewModel: FlightRecustomizationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +35,16 @@ class BookingsFragment : Fragment() {
             requireContext(), HORIZONTAL, false
         )
 
-        val adapter = TicketAdapter() {
-
+        val adapter = TicketAdapter {
+            customizationViewModel.initializePassengerData(it.passengersInfo)
+            customizationViewModel.setTicket(it)
+            navHostActivity.navigateTo(
+                BookingsFragmentDirections.bookingsToRecustomizeFlight(
+                    it.flight, 0, it.passengersCount
+                )
+            )
         }
+
         binding.ticketList.adapter = adapter
 
         viewModel.ticketsFetchStatus.observe(viewLifecycleOwner) {
