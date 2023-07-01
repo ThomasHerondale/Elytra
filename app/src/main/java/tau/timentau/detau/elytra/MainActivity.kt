@@ -210,7 +210,7 @@ class MainActivity :
                     Repository.recustomizeTicket(
                         recustomizationViewModel.ticket.id,
                         recustomizationViewModel.passengerData.value!!,
-                        recustomizationViewModel.addonPrice
+                        recustomizationViewModel.addonPrice.value!!
                     )
                     navigateTo(
                         tau.timentau.detau.elytra.bookings.PaymentFragmentDirections.recustomizePaymentToDiscover()

@@ -17,8 +17,8 @@ class FlightRecustomizationViewModel : ViewModel() {
     val ticket: Ticket
         get() = _ticket ?: throw IllegalStateException("Ticket not set")
 
-    var addonPrice = 0.0
-        private set
+    private val _addonPrice = MutableLiveData(0.0)
+    val addonPrice: LiveData<Double> = _addonPrice
 
     fun initializePassengerData(passengerData: List<PassengerData>) {
         _passengerData.value = passengerData
@@ -63,9 +63,9 @@ class FlightRecustomizationViewModel : ViewModel() {
         _passengerData.value = newData
 
         if (selected)
-            addonPrice += HAND_LUGGAGE_PRICE
+            _addonPrice.value = _addonPrice.value!! + HAND_LUGGAGE_PRICE
         else
-            addonPrice -= HAND_LUGGAGE_PRICE
+            _addonPrice.value = _addonPrice.value!! - HAND_LUGGAGE_PRICE
     }
 
     fun addOrRemoveCargoLuggage(passengerIdx: Int, selected: Boolean) {
@@ -79,8 +79,8 @@ class FlightRecustomizationViewModel : ViewModel() {
         _passengerData.value = newData
 
         if (selected)
-            addonPrice += CARGO_LUGGAGE_PRICE
+            _addonPrice.value = _addonPrice.value!! + CARGO_LUGGAGE_PRICE
         else
-            addonPrice -= CARGO_LUGGAGE_PRICE
+            _addonPrice.value = _addonPrice.value!! - CARGO_LUGGAGE_PRICE
     }
 }

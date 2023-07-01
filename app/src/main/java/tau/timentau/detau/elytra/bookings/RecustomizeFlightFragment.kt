@@ -38,9 +38,14 @@ class RecustomizeFlightFragment : Fragment() {
         // gli indici partono da 0!
         val isLastPassenger = navArgs.passengerIdx + 1 == navArgs.passengersCount
 
-        if (isLastPassenger)
+        if (isLastPassenger) {
             binding.nextStepBttn.text = getString(R.string.procedi_al_pagamento)
-        else
+
+            viewModel.addonPrice.observe(viewLifecycleOwner) {
+                // abilita se c'è qualcosa da pagare -> è stato aggiunto qualche bagaglio
+                binding.nextStepBttn.isEnabled = it != 0.0
+            }
+        } else
             binding.nextStepBttn.text = getString(R.string.prossimo_passegero)
 
         binding.passengerLabel.text = viewModel.getPassengerName(navArgs.passengerIdx)
@@ -66,7 +71,7 @@ class RecustomizeFlightFragment : Fragment() {
             if (isLastPassenger) {
                 navHostActivity.navigateTo(
                     RecustomizeFlightFragmentDirections.recustomizeToPayment(
-                        viewModel.addonPrice.toFloat()
+                        viewModel.addonPrice.value!!.toFloat()
                     )
                 )
             } else {
