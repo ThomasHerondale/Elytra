@@ -1,6 +1,7 @@
 package tau.timentau.detau.elytra.bookings
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentBookingsBinding
 import tau.timentau.detau.elytra.navHostActivity
+
+private const val TAG = "BOOKINGS"
 
 class BookingsFragment : Fragment() {
 
@@ -26,6 +29,7 @@ class BookingsFragment : Fragment() {
         binding = FragmentBookingsBinding.inflate(inflater)
 
         setupTicketList()
+        setupBookingList()
 
         return binding.root
     }
@@ -55,7 +59,6 @@ class BookingsFragment : Fragment() {
 
                 is Status.Loading -> {}
                 is Status.Success -> {
-                    println(it.data)
                     adapter.submitList(it.data)
                 }
             }
@@ -64,5 +67,27 @@ class BookingsFragment : Fragment() {
         viewModel.loadTickets()
     }
 
+    private fun setupBookingList() {
+        binding.bookingList.layoutManager = LinearLayoutManager(
+            requireContext(), HORIZONTAL, false
+        )
+
+        val adapter = BookingAdapter()
+
+        binding.bookingList.adapter = adapter
+
+        viewModel.bookingsFetchStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> {
+                    Log.e(TAG, it.exception.stackTraceToString())
+                }
+
+                is Status.Loading -> {}
+                is Status.Success -> adapter.submitList(it.data)
+            }
+        }
+
+        viewModel.loadBookings()
+    }
 
 }

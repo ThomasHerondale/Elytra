@@ -14,6 +14,7 @@ import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.model.Accomodation
 import tau.timentau.detau.elytra.model.AccomodationCategory
 import tau.timentau.detau.elytra.model.Airport
+import tau.timentau.detau.elytra.model.Booking
 import tau.timentau.detau.elytra.model.City
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
@@ -541,6 +542,44 @@ object Repository {
         return flightDTO!!.toFlight(companies, airports, serviceClass)
     }
 
+    suspend fun getBookings(email: String): Deferred<List<Booking>> {
+        return coroutineScope.async {
+            val bookingsDTO = DatabaseDAO.selectList<BookingDTO>(
+                """
+                SELECT b.id, b.user, b.accomodation, b.checkInDate, b.checkOutDate, 
+                    b.hostCount, b.nightCount, b.price
+                FROM bookings b JOIN accomodations a on a.id = b.accomodation
+                WHERE b.user = '$email'
+            """
+            )
+
+            val bookings = mutableListOf<Booking>()
+
+            bookingsDTO.forEach {
+                val accomodation = getAccomodation(it.accomodation)
+
+                bookings.add(it.toBooking(accomodation))
+            }
+
+            bookings
+        }
+    }
+
+    private suspend fun getAccomodation(id: String): Accomodation {
+        val accomodationDTO = DatabaseDAO.selectValue<AccomodationDTO>(
+            """
+            SELECT a.id, a.name, a.description, a.category, c.name as city, 
+                a.address, a.image, a.price, a.rating
+            FROM accomodations a JOIN cities c on a.city = c.id
+            WHERE a.id = '$id'
+        """
+        )
+
+        val image = DatabaseDAO.getImage(accomodationDTO!!.image)
+
+        return accomodationDTO.toAccomodation(image)
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,
@@ -689,5 +728,19 @@ object Repository {
                 makingDate
             )
         }
+    }
+
+    private data class BookingDTO(
+        val id: Int,
+        val email: String,
+        val accomodation: String,
+        val checkInDate: String,
+        val checkOutDate: String,
+        val hostCount: Int,
+        val nightCount: Int,
+        val price: Double,
+    ) {
+        fun toBooking(accomodation: Accomodation) =
+            Booking(id, accomodation, checkInDate, checkOutDate, hostCount, nightCount, price)
     }
 }
