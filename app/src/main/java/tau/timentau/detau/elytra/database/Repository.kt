@@ -8,8 +8,10 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.model.Accomodation
 import tau.timentau.detau.elytra.model.AccomodationCategory
@@ -719,13 +721,20 @@ object Repository {
             val passengersData: List<PassengerData> =
                 parser.fromJson(passengersInfo, typeToken.type)
 
+            // si può ripersonalizzare se non son passati 3 giorni
+            val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+            val ticketDate = LocalDate.parse(makingDate)
+
+            val isRecustomizable = today < ticketDate.plus(3, DateTimeUnit.DAY)
+
             return Ticket(
                 id,
                 flight,
                 passengersCount,
                 passengersData,
                 price,
-                makingDate
+                makingDate,
+                isRecustomizable
             )
         }
     }

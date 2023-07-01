@@ -43,6 +43,8 @@ class TicketAdapter(
         }
 
         holder.binding.customizeBttn.setOnClickListener { onCustomizeClicked(ticket) }
+
+        holder.binding.customizeBttn.isEnabled = ticket.isRecustomizable
     }
 
     companion object {

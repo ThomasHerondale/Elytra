@@ -7,4 +7,5 @@ data class Ticket(
     val passengersInfo: List<PassengerData>,
     val price: Double,
     val makingDate: String,
+    val isRecustomizable: Boolean,
 )
