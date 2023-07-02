@@ -251,8 +251,8 @@ object Repository {
     suspend fun getAirports(): Deferred<List<Airport>> {
         return coroutineScope.async {
             DatabaseDAO.selectList<Airport>("""
-                SELECT *
-                FROM airports
+                SELECT a.code, a.name, c.name as city
+                FROM airports a JOIN cities c ON a.city = c.id
             """)
         }
     }

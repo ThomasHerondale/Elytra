@@ -13,7 +13,8 @@ import tau.timentau.detau.elytra.model.City
 
 class DestinationsAdapter(
     private val destinations: List<Pair<City, Bitmap>>,
-    private val flightsButton: Boolean,
+    private val onFlightsClicked: ((City) -> Unit)? = null,
+    private val onAccomodationsClicked: (City) -> Unit,
 ) : RecyclerView.Adapter<DestinationsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,7 +36,13 @@ class DestinationsAdapter(
 
         holder.binding.cityName.text = city.name
 
-        holder.binding.toFlightsBttn.visibility = if (flightsButton) View.VISIBLE else View.GONE
+        if (onFlightsClicked != null) {
+            holder.binding.toFlightsBttn.setOnClickListener { onFlightsClicked.invoke(city) }
+            holder.binding.toFlightsBttn.visibility = View.VISIBLE
+        } else
+            holder.binding.toFlightsBttn.visibility = View.GONE
+
+        holder.binding.toAccomodationsBttn.setOnClickListener { onAccomodationsClicked(city) }
     }
 
     override fun onViewRecycled(holder: ViewHolder) {

@@ -6,7 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Airport(
     val code: String,
-    val name: String
+    val name: String,
+    val city: String,
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

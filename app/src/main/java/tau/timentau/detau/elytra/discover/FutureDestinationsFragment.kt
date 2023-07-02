@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import tau.timentau.detau.elytra.databinding.FragmentFutureDestinationsBinding
+import tau.timentau.detau.elytra.navHostActivity
 
 class FutureDestinationsFragment : Fragment() {
 
@@ -31,9 +32,9 @@ class FutureDestinationsFragment : Fragment() {
             requireContext(), HORIZONTAL, false
         )
 
-        binding.destinationsList.adapter = DestinationsAdapter(
-            viewModel.futureDestinations,
-            flightsButton = false
-        )
+        binding.destinationsList.adapter = DestinationsAdapter(viewModel.futureDestinations) {
+            // on accomodations clicked
+            navHostActivity.navigateTo(DiscoverFragmentDirections.discoverToAccomodations(it))
+        }
     }
 }

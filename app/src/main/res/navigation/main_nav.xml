@@ -13,6 +13,11 @@
         <action
             android:id="@+id/search_flights_to_select_going_flight"
             app:destination="@id/selectGoingFlight" />
+        <argument
+            android:name="selectedCity"
+            app:argType="tau.timentau.detau.elytra.model.City"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/selectGoingFlight"
@@ -69,10 +74,15 @@
         android:id="@+id/accomodations"
         android:name="tau.timentau.detau.elytra.accomodations.SearchAccomodationsFragment"
         android:label="fragment_search_accomodations"
-        tools:layout="@layout/fragment_search_accomodations" >
+        tools:layout="@layout/fragment_search_accomodations">
         <action
             android:id="@+id/accomodations_to_selectAccomodation"
             app:destination="@id/selectAccomodationFragment" />
+        <argument
+            android:name="selectedCity"
+            app:argType="tau.timentau.detau.elytra.model.City"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/selectAccomodationFragment"
@@ -101,5 +111,12 @@
     <fragment
         android:id="@+id/discover"
         android:name="tau.timentau.detau.elytra.discover.DiscoverFragment"
-        android:label="DiscoverFragment" />
+        android:label="DiscoverFragment">
+        <action
+            android:id="@+id/discover_to_accomodations"
+            app:destination="@id/accomodations" />
+        <action
+            android:id="@+id/discover_to_flights"
+            app:destination="@id/flights" />
+    </fragment>
 </navigation>

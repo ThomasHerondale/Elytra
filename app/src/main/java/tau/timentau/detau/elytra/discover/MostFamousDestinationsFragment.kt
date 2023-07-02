@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import tau.timentau.detau.elytra.databinding.FragmentMostFamousDestinationsBinding
+import tau.timentau.detau.elytra.navHostActivity
 
 class MostFamousDestinationsFragment : Fragment() {
 
@@ -32,7 +33,19 @@ class MostFamousDestinationsFragment : Fragment() {
         )
 
         binding.mostFamousList.adapter =
-            DestinationsAdapter(viewModel.mostFamousDestinations, flightsButton = true)
+            DestinationsAdapter(
+                viewModel.mostFamousDestinations,
+                onFlightsClicked = {
+                    navHostActivity.navigateTo(
+                        DiscoverFragmentDirections.discoverToFlights(it)
+                    )
+                },
+                onAccomodationsClicked = {
+                    navHostActivity.navigateTo(
+                        DiscoverFragmentDirections.discoverToAccomodations(it)
+                    )
+                }
+            )
     }
 
 }
