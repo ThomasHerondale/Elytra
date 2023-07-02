@@ -8,18 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import tau.timentau.detau.elytra.databinding.FragmentMostFamousDestinationsBinding
+import tau.timentau.detau.elytra.databinding.FragmentFutureDestinationsBinding
 
-class MostFamousDestinationsFragment : Fragment() {
+class FutureDestinationsFragment : Fragment() {
 
-    private lateinit var binding: FragmentMostFamousDestinationsBinding
+    private lateinit var binding: FragmentFutureDestinationsBinding
     private val viewModel: DiscoverViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentMostFamousDestinationsBinding.inflate(inflater)
+        binding = FragmentFutureDestinationsBinding.inflate(inflater)
 
         setupList()
 
@@ -27,12 +27,13 @@ class MostFamousDestinationsFragment : Fragment() {
     }
 
     private fun setupList() {
-        binding.mostFamousList.layoutManager = LinearLayoutManager(
+        binding.destinationsList.layoutManager = LinearLayoutManager(
             requireContext(), HORIZONTAL, false
         )
 
-        binding.mostFamousList.adapter =
-            DestinationsAdapter(viewModel.mostFamousDestinations, flightsButton = true)
+        binding.destinationsList.adapter = DestinationsAdapter(
+            viewModel.futureDestinations,
+            flightsButton = false
+        )
     }
-
 }

@@ -480,6 +480,31 @@ object Repository {
         }
     }
 
+    suspend fun getFutureDestinations(email: String): Deferred<MutableList<Pair<City, Bitmap>>> {
+        return coroutineScope.async {
+            val citiesDTO = DatabaseDAO.selectList<CityDTO>(
+                """
+                SELECT DISTINCT c.id, c.name, CONCAT('media/images/cities/', c.id, '.jpeg') as image
+                FROM cities c JOIN 
+                    airports a on c.id = a.city JOIN 
+                    flights f on a.code = f.arrivalApt JOIN 
+                    tickets t on f.id = t.flight
+                WHERE t.user = '$email'
+            """
+            )
+
+            val cities = mutableListOf<Pair<City, Bitmap>>()
+
+            citiesDTO.forEach {
+                val image = DatabaseDAO.getImage(it.image)
+
+                cities.add(it.destructure(image))
+            }
+
+            cities
+        }
+    }
+
     private class UserDTO(
         val email: String,
         val fullName: String,

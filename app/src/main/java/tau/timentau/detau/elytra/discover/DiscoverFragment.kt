@@ -27,7 +27,32 @@ class DiscoverFragment : Fragment() {
 
         setupMostFamousDestinationsSection()
 
+        setupFutureDestinationsSection()
+
         return binding.root
+    }
+
+    private fun setupFutureDestinationsSection() {
+        viewModel.futureDestinationsFetchStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> {
+                    Log.e(TAG, it.exception.stackTraceToString())
+                    showNetworkErrorDialog()
+                }
+
+                is Status.Loading -> {}
+                is Status.Success -> {
+                    println(it.data)
+                    if (it.data.isNotEmpty()) {
+                        parentFragmentManager.beginTransaction()
+                            .add(R.id.futureCitiesFragContainer, FutureDestinationsFragment())
+                            .commit()
+                    }
+                }
+            }
+        }
+
+        viewModel.getFutureDestinations()
     }
 
     private fun setupMostFamousDestinationsSection() {
@@ -40,7 +65,6 @@ class DiscoverFragment : Fragment() {
 
                 is Status.Loading -> {}
                 is Status.Success -> {
-                    println(it.data)
                     // se c'è almeno una destinazione da mostrare, inserisci il fragment
                     if (it.data.isNotEmpty()) {
                         parentFragmentManager.beginTransaction()

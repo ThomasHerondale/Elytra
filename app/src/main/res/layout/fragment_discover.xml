@@ -18,9 +18,12 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImg">
+        app:layout_constraintTop_toBottomOf="@+id/logoImg"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +37,7 @@
                 android:layout_height="wrap_content" />
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/pickAccomodationFragContainer"
+                android:id="@+id/futureCitiesFragContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

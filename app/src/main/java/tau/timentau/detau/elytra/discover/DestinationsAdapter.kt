@@ -8,16 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import tau.timentau.detau.elytra.R
-import tau.timentau.detau.elytra.databinding.MostFamousDestinationViewHolderBinding
+import tau.timentau.detau.elytra.databinding.DestinationViewHolderBinding
 import tau.timentau.detau.elytra.model.City
 
-class MostFamousDestinationsAdapter(
+class DestinationsAdapter(
     private val destinations: List<Pair<City, Bitmap>>,
-) : RecyclerView.Adapter<MostFamousDestinationsAdapter.ViewHolder>() {
+    private val flightsButton: Boolean,
+) : RecyclerView.Adapter<DestinationsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.most_famous_destination_view_holder, parent, false)
+            .inflate(R.layout.destination_view_holder, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -33,6 +34,8 @@ class MostFamousDestinationsAdapter(
             .into(holder.binding.cityImg)
 
         holder.binding.cityName.text = city.name
+
+        holder.binding.toFlightsBttn.visibility = if (flightsButton) View.VISIBLE else View.GONE
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -42,6 +45,6 @@ class MostFamousDestinationsAdapter(
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = MostFamousDestinationViewHolderBinding.bind(itemView)
+        val binding = DestinationViewHolderBinding.bind(itemView)
     }
 }
