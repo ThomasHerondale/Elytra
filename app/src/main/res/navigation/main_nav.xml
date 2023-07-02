@@ -67,9 +67,6 @@
             app:destination="@id/flights"
             app:popUpTo="@id/flights"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/flight_payment_to_discover"
-            app:destination="@id/discoverFragment" />
     </fragment>
 
     <fragment
@@ -104,9 +101,6 @@
             android:name="hostCount"
             app:argType="integer"
             android:defaultValue="-1" />
-        <action
-            android:id="@+id/accomodation_payment_to_discover"
-            app:destination="@id/discoverFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookings"
@@ -144,12 +138,13 @@
         <argument
             android:name="price"
             app:argType="float" />
-        <action
-            android:id="@+id/recustomize_payment_to_discover"
-            app:destination="@id/discoverFragment" />
     </fragment>
     <fragment
-        android:id="@+id/discoverFragment"
+        android:id="@+id/discover"
         android:name="tau.timentau.detau.elytra.DiscoverFragment"
         android:label="DiscoverFragment" />
+    <action
+        android:id="@+id/back_to_discover"
+        app:destination="@id/discover"
+        app:popUpTo="@id/discover" />
 </navigation>

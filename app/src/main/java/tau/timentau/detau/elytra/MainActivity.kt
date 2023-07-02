@@ -186,7 +186,7 @@ class MainActivity :
                         )
                     }
                     navigateTo(
-                        PaymentFragmentDirections.flightPaymentToDiscover()
+                        PaymentFragmentDirections.backToDiscover()
                     )
                 }
 
@@ -202,7 +202,7 @@ class MainActivity :
                     )
                     navigateTo(
                         tau.timentau.detau.elytra.accomodations.PaymentFragmentDirections
-                            .accomodationPaymentToDiscover()
+                            .backToDiscover()
                     )
                 }
 
@@ -213,7 +213,8 @@ class MainActivity :
                         recustomizationViewModel.addonPrice.value!!
                     )
                     navigateTo(
-                        tau.timentau.detau.elytra.bookings.PaymentFragmentDirections.recustomizePaymentToDiscover()
+                        tau.timentau.detau.elytra.bookings.PaymentFragmentDirections
+                            .backToDiscover()
                     )
                 }
             }
