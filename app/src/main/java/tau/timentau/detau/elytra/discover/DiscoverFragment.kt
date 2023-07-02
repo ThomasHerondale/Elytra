@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import tau.timentau.detau.elytra.R
@@ -40,9 +41,12 @@ class DiscoverFragment : Fragment() {
                     showNetworkErrorDialog()
                 }
 
-                is Status.Loading -> {}
+                is Status.Loading -> {
+                    showOrHideProgressBar(binding.futureProgress, false)
+                }
+
                 is Status.Success -> {
-                    println(it.data)
+                    showOrHideProgressBar(binding.futureProgress, true)
                     if (it.data.isNotEmpty()) {
                         parentFragmentManager.beginTransaction()
                             .add(R.id.futureCitiesFragContainer, FutureDestinationsFragment())
@@ -63,8 +67,12 @@ class DiscoverFragment : Fragment() {
                     showNetworkErrorDialog()
                 }
 
-                is Status.Loading -> {}
+                is Status.Loading -> {
+                    showOrHideProgressBar(binding.mostFamousProgress, false)
+                }
+
                 is Status.Success -> {
+                    showOrHideProgressBar(binding.mostFamousProgress, true)
                     // se c'è almeno una destinazione da mostrare, inserisci il fragment
                     if (it.data.isNotEmpty()) {
                         parentFragmentManager.beginTransaction()
@@ -78,5 +86,8 @@ class DiscoverFragment : Fragment() {
         viewModel.getMostFamousDestinations()
     }
 
+    private fun showOrHideProgressBar(progressBar: ProgressBar, hide: Boolean) {
+        progressBar.visibility = if (hide) View.INVISIBLE else View.VISIBLE
+    }
 
 }
