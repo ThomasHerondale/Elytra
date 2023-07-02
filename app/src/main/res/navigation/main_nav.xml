@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/flights">
+    app:startDestination="@id/discover">
 
     <fragment
         android:id="@+id/flights"
         android:name="tau.timentau.detau.elytra.flights.SearchFlightsFragment"
         android:label="@string/voli"
-        tools:layout="@layout/fragment_search_flights" >
+        tools:layout="@layout/fragment_search_flights">
         <action
             android:id="@+id/search_flights_to_select_going_flight"
             app:destination="@id/selectGoingFlight" />
@@ -99,7 +99,7 @@
             android:defaultValue="-1" />
     </fragment>
     <fragment
-        android:id="@+id/discoverFragment"
-        android:name="tau.timentau.detau.elytra.DiscoverFragment"
+        android:id="@+id/discover"
+        android:name="tau.timentau.detau.elytra.discover.DiscoverFragment"
         android:label="DiscoverFragment" />
 </navigation>
