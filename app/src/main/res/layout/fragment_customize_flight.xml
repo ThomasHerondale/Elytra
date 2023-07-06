@@ -60,6 +60,7 @@
 
             <TextView
                 android:id="@+id/companyNameLabel"
+                android:textColor="@color/md_theme_light_onSecondaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -73,6 +74,7 @@
 
             <TextView
                 android:id="@+id/departureTimeLabel"
+                android:textColor="@color/md_theme_light_onSecondaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -87,6 +89,7 @@
 
             <TextView
                 android:id="@+id/departureAptLabel"
+                android:textColor="@color/md_theme_light_onSurfaceVariant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -117,6 +120,7 @@
 
             <TextView
                 android:id="@+id/durationLabel"
+                android:textColor="@color/md_theme_light_onSecondaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
@@ -129,6 +133,7 @@
 
             <TextView
                 android:id="@+id/arrivalTimeLabel"
+                android:textColor="@color/md_theme_light_onSecondaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -142,6 +147,7 @@
 
             <TextView
                 android:id="@+id/arrivalAptLabel"
+                android:textColor="@color/md_theme_light_onSurfaceVariant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -159,6 +165,7 @@
 
             <TextView
                 android:id="@+id/serviceClassLabel"
+                android:textColor="@color/md_theme_light_onSecondaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -191,6 +198,7 @@
 
     <ImageView
         android:id="@+id/smallBagImg"
+        app:tint="@color/md_theme_light_onPrimaryContainer"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
@@ -249,6 +257,7 @@
     <ImageView
         android:id="@+id/handLuggageImg"
         android:layout_width="60dp"
+        app:tint="@color/md_theme_light_onPrimaryContainer"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="@+id/smallBagImg"
@@ -303,6 +312,7 @@
         android:id="@+id/cargoLuggageImg"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        app:tint="@color/md_theme_light_onPrimaryContainer"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
