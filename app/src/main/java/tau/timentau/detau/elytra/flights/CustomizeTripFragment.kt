@@ -92,7 +92,7 @@ class CustomizeTripFragment : Fragment() {
 
         parentFragmentManager
             .beginTransaction()
-            .add(R.id.goingFlightFragContainer, fragment, "customizeGoingFlight")
+            .replace(R.id.goingFlightFragContainer, fragment, "customizeGoingFlight")
             .commit()
     }
 
@@ -105,7 +105,7 @@ class CustomizeTripFragment : Fragment() {
 
         parentFragmentManager
             .beginTransaction()
-            .add(R.id.returnFlightFragContainer, fragment, "customizeReturnFlight")
+            .replace(R.id.returnFlightFragContainer, fragment, "customizeReturnFlight")
             .commit()
     }
 }

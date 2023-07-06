@@ -33,21 +33,26 @@ class CustomizeFlightFragment : Fragment() {
         val isReturn = arguments?.getBoolean(ARG_IS_RETURN) ?:
             throw IllegalStateException("Could not determine if flight is for return")
 
+        val flight = requireArguments().getParcelable<Flight>(ARG_FLIGHT)
+            ?: throw IllegalArgumentException("Referred flight not provided.")
+
         binding.flightLabel.text =
             if (isReturn)
                 getString(R.string.volo_di_ritorno)
             else
                 getString(R.string.volo_di_andata)
 
-        setupFlightInfo()
+        setupFlightInfo(flight)
 
         val passengerIdx = arguments?.getInt(ARG_PASSENGER_INDEX) ?:
             throw IllegalStateException("Passenger index has not been provided")
 
-        setupPriceInfo(passengerIdx, isReturn)
-
-        if (viewModel.isPassengerDataInitialized())
+        if (viewModel.isPassengerDataInitialized()) {
+            viewModel.updateFlightData(flight, isReturn)
             setupChoices(passengerIdx, isReturn)
+        }
+
+        setupPriceInfo(passengerIdx, isReturn)
 
         binding.handLuggagePriceLabel.text =
             getString(R.string.prezzo_str, HAND_LUGGAGE_PRICE)
@@ -66,9 +71,7 @@ class CustomizeFlightFragment : Fragment() {
             return binding.root
     }
 
-    private fun setupFlightInfo() {
-        val flight = requireArguments().getParcelable<Flight>(ARG_FLIGHT)
-            ?: throw IllegalArgumentException("Referred flight not provided.")
+    private fun setupFlightInfo(flight: Flight) {
 
         binding.apply {
             Glide
