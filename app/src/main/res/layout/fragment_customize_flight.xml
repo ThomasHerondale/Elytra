@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/md_theme_light_tertiary"
+        android:textColor="?attr/colorTertiary"
         app:layout_constraintBaseline_toBaselineOf="@+id/flightLabel"
         app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
         tools:text="€ 130,00" />
@@ -43,7 +43,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/md_theme_light_primaryContainer">
+            android:background="?attr/colorPrimaryContainer">
 
             <ImageView
                 android:id="@+id/companyLogoImg"
@@ -60,6 +60,7 @@
 
             <TextView
                 android:id="@+id/companyNameLabel"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -73,6 +74,7 @@
 
             <TextView
                 android:id="@+id/departureTimeLabel"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -87,6 +89,7 @@
 
             <TextView
                 android:id="@+id/departureAptLabel"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -104,6 +107,7 @@
             <ImageView
                 android:id="@+id/flightIcon"
                 android:layout_width="wrap_content"
+                app:tint="?attr/colorOnPrimaryContainer"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -117,6 +121,7 @@
 
             <TextView
                 android:id="@+id/durationLabel"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
@@ -129,6 +134,7 @@
 
             <TextView
                 android:id="@+id/arrivalTimeLabel"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -142,6 +148,7 @@
 
             <TextView
                 android:id="@+id/arrivalAptLabel"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -159,6 +166,7 @@
 
             <TextView
                 android:id="@+id/serviceClassLabel"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -175,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:textColor="@color/md_theme_light_primary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -191,6 +199,7 @@
 
     <ImageView
         android:id="@+id/smallBagImg"
+        app:tint="?attr/colorOnPrimaryContainer"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
@@ -204,12 +213,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:maxLines="1"
+        android:text="1 borsa piccola"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/smallBagImg"
         app:layout_constraintTop_toTopOf="@+id/smallBagImg"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:text="1 borsa piccola" />
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/smallBagSizeLabel"
@@ -226,13 +235,12 @@
         android:id="@+id/alreadyIncludedLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/md_theme_light_tertiary"
+        android:text="@string/incluso"
+        android:textColor="?attr/colorTertiary"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/smallBagImg"
+        app:layout_constraintBottom_toBottomOf="@+id/smallBagCheck"
         app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
-        app:layout_constraintTop_toTopOf="@+id/smallBagImg"
-        app:layout_constraintVertical_bias="0.0"
-        android:text="Già incluso nel prezzo" />
+        app:layout_constraintTop_toTopOf="@+id/smallBagCheck" />
 
     <CheckBox
         android:id="@+id/smallBagCheck"
@@ -241,14 +249,15 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:clickable="false"
-        app:layout_constraintEnd_toEndOf="@+id/alreadyIncludedLabel"
-        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="@+id/smallBagSizeLabel"
-        app:layout_constraintTop_toBottomOf="@+id/alreadyIncludedLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/smallBagLabel" />
 
     <ImageView
         android:id="@+id/handLuggageImg"
         android:layout_width="60dp"
+        app:tint="?attr/colorOnPrimaryContainer"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="@+id/smallBagImg"
@@ -283,7 +292,7 @@
         android:id="@+id/handLuggagePriceLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/md_theme_light_tertiary"
+        android:textColor="?attr/colorTertiary"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/handLuggageCheck"
         app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
@@ -295,7 +304,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
-        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="@+id/handLuggageSizeLabel"
         app:layout_constraintTop_toBottomOf="@+id/handLuggageLabel" />
 
@@ -303,6 +312,7 @@
         android:id="@+id/cargoLuggageImg"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        app:tint="?attr/colorOnPrimaryContainer"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -339,7 +349,7 @@
         android:id="@+id/cargoLuggagePriceLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/md_theme_light_tertiary"
+        android:textColor="?attr/colorTertiary"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/cargoLuggageCheck"
         app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
@@ -351,7 +361,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@+id/goingFlightCard"
-        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="@+id/cargoLuggageSizeLabel"
         app:layout_constraintTop_toBottomOf="@+id/cargoLuggageLabel" />
 

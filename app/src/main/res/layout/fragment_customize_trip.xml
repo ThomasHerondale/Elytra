@@ -35,13 +35,15 @@
         tools:layout="@layout/fragment_customize_flight" />
 
     <View
-        android:id="@+id/barra_separatore"
+        android:id="@+id/divider"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_width="match_parent"
-        android:layout_height="4dp"
+        android:layout_height="2dp"
         android:layout_marginTop="16dp"
-        android:background="@color/md_theme_light_primary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/goingFlightFragContainer" />
+        app:layout_constraintTop_toBottomOf="@id/goingFlightFragContainer"
+        android:background="?android:attr/listDivider" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/returnFlightFragContainer"
@@ -52,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@id/nextStepBttn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barra_separatore"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
         tools:layout="@layout/fragment_customize_flight" />
 
     <Button
