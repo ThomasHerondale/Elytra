@@ -45,4 +45,12 @@
     <string name="cinque_stelle">Cinque stelle</string>
     <string name="inserisci_citta_valida">Inserisci una città valida</string>
     <string name="seleziona_periodo">Seleziona il periodo di permanenza</string>
+    <string name="seleziona_citta">Seleziona città</string>
+    <string name="cerca_alloggi">Cerca alloggi</string>
+    <string name="campeggi">Campeggi</string>
+    <string name="appartamenti">Appartamenti</string>
+    <string name="ostelli">Ostelli</string>
+    <string name="hotel">Hotel</string>
+    <string name="persone">Persone</string>
+    <string name="periodo_permanenza">Seleziona periodo di permanenza</string>
 </resources>
