@@ -39,7 +39,7 @@ class AccomodationsAdapter(
             accCategoryText.text = accomodation.category.stringValue
             accDescriptionText.text = accomodation.description
             accCityText.text = accomodation.city
-            accAddressText.text = accomodation.description
+            accAddressText.text = accomodation.address
             accPriceText.text =
                 holder.itemView.context.getString(R.string.prezzo_str, accomodation.price)
             accCountsText.text = assembleCountString()
