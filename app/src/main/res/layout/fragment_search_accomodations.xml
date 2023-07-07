@@ -8,22 +8,23 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cityText"
-        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="24dp"
         app:errorEnabled="true"
+        android:hint="@string/seleziona_citta"
         app:errorIconDrawable="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/materialAutoComplete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
             android:inputType="text|textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,24 +40,23 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dateRangeText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         app:endIconDrawable="@drawable/ic_calendar_24"
         app:endIconMode="custom"
         app:errorEnabled="true"
+        android:hint="@string/periodo_permanenza"
         app:errorIconDrawable="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/cityText"
+        app:layout_constraintStart_toStartOf="@id/cityText"
         app:layout_constraintTop_toBottomOf="@+id/cityFetchProgress">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/datePickerRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="false"
-            android:hint="hint"
             android:inputType="datetime|date" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,18 +64,22 @@
         android:id="@+id/hostCountText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/persone"
+        android:maxWidth="100dp"
+        android:minWidth="80dp"
         app:errorEnabled="true"
         app:errorIconDrawable="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="@id/dateRangeText"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ratingBar"
         app:layout_constraintTop_toBottomOf="@+id/dateRangeText">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/numPersone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
             android:inputType="number"
             android:maxLength="1" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -84,19 +88,15 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:numStars="5"
         android:stepSize="1"
-        app:layout_constraintBottom_toBottomOf="@+id/hostCountText"
-        app:layout_constraintEnd_toStartOf="@+id/hostCountText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dateRangeText"
         app:layout_constraintTop_toTopOf="@+id/hostCountText" />
 
     <TextView
         android:id="@+id/ratingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/ratingBar"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
@@ -104,9 +104,9 @@
         android:id="@+id/categoryChips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/dateRangeText"
+        app:layout_constraintStart_toStartOf="@+id/dateRangeText"
         app:layout_constraintTop_toBottomOf="@+id/ratingText">
 
         <com.google.android.material.chip.Chip
@@ -114,28 +114,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Hotel" />
+            android:text="@string/hotel" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/hostelChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Ostelli" />
+            android:text="@string/ostelli" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/apartmentChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Appartamenti" />
+            android:text="@string/appartamenti" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/campingChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Campeggi" />
+            android:text="@string/campeggi" />
     </com.google.android.material.chip.ChipGroup>
 
     <com.google.android.material.slider.RangeSlider
@@ -155,9 +155,11 @@
         android:id="@+id/searchAccomodationsBttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Button"
+        android:layout_marginTop="8dp"
+        android:text="@string/cerca_alloggi"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priceSlider" />
+        app:layout_constraintTop_toBottomOf="@+id/priceSlider"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
