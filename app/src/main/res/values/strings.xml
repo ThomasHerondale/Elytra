@@ -76,4 +76,7 @@
     <string name="pagamento_effettuato">Pagamento effettuato</string>
     <string name="importo_saldato_correttamente">L\'importo è stato saldato correttamente. Troverai i tuoi biglietti nella sezione prenotazioni.</string>
     <string name="alloggi">Alloggi</string>
+    <string name="incluso">Già incluso</string>
+    <string name="riepilogo">Riepilogo</string>
+    <string name="totale">Totale</string>
 </resources>
