@@ -16,6 +16,7 @@ import tau.timentau.detau.elytra.databinding.FragmentSelectFlightBinding
 import tau.timentau.detau.elytra.model.Flight
 import tau.timentau.detau.elytra.navHostActivity
 import tau.timentau.detau.elytra.toReadableDateString
+import tau.timentau.detau.elytra.toReadableTimeString
 
 class SelectFlightFragment : Fragment() {
 
