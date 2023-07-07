@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FlightViewHolderBinding
 import tau.timentau.detau.elytra.model.Flight
+import tau.timentau.detau.elytra.toReadableTimeString
 
 class FlightsAdapter(
     private val flights: List<Flight>,
@@ -37,13 +38,13 @@ class FlightsAdapter(
         holder.binding.apply {
             companyNameLabel.text = flight.company.name
 
-            departureTimeLabel.text = flight.departureTime
+            departureTimeLabel.text = flight.departureTime.toReadableTimeString()
             departureAptLabel.text = flight.departureApt.name
 
-            arrivalTimeLabel.text = flight.arrivalTime
+            arrivalTimeLabel.text = flight.arrivalTime.toReadableTimeString()
             arrivalAptLabel.text = flight.arrivalApt.name
 
-            durationLabel.text = flight.duration
+            durationLabel.text = flight.duration.toReadableTimeString()
 
             serviceClassLabel.text = flight.serviceClass.stringValue
             priceLabel.text = holder.itemView.context.getString(R.string.prezzo_str, flight.price)
