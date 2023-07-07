@@ -59,13 +59,13 @@ class SelectFlightFragment : Fragment() {
         binding.apply {
             companyNameLabel.text = flight.company.name
 
-            departureTimeLabel.text = flight.departureTime
+            departureTimeLabel.text = flight.departureTime.toReadableTimeString()
             departureAptLabel.text = flight.departureApt.name
 
-            arrivalTimeLabel.text = flight.arrivalTime
+            arrivalTimeLabel.text = flight.arrivalTime.toReadableTimeString()
             arrivalAptLabel.text = flight.arrivalApt.name
 
-            durationLabel.text = flight.duration
+            durationLabel.text = flight.duration.toReadableTimeString()
 
             serviceClassLabel.text = flight.serviceClass.stringValue
             priceLabel.text = getString(R.string.prezzo_str, flight.price)

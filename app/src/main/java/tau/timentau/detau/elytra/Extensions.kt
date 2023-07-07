@@ -31,6 +31,9 @@ import java.util.Locale
 private val dbDateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 private val readableDateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.ITALY)
 
+private val dbTimeFormatter = SimpleDateFormat("kk:mm:ss", Locale.ITALY)
+private val readableTimeFormatter = SimpleDateFormat("kk:mm", Locale.ITALY)
+
 val TextInputLayout.text: String
     get() = editText?.text.toString()
 
@@ -66,6 +69,11 @@ fun fromMilliToReadable(milliseconds: Long) =
 
 fun fromMilliToDate(milliseconds: Long) =
     Date.from(Instant.ofEpochMilli(milliseconds))
+
+fun String.toReadableTimeString(): String {
+    val date = dbTimeFormatter.parse(this)
+    return readableTimeFormatter.format(date!!)
+}
 
 fun hiddenPasswordString(length: Int) = "•".repeat(length)
 
