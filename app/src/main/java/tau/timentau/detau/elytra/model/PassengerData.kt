@@ -9,7 +9,7 @@ class PassengerData(
     val forReturn: Boolean = false,
 ) {
 
-    var name: String = "Passegero $index"
+    var name: String = "Passeggero $index"
 
     var handLuggage: Boolean = false
         set(value) {

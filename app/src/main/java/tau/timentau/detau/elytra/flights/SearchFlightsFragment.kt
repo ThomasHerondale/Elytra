@@ -139,11 +139,11 @@ class SearchFlightsFragment : Fragment() {
 
                 is Status.Success -> {
                     if (flightsViewModel.goingFlightsList.isNotEmpty()) {
-                        progressDialog.cancel()
-
                         val roundTrip = binding.roundTripSwitch.isChecked
 
                         if (roundTrip) {
+                            progressDialog.cancel()
+
                             if (flightsViewModel.returnFlightsList.isNotEmpty()) {
                                 navHostActivity.navigateTo(
                                     SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(
@@ -154,6 +154,8 @@ class SearchFlightsFragment : Fragment() {
                                 showNoFlightFoundDialog()
                             }
                         } else {
+                            progressDialog.cancel()
+
                             navHostActivity.navigateTo(
                                 SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(
                                     isReturn = false, isPaymentNext = true

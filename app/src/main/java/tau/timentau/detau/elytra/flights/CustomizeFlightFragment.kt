@@ -14,6 +14,7 @@ import tau.timentau.detau.elytra.model.CARGO_LUGGAGE_PRICE
 import tau.timentau.detau.elytra.model.Flight
 import tau.timentau.detau.elytra.model.HAND_LUGGAGE_PRICE
 import tau.timentau.detau.elytra.model.PassengerData
+import tau.timentau.detau.elytra.toReadableTimeString
 
 private const val ARG_FLIGHT = "flight"
 private const val ARG_IS_RETURN = "isReturn"
@@ -81,13 +82,13 @@ class CustomizeFlightFragment : Fragment() {
 
             companyNameLabel.text = flight.company.name
 
-            departureTimeLabel.text = flight.departureTime
+            departureTimeLabel.text = flight.departureTime.toReadableTimeString()
             departureAptLabel.text = flight.departureApt.name
 
-            arrivalTimeLabel.text = flight.arrivalTime
+            arrivalTimeLabel.text = flight.arrivalTime.toReadableTimeString()
             arrivalAptLabel.text = flight.arrivalApt.name
 
-            durationLabel.text = flight.duration
+            durationLabel.text = flight.duration.toReadableTimeString()
 
             serviceClassLabel.text = flight.serviceClass.stringValue
             priceLabel.text = getString(R.string.prezzo_str, flight.price)
