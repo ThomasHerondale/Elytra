@@ -22,6 +22,7 @@
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/textInput1"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,6 +68,7 @@
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/textInput2"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,8 +93,9 @@
             android:layout_height="wrap_content"
             android:inputType="datetime|date"
             android:maxEms="10"
+            android:id="@+id/textInput3"
             android:maxLength="10"
-            android:text="21/07/2023" />
+            tools:text="21/07/2023" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,7 +119,8 @@
             android:inputType="datetime|date"
             android:maxEms="10"
             android:maxLength="10"
-            android:text="25/07/2023" />
+            android:id="@+id/textInput4"
+            tools:text="25/07/2023" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,6 +144,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:maxLength="1"
+            android:id="@+id/textInput5"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
