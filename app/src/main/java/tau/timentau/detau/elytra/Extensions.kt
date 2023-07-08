@@ -101,6 +101,7 @@ fun <T> ViewModel.performStateful(
         try {
             observableStatus.value = Status.success(block())
         } catch (e: Exception) {
+            println(e.stackTraceToString())
             observableStatus.value = Status.failure(e)
         }
     }

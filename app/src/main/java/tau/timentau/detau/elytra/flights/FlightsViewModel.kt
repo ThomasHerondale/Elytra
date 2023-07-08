@@ -102,10 +102,14 @@ class FlightsViewModel : ViewModel() {
                 selectedCompanies
             ).await()
 
+            println("Fatto")
+
             var returnFlights: List<Flight>? = null
 
             // cerca anche i voli di ritorno se l'utente lo desidera
             if (roundTrip) {
+                println("Round trip inizio")
+
                 returnFlights = Repository.getFlights(
                     arrivalAptCode,
                     departureAptCode, // scambia le destinazioni
@@ -118,6 +122,8 @@ class FlightsViewModel : ViewModel() {
                     firstClass,
                     selectedCompanies
                 ).await()
+
+                println("ROund trip fine")
             }
 
             _goingFlightsFetchStatus.value = Status.Success(goingFlights)
@@ -128,6 +134,8 @@ class FlightsViewModel : ViewModel() {
 
             _passengersCount = passengersCount
         }
+
+        println("Fine ricerca")
     }
 
     fun selectGoingFlight(flight: Flight) {

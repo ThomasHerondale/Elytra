@@ -84,43 +84,6 @@ class SearchFlightsFragment : Fragment() {
     }
 
     private fun performSearch() {
-        val progressDialog = showProgressDialog()
-
-        flightsViewModel.flightsFetchStatus.observe(viewLifecycleOwner) {
-            when (it) {
-                is Status.Failed -> {
-                    showNetworkErrorDialog()
-                    Log.e(TAG, it.exception.stackTraceToString())
-                }
-
-                is Status.Loading -> { /* non fare nulla, il dialogo è già mostrato */ }
-
-                is Status.Success -> {
-                    if (flightsViewModel.goingFlightsList.isNotEmpty() &&
-                        flightsViewModel.returnFlightsList.isNotEmpty()
-                    ) {
-                        val roundTrip = binding.roundTripSwitch.isChecked
-
-                        navHostActivity.navigateTo(
-                            SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(
-                                isReturn = false, isPaymentNext = !roundTrip
-                            )
-                        )
-                    } else {
-                        MaterialAlertDialogBuilder(
-                            requireActivity(),
-                            ThemeOverlay_Material3_MaterialAlertDialog_Centered
-                        )
-                            .setTitle(getString(R.string.nessun_volo_trovato))
-                            .setMessage(getString(R.string.nessun_volo_con_caratteristiche_desiderate))
-                            .setIcon(R.drawable.ic_error_24)
-                            .setPositiveButton(R.string.okay) { _, _ -> }
-                            .show()
-                    }
-                    progressDialog.dismiss()
-                }
-            }
-        }
 
         // ottieni i nomi delle compagnie selezionate dall'utente
         val selectedCompanies = mutableListOf<String>()
@@ -161,6 +124,61 @@ class SearchFlightsFragment : Fragment() {
             selectedCompanies,
             binding.returnDatetext.isEnabled
         )
+
+        val progressDialog = showProgressDialog()
+
+        flightsViewModel.flightsFetchStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                is Status.Failed -> {
+                    showNetworkErrorDialog()
+                    Log.e(TAG, it.exception.stackTraceToString())
+                }
+
+                is Status.Loading -> { /* non fare nulla, il dialogo è già mostrato */
+                }
+
+                is Status.Success -> {
+                    if (flightsViewModel.goingFlightsList.isNotEmpty()) {
+                        progressDialog.cancel()
+
+                        val roundTrip = binding.roundTripSwitch.isChecked
+
+                        if (roundTrip) {
+                            if (flightsViewModel.returnFlightsList.isNotEmpty()) {
+                                navHostActivity.navigateTo(
+                                    SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(
+                                        isReturn = false, isPaymentNext = false
+                                    )
+                                )
+                            } else {
+                                showNoFlightFoundDialog()
+                            }
+                        } else {
+                            navHostActivity.navigateTo(
+                                SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(
+                                    isReturn = false, isPaymentNext = true
+                                )
+                            )
+                        }
+                    } else {
+                        progressDialog.cancel()
+                        showNoFlightFoundDialog()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showNoFlightFoundDialog() {
+        MaterialAlertDialogBuilder(
+            requireActivity(),
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(getString(R.string.nessun_volo_trovato))
+            .setMessage(getString(R.string.nessun_volo_con_caratteristiche_desiderate))
+            .setIcon(R.drawable.ic_error_24)
+            .setPositiveButton(R.string.okay) { _, _ -> }
+            .show()
     }
 
     private fun setupAirportFields() {
