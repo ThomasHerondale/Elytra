@@ -145,4 +145,6 @@
     <string name="donna">Donna</string>
     <string name="altro">Altro</string>
     <string name="scegli_una_domanda_di_sicurezza">Scegli una domanda di sicurezza</string>
+    <string name="nessun_volo_trovato">Nessun volo trovato</string>
+    <string name="nessun_volo_con_caratteristiche_desiderate">Purtroppo, non è attualmente disponibile nessun volo con le caratteristiche desiderate.</string>
 </resources>

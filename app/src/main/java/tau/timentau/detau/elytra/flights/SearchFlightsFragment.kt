@@ -12,6 +12,7 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -95,13 +96,27 @@ class SearchFlightsFragment : Fragment() {
                 is Status.Loading -> { /* non fare nulla, il dialogo è già mostrato */ }
 
                 is Status.Success -> {
-                    val roundTrip = binding.roundTripSwitch.isChecked
+                    if (flightsViewModel.goingFlightsList.isNotEmpty() &&
+                        flightsViewModel.returnFlightsList.isNotEmpty()
+                    ) {
+                        val roundTrip = binding.roundTripSwitch.isChecked
 
-                    navHostActivity.navigateTo(
-                        SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(
-                            isReturn = false, isPaymentNext = !roundTrip
+                        navHostActivity.navigateTo(
+                            SearchFlightsFragmentDirections.searchFlightsToSelectGoingFlight(
+                                isReturn = false, isPaymentNext = !roundTrip
+                            )
                         )
-                    )
+                    } else {
+                        MaterialAlertDialogBuilder(
+                            requireActivity(),
+                            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+                        )
+                            .setTitle(getString(R.string.nessun_volo_trovato))
+                            .setMessage(getString(R.string.nessun_volo_con_caratteristiche_desiderate))
+                            .setIcon(R.drawable.ic_error_24)
+                            .setPositiveButton(R.string.okay) { _, _ -> }
+                            .show()
+                    }
                     progressDialog.dismiss()
                 }
             }
@@ -378,7 +393,7 @@ class SearchFlightsFragment : Fragment() {
     private fun showProgressDialog(): AlertDialog {
         return MaterialAlertDialogBuilder(
             requireContext(),
-            com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+            ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
             .setView(R.layout.dialog_progress_simple)
             .setCancelable(false)
