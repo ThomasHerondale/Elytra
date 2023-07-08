@@ -3,12 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/accomodationCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="?attr/colorPrimaryContainer"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,6 +27,9 @@
                 android:id="@+id/accImg"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -30,13 +39,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="12dp"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/accImg"
                 tools:text="Hotel Roma" />
 
             <ImageView
                 android:id="@+id/imageView"
+                app:tint="?attr/colorOnPrimaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -48,6 +61,8 @@
             <TextView
                 android:id="@+id/ratingScoreText"
                 android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="?attr/colorTertiary"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -58,6 +73,8 @@
             <TextView
                 android:id="@+id/accCategoryText"
                 android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingScoreText"
@@ -70,8 +87,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="48dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:textSize="16sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                app:layout_constraintEnd_toEndOf="@id/accCategoryText"
                 app:layout_constraintStart_toStartOf="@+id/accNameText"
                 app:layout_constraintTop_toBottomOf="@+id/accNameText"
                 tools:text="Un moderno appartamento nel centro di Città del Messico." />
@@ -79,6 +99,8 @@
             <TextView
                 android:id="@+id/accCityText"
                 android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="@+id/accDescriptionText"
@@ -88,6 +110,8 @@
             <TextView
                 android:id="@+id/accAddressText"
                 android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/accCityText"
@@ -99,8 +123,11 @@
                 android:id="@+id/accPriceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="?attr/colorTertiary"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/accCityText"
                 tools:text="€ 1024,90" />
@@ -109,6 +136,12 @@
                 android:id="@+id/accCountsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="?attr/colorTertiary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/accPriceText"
                 app:layout_constraintTop_toBottomOf="@+id/accPriceText"
                 tools:text="5 notti, 4 persone" />
