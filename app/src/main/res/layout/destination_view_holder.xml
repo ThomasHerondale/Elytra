@@ -2,12 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="?attr/colorPrimaryContainer"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +38,14 @@
                 android:id="@+id/cityName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="?attr/colorOnSecondaryContainer"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/cityImg"
                 app:layout_constraintStart_toStartOf="@+id/cityImg"
-                app:layout_constraintTop_toBottomOf="@+id/cityImg" />
+                app:layout_constraintTop_toBottomOf="@+id/cityImg"
+                tools:text="Palermo" />
 
             <Button
                 android:id="@+id/toFlightsBttn"
@@ -44,8 +53,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginEnd="8dp"
+                android:backgroundTint="?attr/colorSecondaryContainer"
+                android:elevation="4dp"
                 android:text="@string/voli"
+                android:textColor="?attr/colorOnSecondaryContainer"
+                android:textSize="16sp"
                 app:icon="@drawable/ic_flight_takeoff_24"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp"
@@ -54,18 +66,23 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/toAccomodationsBttn"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"
+                app:tint="?attr/colorOnSecondaryContainer" />
 
             <Button
                 android:id="@+id/toAccomodationsBttn"
                 style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="16dp"
+                android:backgroundTint="?attr/colorSecondaryContainer"
+                android:elevation="4dp"
                 android:text="@string/alloggi"
+                android:textColor="?attr/colorOnSecondaryContainer"
+                android:textSize="16sp"
                 app:icon="@drawable/ic_hotel_24"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp"
@@ -73,7 +90,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/toFlightsBttn"
-                app:layout_constraintTop_toBottomOf="@+id/cityName" />
+                app:layout_constraintTop_toBottomOf="@+id/cityName"
+                app:tint="?attr/colorOnSecondaryContainer" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
