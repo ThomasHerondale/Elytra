@@ -3,13 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         app:cardBackgroundColor="?attr/colorPrimaryContainer"
         app:cardCornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,8 +28,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +39,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/accImg"
                 app:layout_constraintTop_toTopOf="@+id/accImg"
                 tools:text="Hotel Belvedere" />
@@ -42,6 +49,7 @@
                 android:id="@+id/accCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintStart_toStartOf="@+id/accName"
                 app:layout_constraintTop_toBottomOf="@+id/accName"
                 tools:text="Roma," />
@@ -51,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintStart_toEndOf="@+id/accCity"
                 app:layout_constraintTop_toBottomOf="@+id/accName"
                 tools:text="Via Decollati 28" />
@@ -60,6 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintStart_toStartOf="@+id/accCity"
                 app:layout_constraintTop_toBottomOf="@+id/accAddress"
                 tools:text="Dal 12/08/2023 al 16/08/2023" />
@@ -68,6 +78,7 @@
                 android:id="@+id/countsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintStart_toStartOf="@+id/bookingDates"
                 app:layout_constraintTop_toBottomOf="@+id/bookingDates"
                 tools:text="5 notti, 6 persone" />
@@ -77,8 +88,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="?attr/colorTertiary"
+                app:layout_constraintBottom_toBottomOf="@+id/accImg"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="€1600,00" />
         </androidx.constraintlayout.widget.ConstraintLayout>

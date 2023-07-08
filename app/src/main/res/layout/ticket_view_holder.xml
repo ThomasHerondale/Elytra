@@ -2,13 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         app:cardBackgroundColor="?attr/colorPrimaryContainer"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,6 +22,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/partenza"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="@+id/arrivalAptLabel"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/arrivalAptLabel"
+                app:layout_constraintTop_toBottomOf="@+id/arrivalAptLabel" />
 
             <TextView
                 android:id="@+id/departAptCodeLabel"
@@ -33,14 +49,14 @@
 
             <TextView
                 android:id="@+id/departAptLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:text="TextView"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                app:layout_constraintEnd_toStartOf="@+id/arrivalAptLabel"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@id/arrivalAptLabel"
                 app:layout_constraintStart_toStartOf="@+id/departAptCodeLabel"
                 app:layout_constraintTop_toBottomOf="@+id/departAptCodeLabel"
                 tools:text="Roma Fiumicino" />
@@ -50,46 +66,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                app:layout_constraintBottom_toBottomOf="@+id/gateClosingLabel"
-                app:layout_constraintStart_toStartOf="@+id/departAptLabel"
-                app:layout_constraintTop_toTopOf="@+id/gateClosingLabel"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
                 tools:text="Sab, 28 Dic 2022" />
 
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="56dp"
-                android:tint="?attr/colorOnPrimaryContainer"
                 app:layout_constraintBottom_toBottomOf="@+id/arrivalAptCodeLabel"
-                app:layout_constraintEnd_toStartOf="@+id/arrivalAptCodeLabel"
-                app:layout_constraintStart_toEndOf="@+id/departAptCodeLabel"
+                app:layout_constraintEnd_toStartOf="@id/arrivalAptCodeLabel"
+                app:layout_constraintStart_toEndOf="@id/departAptCodeLabel"
                 app:layout_constraintTop_toTopOf="@+id/arrivalAptCodeLabel"
-                app:srcCompat="@drawable/plane_divider_ticket" />
+                app:srcCompat="@drawable/plane_divider_ticket"
+                app:tint="?attr/colorOnPrimaryContainer" />
 
             <TextView
                 android:id="@+id/arrivalAptCodeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="PMO"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                app:layout_constraintBottom_toBottomOf="@+id/departAptCodeLabel"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/departAptCodeLabel" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="PMO" />
 
             <TextView
                 android:id="@+id/arrivalAptLabel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="textEnd"
                 android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintEnd_toEndOf="@+id/arrivalAptCodeLabel"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/departAptLabel"
+                app:layout_constraintStart_toEndOf="@id/departAptLabel"
                 app:layout_constraintTop_toBottomOf="@+id/arrivalAptCodeLabel"
                 tools:text="Palermo Falcone Borsellino" />
 
@@ -97,9 +112,9 @@
                 android:id="@+id/gateClosingLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                app:layout_constraintStart_toStartOf="@+id/arrivalAptLabel"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView12"
                 app:layout_constraintTop_toBottomOf="@+id/textView12"
                 tools:text="12:50" />
 
@@ -108,25 +123,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                app:layout_constraintBottom_toBottomOf="@+id/gateClosingLabel"
-                app:layout_constraintEnd_toEndOf="@+id/arrivalAptLabel"
-                app:layout_constraintTop_toTopOf="@+id/gateClosingLabel"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/textView13"
+                app:layout_constraintTop_toBottomOf="@+id/textView13"
                 tools:text="12:50" />
 
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/gate_chiude_alle"
                 android:textColor="?attr/colorOnPrimaryContainer"
                 android:textSize="11sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView13"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toEndOf="@+id/departAptLabel"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="@+id/arrivalAptLabel"
-                app:layout_constraintTop_toBottomOf="@+id/arrivalAptLabel" />
+                app:layout_constraintStart_toStartOf="@+id/departAptLabel"
+                app:layout_constraintTop_toBottomOf="@+id/departAptLabel" />
 
             <TextView
                 android:id="@+id/textView15"
@@ -154,24 +168,21 @@
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:text="@string/decollo_alle"
                 android:textColor="?attr/colorOnPrimaryContainer"
                 android:textSize="11sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView12"
-                app:layout_constraintEnd_toEndOf="@+id/arrivalAptLabel"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView12"
-                app:layout_constraintTop_toTopOf="@+id/textView12" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
+                app:layout_constraintStart_toEndOf="@+id/textView12" />
 
             <Button
                 android:id="@+id/customizeBttn"
                 style="@style/Widget.Material3.Button.TextButton.Dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/personalizza"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gateClosingLabel" />
 
