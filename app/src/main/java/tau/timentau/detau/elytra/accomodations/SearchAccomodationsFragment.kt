@@ -145,7 +145,7 @@ class SearchAccomodationsFragment : Fragment() {
 
     private fun validateHostCountField(): Boolean {
         if (binding.hostCountText.text.isBlank() || binding.hostCountText.text.toInt() <= 0)
-            binding.hostCountText.error = " "
+            binding.hostCountText.error = "Invalido"
         else
             binding.hostCountText.error = null
 
