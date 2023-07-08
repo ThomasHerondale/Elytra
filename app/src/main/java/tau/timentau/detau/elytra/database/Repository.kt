@@ -580,8 +580,6 @@ object Repository {
         val image = DatabaseDAO.getImage(accomodationDTO!!.image)
 
         return accomodationDTO.toAccomodation(image)
-        """
-        )
     }
 
     suspend fun getMostFamousDestinations(): Deferred<List<Pair<City, Bitmap>>> {

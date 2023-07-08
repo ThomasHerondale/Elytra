@@ -62,11 +62,6 @@ fun String.toReadableDateString(): String {
     return date!!.toReadable()
 }
 
-fun String.toReadableTimeString(): String {
-    val time = dbTimeFormatter.parse(this)
-    return readableTimeFormatter.format(time!!)
-}
-
 fun Date.toReadable(): String = readableDateFormatter.format(this)
 
 fun fromMilliToReadable(milliseconds: Long) =

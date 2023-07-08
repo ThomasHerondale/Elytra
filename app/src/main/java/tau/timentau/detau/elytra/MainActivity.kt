@@ -32,7 +32,6 @@ import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.PaymentSubjec
 import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.PaymentSubject.FLIGHT
 import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.SelectPaymentMethodHandler
 import tau.timentau.detau.elytra.flights.TripCustomizationViewModel
-import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog
 import tau.timentau.detau.elytra.profile.ProfileActivity
 
 class MainActivity :

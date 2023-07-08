@@ -113,16 +113,6 @@
             android:defaultValue="-1" />
     </fragment>
     <fragment
-        android:id="@+id/discover"
-        android:name="tau.timentau.detau.elytra.discover.DiscoverFragment"
-        android:label="DiscoverFragment">
-        <action
-            android:id="@+id/discover_to_accomodations"
-            app:destination="@id/accomodations" />
-        <action
-            android:id="@+id/discover_to_flights"
-            app:destination="@id/flights" />
-    </fragment>
         android:id="@+id/bookings"
         android:name="tau.timentau.detau.elytra.bookings.BookingsFragment"
         android:label="BookingsFragment"
@@ -161,10 +151,17 @@
     </fragment>
     <fragment
         android:id="@+id/discover"
-        android:name="tau.timentau.detau.elytra.DiscoverFragment"
-        android:label="DiscoverFragment" />
+        android:name="tau.timentau.detau.elytra.discover.DiscoverFragment"
+        android:label="DiscoverFragment"
+        tools:layout="@layout/fragment_discover" />
     <action
         android:id="@+id/back_to_discover"
         app:destination="@id/discover"
         app:popUpTo="@id/discover" />
+    <action
+        android:id="@+id/discover_to_accomodations"
+        app:destination="@id/accomodations" />
+    <action
+        android:id="@+id/discover_to_flights"
+        app:destination="@id/flights" />
 </navigation>
