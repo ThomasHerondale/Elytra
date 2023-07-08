@@ -118,6 +118,10 @@
     <string name="volo_ritorno">Seleziona il volo di ritorno</string>
     <string name="volo_andata">Il tuo volo di andata</string>
     <string name="seleziona_volo">Seleziona volo</string>
+    <string name="decollo_alle">Decollo alle</string>
+    <string name="acquistato_il">Acquistato il</string>
+    <string name="gate_chiude_alle">Il gate chiude alle</string>
+    <string name="personalizza">Personalizza</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="incluso">Già incluso</string>

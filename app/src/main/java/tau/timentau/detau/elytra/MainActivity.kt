@@ -19,10 +19,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.Session.loggedEmail
 import tau.timentau.detau.elytra.accomodations.AccomodationsViewModel
+import tau.timentau.detau.elytra.bookings.FlightRecustomizationViewModel
 import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.firstAccess.SetSecurityQuestionDialog
+import tau.timentau.detau.elytra.flights.FlightsViewModel
+import tau.timentau.detau.elytra.flights.PaymentFragmentDirections
+import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.PaymentSubject
+import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.PaymentSubject.ACCOMODATION
+import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.PaymentSubject.CUSTOMIZATION
+import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.PaymentSubject.FLIGHT
+import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.SelectPaymentMethodHandler
+import tau.timentau.detau.elytra.flights.TripCustomizationViewModel
 import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog
 import tau.timentau.detau.elytra.profile.ProfileActivity
 
@@ -30,14 +39,18 @@ class MainActivity :
     AppCompatActivity(),
     SetSecurityQuestionDialog.SetSecurityQuestionHandler,
     SelectAvatarDialog.SelectAvatarHandler,
-    SelectPaymentMethodDialog.SelectPaymentMethodHandler,
+    SelectPaymentMethodHandler,
     NavHostActivity {
 
     private lateinit var binding: ActivityMainBinding
     private val navController by lazy {
         (binding.mainFragmentContainer.getFragment() as NavHostFragment).navController
     }
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val accomodationsViewModel: AccomodationsViewModel by viewModels()
+    private val flightViewModel: FlightsViewModel by viewModels()
+    private val customizationViewModel: TripCustomizationViewModel by viewModels()
+    private val recustomizationViewModel: FlightRecustomizationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,8 +193,61 @@ class MainActivity :
         Repository.setAvatar(loggedEmail, id)
     }
 
-    override fun paymentDone() {
-        accomodationsViewModel.insertBooking()
+    override fun paymentDone(subject: PaymentSubject) {
+        coroutineScope.launch {
+            when (subject) {
+                FLIGHT -> {
+                    Repository.insertTicket(
+                        loggedEmail,
+                        flightViewModel.selectedGoingFlight,
+                        flightViewModel.passengersCount,
+                        customizationViewModel.getGoingPassengerData(),
+                        customizationViewModel.getTripTotalPrice()
+                    )
+
+                    if (flightViewModel.isRoundTrip()) {
+                        Repository.insertTicket(
+                            loggedEmail,
+                            flightViewModel.selectedReturnFlight,
+                            flightViewModel.passengersCount,
+                            customizationViewModel.getReturnPassengerData(),
+                            customizationViewModel.getTripTotalPrice()
+                        )
+                    }
+                    navigateTo(
+                        PaymentFragmentDirections.backToDiscover()
+                    )
+                }
+
+                ACCOMODATION -> {
+                    Repository.insertBooking(
+                        loggedEmail,
+                        accomodationsViewModel.selectedAccomodation,
+                        accomodationsViewModel.selectedStartDate,
+                        accomodationsViewModel.selectedEndDate,
+                        accomodationsViewModel.hostCount,
+                        accomodationsViewModel.getStayingDuration(),
+                        accomodationsViewModel.getTotalPrice()
+                    )
+                    navigateTo(
+                        tau.timentau.detau.elytra.accomodations.PaymentFragmentDirections
+                            .backToDiscover()
+                    )
+                }
+
+                CUSTOMIZATION -> {
+                    Repository.recustomizeTicket(
+                        recustomizationViewModel.ticket.id,
+                        recustomizationViewModel.passengerData.value!!,
+                        recustomizationViewModel.addonPrice.value!!
+                    )
+                    navigateTo(
+                        tau.timentau.detau.elytra.bookings.PaymentFragmentDirections
+                            .backToDiscover()
+                    )
+                }
+            }
+        }
     }
 
     override fun toAvatarSetConfirm() =

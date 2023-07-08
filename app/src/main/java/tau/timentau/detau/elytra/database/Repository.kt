@@ -1,17 +1,26 @@
 package tau.timentau.detau.elytra.database
 
 import android.graphics.Bitmap
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.todayIn
 import tau.timentau.detau.elytra.model.Accomodation
 import tau.timentau.detau.elytra.model.AccomodationCategory
 import tau.timentau.detau.elytra.model.Airport
+import tau.timentau.detau.elytra.model.Booking
 import tau.timentau.detau.elytra.model.City
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.model.Flight
+import tau.timentau.detau.elytra.model.PassengerData
 import tau.timentau.detau.elytra.model.PaymentCircuit
 import tau.timentau.detau.elytra.model.PaymentMethod
 import tau.timentau.detau.elytra.model.ServiceClass
@@ -19,6 +28,7 @@ import tau.timentau.detau.elytra.model.ServiceClass.BUSINESS
 import tau.timentau.detau.elytra.model.ServiceClass.ECONOMY
 import tau.timentau.detau.elytra.model.ServiceClass.FIRST_CLASS
 import tau.timentau.detau.elytra.model.Sex
+import tau.timentau.detau.elytra.model.Ticket
 import tau.timentau.detau.elytra.model.User
 import tau.timentau.detau.elytra.toDateString
 import java.util.Date
@@ -26,6 +36,7 @@ import java.util.Date
 object Repository {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val parser = Gson()
 
     suspend fun userExists(email: String, password: String): Deferred<Boolean> {
         return coroutineScope.async {
@@ -453,14 +464,134 @@ object Repository {
         )
     }
 
+    suspend fun getTickets(email: String): Deferred<List<Ticket>> {
+        return coroutineScope.async {
+            val ticketsDTOs = DatabaseDAO.selectList<TicketDTO>(
+                """
+            SELECT id, flight, serviceClass, passengersCount, passengersInfo, price, makingDate
+            FROM tickets
+            WHERE user = '$email'
+        """
+            )
+
+            val tickets = mutableListOf<Ticket>()
+
+            for (ticketDTO in ticketsDTOs) {
+                val flight = getFlight(ticketDTO.flight, ticketDTO.serviceClass)
+
+                tickets.add(ticketDTO.toTicket(flight))
+            }
+
+            tickets
+        }
+
+    }
+
+    suspend fun insertTicket(
+        email: String,
+        flight: Flight,
+        passengersCount: Int,
+        passengerData: List<PassengerData>,
+        price: Double,
+    ) {
+        val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+
+        val json = parser.toJson(passengerData)
+
+        DatabaseDAO.insert(
+            """
+            INSERT INTO tickets(user, flight, serviceClass, passengersCount, passengersInfo,
+                price, makingDate)
+            VALUES ('$email', '${flight.id}', '${flight.serviceClass}', $passengersCount,
+                '$json', $price, '${today.toDateString()}')
+        """
+        )
+    }
+
+    suspend fun recustomizeTicket(
+        id: Int,
+        passengerData: List<PassengerData>,
+        addonPrice: Double,
+    ) {
+        val json = parser.toJson(passengerData)
+
+        DatabaseDAO.update(
+            """
+            UPDATE tickets
+            SET passengersInfo = '$json', price = price + $addonPrice
+            WHERE id = $id
+        """
+        )
+    }
+
+    private suspend fun getFlight(id: String, serviceClass: ServiceClass): Flight {
+        // ottieni prima le informazioni sulle compagnie
+        val companies = getCompanies().await()
+
+        // ottieni le informazioni sugli aeroporti
+        val airports = getAirports().await()
+
+        val flightDTO = DatabaseDAO.selectValue<FlightDTO>(
+            """
+            SELECT f.id, f.company, f.departureApt, f.arrivalApt, f.date, f.gateClosingTime,
+                f.departureTime, f.arrivalTime, f.duration, 
+                fp.${serviceClass.name.lowercase()}Price as price
+            FROM flights f JOIN flights_prices fp ON f.id = fp.id
+            WHERE f.id = '$id'
+        """
+        )
+
+        return flightDTO!!.toFlight(companies, airports, serviceClass)
+    }
+
+    suspend fun getBookings(email: String): Deferred<List<Booking>> {
+        return coroutineScope.async {
+            val bookingsDTO = DatabaseDAO.selectList<BookingDTO>(
+                """
+                SELECT b.id, b.user, b.accomodation, b.checkInDate, b.checkOutDate, 
+                    b.hostCount, b.nightCount, b.price
+                FROM bookings b JOIN accomodations a on a.id = b.accomodation
+                WHERE b.user = '$email'
+            """
+            )
+
+            val bookings = mutableListOf<Booking>()
+
+            bookingsDTO.forEach {
+                val accomodation = getAccomodation(it.accomodation)
+
+                bookings.add(it.toBooking(accomodation))
+            }
+
+            bookings
+        }
+    }
+
+    private suspend fun getAccomodation(id: String): Accomodation {
+        val accomodationDTO = DatabaseDAO.selectValue<AccomodationDTO>(
+            """
+            SELECT a.id, a.name, a.description, a.category, c.name as city, 
+                a.address, a.image, a.price, a.rating
+            FROM accomodations a JOIN cities c on a.city = c.id
+            WHERE a.id = '$id'
+        """
+        )
+
+        val image = DatabaseDAO.getImage(accomodationDTO!!.image)
+
+        return accomodationDTO.toAccomodation(image)
+        """
+        )
+    }
+
     suspend fun getMostFamousDestinations(): Deferred<List<Pair<City, Bitmap>>> {
         return coroutineScope.async {
             val citiesDTO = DatabaseDAO.selectList<CityDTO>(
                 """
                 SELECT c.id, c.name, CONCAT('media/images/cities/', c.id, '.jpeg') as image
-                FROM cities c JOIN 
-                    airports a on c.id = a.city JOIN 
-                    flights f on a.code = f.arrivalApt JOIN 
+                FROM cities c JOIN
+                    airports a on c.id = a.city JOIN
+                    flights f on a.code = f.arrivalApt JOIN
                     tickets t on f.id = t.flight
                 GROUP BY c.id
                 ORDER BY COUNT(DISTINCT t.id) DESC
@@ -485,9 +616,9 @@ object Repository {
             val citiesDTO = DatabaseDAO.selectList<CityDTO>(
                 """
                 SELECT DISTINCT c.id, c.name, CONCAT('media/images/cities/', c.id, '.jpeg') as image
-                FROM cities c JOIN 
-                    airports a on c.id = a.city JOIN 
-                    flights f on a.code = f.arrivalApt JOIN 
+                FROM cities c JOIN
+                    airports a on c.id = a.city JOIN
+                    flights f on a.code = f.arrivalApt JOIN
                     tickets t on f.id = t.flight
                 WHERE t.user = '$email'
             """
@@ -636,5 +767,51 @@ object Repository {
         val image: String,
     ) {
         fun destructure(image: Bitmap) = City(id, name) to image
+    }
+
+    private data class TicketDTO(
+        val id: Int,
+        val flight: String,
+        val serviceClass: ServiceClass,
+        val passengersCount: Int,
+        val passengersInfo: String,
+        val price: Double,
+        val makingDate: String,
+    ) {
+        fun toTicket(flight: Flight): Ticket {
+            val typeToken = TypeToken.getParameterized(List::class.java, PassengerData::class.java)
+            val passengersData: List<PassengerData> =
+                parser.fromJson(passengersInfo, typeToken.type)
+
+            // si può ripersonalizzare se non son passati 3 giorni
+            val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+            val ticketDate = LocalDate.parse(makingDate)
+
+            val isRecustomizable = today < ticketDate.plus(3, DateTimeUnit.DAY)
+
+            return Ticket(
+                id,
+                flight,
+                passengersCount,
+                passengersData,
+                price,
+                makingDate,
+                isRecustomizable
+            )
+        }
+    }
+
+    private data class BookingDTO(
+        val id: Int,
+        val email: String,
+        val accomodation: String,
+        val checkInDate: String,
+        val checkOutDate: String,
+        val hostCount: Int,
+        val nightCount: Int,
+        val price: Double,
+    ) {
+        fun toBooking(accomodation: Accomodation) =
+            Booking(id, accomodation, checkInDate, checkOutDate, hostCount, nightCount, price)
     }
 }

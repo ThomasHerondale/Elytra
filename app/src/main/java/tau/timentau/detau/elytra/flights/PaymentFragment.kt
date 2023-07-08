@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentPaymentFlightsBinding
 import tau.timentau.detau.elytra.setContainerActivityTitle
+import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog.PaymentSubject.FLIGHT
 
 private const val SERVICE_FEES = 16.70
 
@@ -39,7 +40,8 @@ class PaymentFragment : Fragment() {
             getString(R.string.prezzo_str, totalPrice + SERVICE_FEES)
 
         binding.selectPaymentMethodBttn.setOnClickListener {
-            SelectPaymentMethodDialog().show(parentFragmentManager, "selectPaymentMethod")
+            SelectPaymentMethodDialog.newInstance(FLIGHT)
+                .show(parentFragmentManager, "selectPaymentMethod")
         }
 
         return binding.root
