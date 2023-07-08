@@ -40,6 +40,18 @@ class BookingAdapter : ListAdapter<Booking, BookingAdapter.ViewHolder>(diffCallb
             bookingPrice.text = holder.itemView.context.getString(
                 R.string.prezzo_str, booking.price
             )
+
+            var stringaNotte = "notte"
+            var stringaPersona = "persona"
+            when {
+                booking.hostCount > 1 && booking.nightCount > 1 -> {
+                    stringaNotte="notti"
+                    stringaPersona="persone"
+                }
+                booking.hostCount > 1 -> stringaPersona="persone"
+                booking.nightCount > 1 -> stringaNotte="notti"
+            }
+            countsText.text = "${booking.nightCount} $stringaNotte, ${booking.hostCount} $stringaPersona"
         }
     }
 
