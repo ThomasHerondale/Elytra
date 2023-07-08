@@ -155,6 +155,7 @@ class SearchAccomodationsFragment : Fragment() {
     private fun setupRatingSection() {
         binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
             val ratingStr = when (val stars = rating.toInt()) {
+                0 -> ""
                 1 -> getString(R.string.una_stella_o_piu)
                 2, 3, 4 -> getString(R.string.stelle_o_piu, stars)
                 5 -> getString(R.string.cinque_stelle)
