@@ -12,6 +12,8 @@ import tau.timentau.detau.elytra.passwordReset.InsertEmailDialog
 import tau.timentau.detau.elytra.passwordReset.PasswordResetDialog
 import tau.timentau.detau.elytra.passwordReset.SecurityQuestionDialog
 
+private const val PASSWORD_RESET_EMAIL_KEY = "PWD_RESET_EMAIL"
+
 class StartActivity :
     AppCompatActivity(),
     NavHostActivity,
@@ -19,7 +21,7 @@ class StartActivity :
     PasswordResetDialog.PasswordResetHandler,
     InsertEmailDialog.InsertEmailHandler {
 
-    private lateinit var binding : ActivityStartBinding
+    private lateinit var binding: ActivityStartBinding
     private val navigator by lazy { getNavController() }
 
     private var _emailForPasswordReset: String? = null
@@ -35,6 +37,8 @@ class StartActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
+
+        _emailForPasswordReset = savedInstanceState?.getString(PASSWORD_RESET_EMAIL_KEY)
 
         // comando debug per saltare la schermata di login
         intent.getStringExtra("TEST_EMAIL")?.let { login(it) }
@@ -56,6 +60,13 @@ class StartActivity :
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (_emailForPasswordReset != null)
+            outState.putString(PASSWORD_RESET_EMAIL_KEY, _emailForPasswordReset)
+        super.onSaveInstanceState(outState)
+    }
+
 
     override fun navigateTo(directions: NavDirections) {
         navigator.navigate(directions)
