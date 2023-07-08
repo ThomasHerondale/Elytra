@@ -144,4 +144,5 @@
     <string name="uomo">Uomo</string>
     <string name="donna">Donna</string>
     <string name="altro">Altro</string>
+    <string name="scegli_una_domanda_di_sicurezza">Scegli una domanda di sicurezza</string>
 </resources>
