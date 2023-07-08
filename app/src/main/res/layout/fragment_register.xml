@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:background="?attr/colorPrimaryContainer"
+    android:layout_height="wrap_content" >
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameText"
@@ -22,6 +23,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
+            android:id="@+id/textInput1"
+            android:textColor="?attr/colorOnPrimaryContainer"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,6 +44,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
+            android:id="@+id/textInput2"
+            android:textColor="?attr/colorOnPrimaryContainer"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,6 +67,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:inputType="textPassword"
+            android:id="@+id/textInput3"
+            android:textColor="?attr/colorOnPrimaryContainer"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,6 +90,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:inputType="textPassword"
+            android:id="@+id/textInput4"
+            android:textColor="?attr/colorOnPrimaryContainer"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,6 +111,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/textInput5"
+            android:textColor="?attr/colorOnPrimaryContainer"
             android:inputType="datetime|date" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -122,7 +133,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Uomo"
+            app:chipBackgroundColor="?attr/colorTertiaryContainer"
+            android:textColor="?attr/colorOnTertiaryContainer"
+            android:text="@string/uomo"
+            app:chipIconTint="?attr/colorOnTertiaryContainer"
+            app:tint="@color/md_theme_light_primary"
             app:chipIcon="@drawable/ic_male_24" />
 
         <com.google.android.material.chip.Chip
@@ -130,7 +145,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Donna"
+            app:chipBackgroundColor="?attr/colorTertiaryContainer"
+            android:textColor="?attr/colorOnTertiaryContainer"
+            android:text="@string/donna"
+            app:chipIconTint="?attr/colorOnTertiaryContainer"
             app:chipIcon="@drawable/ic_female_24" />
 
         <com.google.android.material.chip.Chip
@@ -138,7 +156,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
-            android:text="Altro"
+            app:chipBackgroundColor="?attr/colorTertiaryContainer"
+            android:textColor="?attr/colorOnTertiaryContainer"
+            android:text="@string/altro"
+            app:chipIconTint="?attr/colorOnTertiaryContainer"
             app:chipIcon="@drawable/ic_transgender_24" />
     </com.google.android.material.chip.ChipGroup>
 
@@ -179,7 +200,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="20dp"
-        android:text="Registrati"
+        android:text="@string/registrati"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

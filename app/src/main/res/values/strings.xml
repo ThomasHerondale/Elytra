@@ -138,4 +138,10 @@
     <string name="seleziona_un_alloggio">Seleziona un alloggio</string>
     <string name="alloggi_disponibili">Alloggi disponibili</string>
     <string name="destinazioni_piu_visitate">Le destinazioni più visitate</string>
+    <string name="benvenuto_in">Benvenuto in</string>
+    <string name="elytra">"  ELYTRA"</string>
+    <string name="registrati">Registrati</string>
+    <string name="uomo">Uomo</string>
+    <string name="donna">Donna</string>
+    <string name="altro">Altro</string>
 </resources>
