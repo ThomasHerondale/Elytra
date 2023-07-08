@@ -87,14 +87,26 @@ class SearchAccomodationsFragment : Fragment() {
                 }
                 is Status.Loading -> { }
                 is Status.Success -> {
-                    dialog.cancel()
-
-                    navHostActivity.navigateTo(
-                        SearchAccomodationsFragmentDirections.accomodationsToSelectAccomodation(
-                            accomodationsViewModel.getStayingDuration(),
-                            binding.hostCountText.text.toInt()
+                    if (it.data.isNotEmpty()) {
+                        navHostActivity.navigateTo(
+                            SearchAccomodationsFragmentDirections.accomodationsToSelectAccomodation(
+                                accomodationsViewModel.getStayingDuration(),
+                                binding.hostCountText.text.toInt()
+                            )
                         )
-                    )
+                    } else {
+                        MaterialAlertDialogBuilder(
+                            requireActivity(),
+                            ThemeOverlay_Material3_MaterialAlertDialog_Centered
+                        )
+                            .setTitle(getString(R.string.nessun_alloggio_trovato))
+                            .setMessage(getString(R.string.nessun_alloggio_con_caratteristiche_desiderate))
+                            .setIcon(R.drawable.ic_error_24)
+                            .setPositiveButton(R.string.okay) { _, _ -> }
+                            .show()
+                    }
+
+                    dialog.cancel()
                 }
             }
         }
