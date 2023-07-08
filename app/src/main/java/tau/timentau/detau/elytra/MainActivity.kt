@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +45,23 @@ class MainActivity :
 
         // inizializza la barra di navigazione
         binding.mainNavBar.setupWithNavController(navController)
+        binding.mainNavBar.setOnItemSelectedListener {
+            val destinationId = when (it.itemId) {
+                R.id.discover -> R.id.discover
+                R.id.flights -> R.id.flights
+                R.id.accomodations -> R.id.accomodations
+                R.id.bookings -> R.id.bookings
+                else -> throw IllegalStateException("Unknown item")
+            }
+
+            // se siamo già in questa destinazione, non ricaricare
+            if (destinationId != navController.currentDestination?.id) {
+                navController.navigate(destinationId)
+            }
+
+            // indica che è gestito ad android, sennò fa cose strane, meglio non sapere ._.
+            true
+        }
 
         checkForFirstAccess()
 
@@ -52,6 +70,12 @@ class MainActivity :
                 R.id.profile -> toProfile()
                 else -> throw IllegalStateException("Unknown menu item")
             }
+        }
+
+        // altrimenti il grafo di navigazione si spascia
+        // mi chiedo perché questo non sia il comportamento di default del framework .-.
+        onBackPressedDispatcher.addCallback(this) {
+            popBackStack()
         }
 
         setContentView(binding.root)

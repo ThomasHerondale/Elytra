@@ -251,8 +251,8 @@ object Repository {
     suspend fun getAirports(): Deferred<List<Airport>> {
         return coroutineScope.async {
             DatabaseDAO.selectList<Airport>("""
-                SELECT *
-                FROM airports
+                SELECT a.code, a.name, c.name as city
+                FROM airports a JOIN cities c ON a.city = c.id
             """)
         }
     }
@@ -391,7 +391,7 @@ object Repository {
     suspend fun getCities(): Deferred<List<City>> {
         return coroutineScope.async {
             DatabaseDAO.selectList<City>("""
-                SELECT *
+                SELECT id, name
                 FROM cities
             """)
         }
@@ -441,14 +441,68 @@ object Repository {
         checkOutDate: LocalDate,
         hostCount: Int,
         nightCount: Int,
-        price: Double
+        price: Double,
     ) {
-        DatabaseDAO.insert("""
+        DatabaseDAO.insert(
+            """
             INSERT INTO bookings(user, accomodation, checkInDate, checkOutDate, 
                 hostCount, nightCount, price)
             VALUE ('$email', '${accomodation.id}', '${checkInDate.toDateString()}',
             '${checkOutDate.toDateString()}', $hostCount, $nightCount, $price)
-        """)
+        """
+        )
+    }
+
+    suspend fun getMostFamousDestinations(): Deferred<List<Pair<City, Bitmap>>> {
+        return coroutineScope.async {
+            val citiesDTO = DatabaseDAO.selectList<CityDTO>(
+                """
+                SELECT c.id, c.name, CONCAT('media/images/cities/', c.id, '.jpeg') as image
+                FROM cities c JOIN 
+                    airports a on c.id = a.city JOIN 
+                    flights f on a.code = f.arrivalApt JOIN 
+                    tickets t on f.id = t.flight
+                GROUP BY c.id
+                ORDER BY COUNT(DISTINCT t.id) DESC
+                LIMIT 5;
+            """
+            )
+
+            val cities = mutableListOf<Pair<City, Bitmap>>()
+
+            citiesDTO.forEach {
+                val image = DatabaseDAO.getImage(it.image)
+
+                cities.add(it.destructure(image))
+            }
+
+            cities
+        }
+    }
+
+    suspend fun getFutureDestinations(email: String): Deferred<MutableList<Pair<City, Bitmap>>> {
+        return coroutineScope.async {
+            val citiesDTO = DatabaseDAO.selectList<CityDTO>(
+                """
+                SELECT DISTINCT c.id, c.name, CONCAT('media/images/cities/', c.id, '.jpeg') as image
+                FROM cities c JOIN 
+                    airports a on c.id = a.city JOIN 
+                    flights f on a.code = f.arrivalApt JOIN 
+                    tickets t on f.id = t.flight
+                WHERE t.user = '$email'
+            """
+            )
+
+            val cities = mutableListOf<Pair<City, Bitmap>>()
+
+            citiesDTO.forEach {
+                val image = DatabaseDAO.getImage(it.image)
+
+                cities.add(it.destructure(image))
+            }
+
+            cities
+        }
     }
 
     private class UserDTO(
@@ -459,7 +513,7 @@ object Repository {
         val avatar: String,
         val password: String,
         val question: String,
-        val answer: String
+        val answer: String,
     ) {
         fun toUser(avatar: Bitmap) =
             User(
@@ -570,9 +624,17 @@ object Repository {
         val address: String,
         val image: String,
         val price: Double,
-        val rating: Double
+        val rating: Double,
     ) {
         fun toAccomodation(image: Bitmap) =
             Accomodation(id, name, description, category, city, address, image, price, rating)
+    }
+
+    private data class CityDTO(
+        val id: Int,
+        val name: String,
+        val image: String,
+    ) {
+        fun destructure(image: Bitmap) = City(id, name) to image
     }
 }

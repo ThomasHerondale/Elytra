@@ -11,6 +11,7 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -35,6 +36,7 @@ private const val TAG = "FLIGHTS"
 class SearchFlightsFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchFlightsBinding
+    private val navArgs: SearchFlightsFragmentArgs by navArgs()
     private val flightsViewModel: FlightsViewModel by activityViewModels()
 
     private inline val departureAptField: MaterialAutoCompleteTextView
@@ -161,8 +163,15 @@ class SearchFlightsFragment : Fragment() {
 
                 is Status.Success -> {
                     val airportDropdownItems = status.data.map { it.toString() }.toTypedArray()
+
                     departureAptField.setSimpleItems(airportDropdownItems)
                     arrivalAptField.setSimpleItems(airportDropdownItems)
+
+                    if (navArgs.selectedCity != null) {
+                        val selectedApt =
+                            status.data.find { it.city == navArgs.selectedCity!!.name }
+                        arrivalAptField.setText(selectedApt.toString())
+                    }
 
                     showOrHideProgressBar(true)
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -38,6 +39,7 @@ private const val TAG = "SEARCH_ACCOMODATIONS"
 class SearchAccomodationsFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchAccomodationsBinding
+    private val navArgs: SearchAccomodationsFragmentArgs by navArgs()
     private val accomodationsViewModel: AccomodationsViewModel by activityViewModels()
 
     private inline val citiesField: MaterialAutoCompleteTextView
@@ -185,6 +187,9 @@ class SearchAccomodationsFragment : Fragment() {
         accomodationsViewModel.loadCities()
 
         citiesField.dropDownHeight = 1000
+
+        if (navArgs.selectedCity != null)
+            binding.cityText.editText?.setText(navArgs.selectedCity!!.name)
     }
 
     private fun showDateRangePickerDialog() {
