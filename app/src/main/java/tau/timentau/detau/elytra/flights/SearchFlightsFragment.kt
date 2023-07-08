@@ -23,6 +23,7 @@ import tau.timentau.detau.elytra.databinding.FragmentSearchFlightsBinding
 import tau.timentau.detau.elytra.model.Company
 import tau.timentau.detau.elytra.navHostActivity
 import tau.timentau.detau.elytra.parseToDate
+import tau.timentau.detau.elytra.setContainerActivityTitle
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 import tau.timentau.detau.elytra.text
 import java.text.NumberFormat
@@ -47,6 +48,8 @@ class SearchFlightsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSearchFlightsBinding.inflate(layoutInflater)
+
+        setContainerActivityTitle("Trova voli")
 
         setupAirportFields()
         setupCompanyFilters()

@@ -15,6 +15,7 @@ import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentSelectFlightBinding
 import tau.timentau.detau.elytra.model.Flight
 import tau.timentau.detau.elytra.navHostActivity
+import tau.timentau.detau.elytra.setContainerActivityTitle
 import tau.timentau.detau.elytra.toReadableDateString
 import tau.timentau.detau.elytra.toReadableTimeString
 
@@ -29,6 +30,8 @@ class SelectFlightFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSelectFlightBinding.inflate(inflater)
+
+        setContainerActivityTitle("Seleziona voli")
 
         if (args.isReturn)
             setupGoingFlightCard()

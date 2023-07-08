@@ -153,3 +153,7 @@ fun Fragment.showNetworkErrorDialog() {
 
     activity.showNetworkErrorDialog()
 }
+
+fun Fragment.setContainerActivityTitle(title: String) {
+    (context as MainActivity).setTitle(title)
+}

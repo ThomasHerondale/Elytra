@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentCustomizeTripBinding
 import tau.timentau.detau.elytra.navHostActivity
+import tau.timentau.detau.elytra.setContainerActivityTitle
 import tau.timentau.detau.elytra.text
 
 class CustomizeTripFragment : Fragment() {
@@ -24,6 +25,8 @@ class CustomizeTripFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentCustomizeTripBinding.inflate(inflater)
+
+        setContainerActivityTitle("Personalizza viaggio")
 
         // inizializza le preferenze dei passegeri, se non lo sono già state
         if (!tripCustomizationViewModel.isPassengerDataInitialized()) {

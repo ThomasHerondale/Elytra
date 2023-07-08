@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import tau.timentau.detau.elytra.databinding.FragmentSelectAccomodationBinding
 import tau.timentau.detau.elytra.navHostActivity
+import tau.timentau.detau.elytra.setContainerActivityTitle
 
 class SelectAccomodationFragment : Fragment() {
 
@@ -23,6 +24,8 @@ class SelectAccomodationFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSelectAccomodationBinding.inflate(inflater)
+
+        setContainerActivityTitle("Seleziona alloggi")
 
         setupAccomodationsList()
 

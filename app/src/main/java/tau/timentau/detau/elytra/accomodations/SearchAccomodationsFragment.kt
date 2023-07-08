@@ -24,6 +24,7 @@ import tau.timentau.detau.elytra.model.AccomodationCategory.CAMPING
 import tau.timentau.detau.elytra.model.AccomodationCategory.HOSTEL
 import tau.timentau.detau.elytra.model.AccomodationCategory.HOTEL
 import tau.timentau.detau.elytra.navHostActivity
+import tau.timentau.detau.elytra.setContainerActivityTitle
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 import tau.timentau.detau.elytra.text
 import tau.timentau.detau.elytra.toReadable
@@ -47,6 +48,8 @@ class SearchAccomodationsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSearchAccomodationsBinding.inflate(inflater)
+
+        setContainerActivityTitle("Trova alloggi")
 
         setupCityField()
         setupRatingSection()

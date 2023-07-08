@@ -22,7 +22,6 @@ import tau.timentau.detau.elytra.database.Repository
 import tau.timentau.detau.elytra.databinding.ActivityMainBinding
 import tau.timentau.detau.elytra.firstAccess.SelectAvatarDialog
 import tau.timentau.detau.elytra.firstAccess.SetSecurityQuestionDialog
-import tau.timentau.detau.elytra.flights.PaymentFragmentDirections
 import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog
 import tau.timentau.detau.elytra.profile.ProfileActivity
 
@@ -64,6 +63,10 @@ class MainActivity :
 
     override fun popBackStack() {
         navController.popBackStack()
+    }
+
+    fun setTitle(title: String) {
+        binding.topAppBar.title = title
     }
 
     private fun checkForFirstAccess() {

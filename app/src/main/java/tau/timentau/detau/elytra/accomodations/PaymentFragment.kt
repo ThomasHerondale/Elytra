@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.databinding.FragmentPaymentAccomodationsBinding
 import tau.timentau.detau.elytra.flights.SelectPaymentMethodDialog
+import tau.timentau.detau.elytra.setContainerActivityTitle
 
 private const val SERVICE_FEES = 25.90
 
@@ -22,6 +23,8 @@ class PaymentFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentPaymentAccomodationsBinding.inflate(inflater)
+
+        setContainerActivityTitle("Riepilogo")
 
         val totalPrice = accomodationsViewModel.getTotalPrice()
 
