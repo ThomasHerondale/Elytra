@@ -26,9 +26,12 @@ class DiscoverFragment : Fragment() {
     ): View {
         binding = FragmentDiscoverBinding.inflate(inflater)
 
-        setupMostFamousDestinationsSection()
+        // se non c'è stato salvato -> se il fragment sta venendo creato per la prima volta
+        if (savedInstanceState == null) {
+            setupMostFamousDestinationsSection()
 
-        setupFutureDestinationsSection()
+            setupFutureDestinationsSection()
+        }
 
         return binding.root
     }
