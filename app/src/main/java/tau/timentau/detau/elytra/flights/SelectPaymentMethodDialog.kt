@@ -17,6 +17,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.DialogSelectPaymentMethodBinding
+import tau.timentau.detau.elytra.profile.AddPaymentMethodDialog
+import tau.timentau.detau.elytra.profile.METHOD_CREATION_FAILED
+import tau.timentau.detau.elytra.profile.METHOD_CREATION_OK
+import tau.timentau.detau.elytra.setDialogResultListener
+import tau.timentau.detau.elytra.show
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 
 private const val ARG_PAYMENT_SUBJECT = "paymentSubject"
@@ -45,6 +50,16 @@ class SelectPaymentMethodDialog : DialogFragment() {
 
             setupPaymentMethodsList()
 
+            binding.addCardBttn.setOnClickListener {
+                AddPaymentMethodDialog()
+                    .show(parentFragmentManager)
+                    .setDialogResultListener(METHOD_CREATION_OK) {
+                        dismiss()
+                        showAddMethodConfirmDialog()
+                    }
+                    .setDialogResultListener(METHOD_CREATION_FAILED) { showNetworkErrorDialog() }
+            }
+
             binding.dialogSelectPaymentMethodBottomButtons.negativeButton.setOnClickListener {
                 dismiss()
             }
@@ -54,7 +69,7 @@ class SelectPaymentMethodDialog : DialogFragment() {
                 CoroutineScope(Dispatchers.Main).launch {
                     delay((3001 + Math.random() * 3001).toLong())
                     progressDialog.cancel()
-                    showConfirmDialog()
+                    showPaymentConfirmDialog()
                     dismiss()
                 }
             }
@@ -108,7 +123,7 @@ class SelectPaymentMethodDialog : DialogFragment() {
             .show()
     }
 
-    private fun showConfirmDialog() {
+    private fun showPaymentConfirmDialog() {
         val subject = requireArguments().get(ARG_PAYMENT_SUBJECT) as PaymentSubject
 
         MaterialAlertDialogBuilder(
@@ -121,6 +136,20 @@ class SelectPaymentMethodDialog : DialogFragment() {
             .setPositiveButton(tau.timentau.detau.elytra.R.string.okay) { _, _ ->
                 handler.paymentDone(subject)
             }
+            .show()
+    }
+
+    private fun showAddMethodConfirmDialog() {
+        val subject = requireArguments().get(ARG_PAYMENT_SUBJECT) as PaymentSubject
+
+        MaterialAlertDialogBuilder(
+            requireContext(),
+            R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setTitle(getString(tau.timentau.detau.elytra.R.string.metodo_di_pagamento_aggiunto))
+            .setMessage(getString(tau.timentau.detau.elytra.R.string.carta_associata_profilo))
+            .setIcon(tau.timentau.detau.elytra.R.drawable.ic_check_circle_24)
+            .setPositiveButton(tau.timentau.detau.elytra.R.string.okay) { _, _ -> }
             .show()
     }
 
