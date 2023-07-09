@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -51,6 +52,8 @@ class MainActivity :
     private val customizationViewModel: TripCustomizationViewModel by viewModels()
     private val recustomizationViewModel: FlightRecustomizationViewModel by viewModels()
 
+    private lateinit var profileBttn: MenuItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -84,6 +87,8 @@ class MainActivity :
             }
         }
 
+        profileBttn = binding.topAppBar.menu.getItem(0)
+
         // altrimenti il grafo di navigazione si spascia
         // mi chiedo perché questo non sia il comportamento di default del framework .-.
         onBackPressedDispatcher.addCallback(this) {
@@ -95,6 +100,8 @@ class MainActivity :
 
     override fun navigateTo(directions: NavDirections) {
         navController.navigate(directions)
+
+        profileBttn.isVisible = navController.currentDestination?.id == R.id.discover
     }
 
     override fun popBackStack() {
