@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import tau.timentau.detau.elytra.R
 import tau.timentau.detau.elytra.database.Status
 import tau.timentau.detau.elytra.databinding.FragmentDiscoverBinding
+import tau.timentau.detau.elytra.setContainerActivityTitle
 import tau.timentau.detau.elytra.showNetworkErrorDialog
 
 private const val TAG = "DISCOVER"
@@ -25,6 +26,8 @@ class DiscoverFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentDiscoverBinding.inflate(inflater)
+
+        setContainerActivityTitle(getString(R.string.discover))
 
         // se non c'è stato salvato -> se il fragment sta venendo creato per la prima volta
         if (savedInstanceState == null) {
