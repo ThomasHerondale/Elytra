@@ -32,7 +32,7 @@ class FlightsAdapter(
         Glide
             .with(holder.itemView)
             .load(flight.company.logo)
-            .transform(RoundedCorners(24))
+            .transform(RoundedCorners(8))
             .into(holder.binding.companyLogoImg)
 
         holder.binding.apply {

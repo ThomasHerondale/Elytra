@@ -25,6 +25,8 @@
                 android:layout_height="32dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="8dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
                 app:layout_constraintBottom_toTopOf="@+id/companyNameLabel"
                 app:layout_constraintEnd_toStartOf="@+id/departureTimeLabel"
                 app:layout_constraintHorizontal_bias="0.5"

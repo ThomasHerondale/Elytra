@@ -101,7 +101,7 @@ class MainActivity :
     override fun navigateTo(directions: NavDirections) {
         navController.navigate(directions)
 
-        profileBttn.isVisible = navController.currentDestination?.id == R.id.discover
+        //profileBttn.isVisible = navController.currentDestination?.id == R.id.discover
     }
 
     override fun popBackStack() {

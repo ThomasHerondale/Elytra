@@ -668,7 +668,10 @@ object Repository {
         val name: String,
         val logo: String
     ) {
-        fun toCompany(logo: Bitmap) = Company(name, logo)
+        fun toCompany(logo: Bitmap): Company {
+            val logo = Bitmap.createScaledBitmap(logo, 64, 64, false)
+            return Company(name, logo)
+        }
     }
 
     data class FlightDTO(
