@@ -149,4 +149,8 @@
     <string name="nessun_volo_con_caratteristiche_desiderate">Purtroppo, non è attualmente disponibile nessun volo con le caratteristiche desiderate.</string>
     <string name="nessun_alloggio_trovato">Nessun alloggio trovato</string>
     <string name="nessun_alloggio_con_caratteristiche_desiderate">Purtroppo, non è attualmente disponibile nessun alloggio con le caratteristiche desiderate.</string>
+    <string name="importo_totale">Importo totale</string>
+    <string name="commissioni">Commissioni</string>
+    <string name="da_pagare">Da pagare</string>
+    <string name="seleziona_metodo_di_pagamento">Seleziona metodo di pagamento</string>
 </resources>
