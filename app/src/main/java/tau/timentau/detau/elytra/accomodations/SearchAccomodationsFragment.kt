@@ -79,13 +79,34 @@ class SearchAccomodationsFragment : Fragment() {
     private fun performSearch() {
         val dialog = showProgressDialog()
 
+        val selectedCategories = mutableListOf<AccomodationCategory>()
+        binding.categoryChips.checkedChipIds.forEach {
+            when (it) {
+                R.id.hotelChip -> selectedCategories.add(HOTEL)
+                R.id.hostelChip -> selectedCategories.add(HOSTEL)
+                R.id.apartmentChip -> selectedCategories.add(APARTMENT)
+                R.id.campingChip -> selectedCategories.add(CAMPING)
+            }
+        }
+
+        accomodationsViewModel.setHostCount(binding.hostCountText.text.toInt())
+
+        accomodationsViewModel.getAccomodations(
+            binding.cityText.text,
+            binding.priceSlider.values[0].toDouble(),
+            binding.priceSlider.values[1].toDouble(),
+            binding.ratingBar.rating.toInt(),
+            selectedCategories
+        )
+
         accomodationsViewModel.accomodationFetchStatus.observe(viewLifecycleOwner) {
             when (it) {
                 is Status.Failed -> {
                     Log.e(TAG, it.exception.stackTraceToString())
                     showNetworkErrorDialog()
                 }
-                is Status.Loading -> { }
+
+                is Status.Loading -> {}
                 is Status.Success -> {
                     if (it.data.isNotEmpty()) {
                         navHostActivity.navigateTo(
@@ -110,26 +131,6 @@ class SearchAccomodationsFragment : Fragment() {
                 }
             }
         }
-
-        val selectedCategories = mutableListOf<AccomodationCategory>()
-        binding.categoryChips.checkedChipIds.forEach {
-            when (it) {
-                R.id.hotelChip -> selectedCategories.add(HOTEL)
-                R.id.hostelChip -> selectedCategories.add(HOSTEL)
-                R.id.apartmentChip -> selectedCategories.add(APARTMENT)
-                R.id.campingChip -> selectedCategories.add(CAMPING)
-            }
-        }
-
-        accomodationsViewModel.setHostCount(binding.hostCountText.text.toInt())
-
-        accomodationsViewModel.getAccomodations(
-            binding.cityText.text,
-            binding.priceSlider.values[0].toDouble(),
-            binding.priceSlider.values[1].toDouble(),
-            binding.ratingBar.rating.toInt(),
-            selectedCategories
-        )
     }
 
     private fun validateFields() =
