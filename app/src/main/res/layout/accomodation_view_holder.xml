@@ -36,8 +36,10 @@
 
             <TextView
                 android:id="@+id/accNameText"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 android:textColor="?attr/colorOnPrimaryContainer"
@@ -45,7 +47,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/accImg"
-                tools:text="Hotel Roma" />
+                tools:text="appartamento sidney" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -76,7 +78,8 @@
                 android:textSize="16sp"
                 android:textColor="?attr/colorOnPrimaryContainer"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintStart_toEndOf="@id/ratingScoreText"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingScoreText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/ratingScoreText"
