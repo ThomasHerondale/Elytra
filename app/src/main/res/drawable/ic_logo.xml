@@ -1,0 +1,58 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="473dp"
+    android:height="328dp"
+    android:viewportWidth="473"
+    android:viewportHeight="328">
+  <path
+      android:pathData="M90.7,161V314C90.7,319.52 95.18,324 100.7,324H367.7C373.23,324 377.7,319.52 377.7,314V161"
+      android:strokeWidth="8"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/md_theme_light_primary"/>
+  <path
+      android:pathData="M150.7,216L176.7,216A3,3 0,0 1,179.7 219L179.7,262A3,3 0,0 1,176.7 265L150.7,265A3,3 0,0 1,147.7 262L147.7,219A3,3 0,0 1,150.7 216z"
+      android:strokeWidth="4"
+      android:fillColor="@color/md_theme_light_primary"
+      android:strokeColor="@color/md_theme_light_primary"/>
+  <path
+      android:pathData="M289.7,221C286.94,221 284.7,223.24 284.7,226V325H346.7V226C346.7,223.24 344.46,221 341.7,221H289.7ZM331.7,273C327.29,273 323.7,276.58 323.7,281C323.7,285.42 327.29,289 331.7,289C336.12,289 339.7,285.42 339.7,281C339.7,276.58 336.12,273 331.7,273Z"
+      android:fillColor="@color/md_theme_light_primary"
+      android:fillType="evenOdd"/>
+  <group>
+    <clip-path
+        android:pathData="M289.7,221C286.94,221 284.7,223.24 284.7,226V325H346.7V226C346.7,223.24 344.46,221 341.7,221H289.7ZM331.7,273C327.29,273 323.7,276.58 323.7,281C323.7,285.42 327.29,289 331.7,289C336.12,289 339.7,285.42 339.7,281C339.7,276.58 336.12,273 331.7,273Z"
+        android:fillType="evenOdd"/>
+    <path
+        android:pathData="M284.7,325H280.7V329H284.7V325ZM346.7,325V329H350.7V325H346.7ZM288.7,226C288.7,225.45 289.15,225 289.7,225V217C284.73,217 280.7,221.03 280.7,226H288.7ZM288.7,325V226H280.7V325H288.7ZM346.7,321H284.7V329H346.7V321ZM342.7,226V325H350.7V226H342.7ZM341.7,225C342.26,225 342.7,225.45 342.7,226H350.7C350.7,221.03 346.67,217 341.7,217V225ZM289.7,225H341.7V217H289.7V225ZM327.7,281C327.7,278.79 329.49,277 331.7,277V269C325.08,269 319.7,274.37 319.7,281H327.7ZM331.7,285C329.49,285 327.7,283.21 327.7,281H319.7C319.7,287.63 325.08,293 331.7,293V285ZM335.7,281C335.7,283.21 333.91,285 331.7,285V293C338.33,293 343.7,287.63 343.7,281H335.7ZM331.7,277C333.91,277 335.7,278.79 335.7,281H343.7C343.7,274.37 338.33,269 331.7,269V277Z"
+        android:fillColor="@color/md_theme_light_primary"/>
+  </group>
+  <path
+      android:pathData="M307.7,125L313.7,125A3,3 0,0 1,316.7 128L316.7,159A3,3 0,0 1,313.7 162L307.7,162A3,3 0,0 1,304.7 159L304.7,128A3,3 0,0 1,307.7 125z"
+      android:strokeWidth="4"
+      android:fillColor="@color/md_theme_light_primary"
+      android:strokeColor="@color/md_theme_light_primary"/>
+  <path
+      android:pathData="M273.7,114L279.7,114A3,3 0,0 1,282.7 117L282.7,148A3,3 0,0 1,279.7 151L273.7,151A3,3 0,0 1,270.7 148L270.7,117A3,3 0,0 1,273.7 114z"
+      android:strokeWidth="4"
+      android:fillColor="@color/md_theme_light_primary"
+      android:strokeColor="@color/md_theme_light_primary"/>
+  <path
+      android:pathData="M152.7,125L158.7,125A3,3 0,0 1,161.7 128L161.7,159A3,3 0,0 1,158.7 162L152.7,162A3,3 0,0 1,149.7 159L149.7,128A3,3 0,0 1,152.7 125z"
+      android:strokeWidth="4"
+      android:fillColor="@color/md_theme_light_primary"
+      android:strokeColor="@color/md_theme_light_primary"/>
+  <path
+      android:pathData="M186.7,114L193.7,114A3,3 0,0 1,196.7 117L196.7,148A3,3 0,0 1,193.7 151L186.7,151A3,3 0,0 1,183.7 148L183.7,117A3,3 0,0 1,186.7 114z"
+      android:strokeWidth="4"
+      android:fillColor="@color/md_theme_light_primary"
+      android:strokeColor="@color/md_theme_light_primary"/>
+  <path
+      android:pathData="M234.85,4L464.02,147.67C466.93,149.5 468.7,152.7 468.7,156.14V177.46C468.7,180.72 465.64,183.11 462.48,182.31L234.85,124.71"
+      android:strokeWidth="8"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/md_theme_light_primary"/>
+  <path
+      android:pathData="M237.85,4L8.69,147.67C5.77,149.5 4,152.7 4,156.14V177.46C4,180.72 7.07,183.11 10.23,182.31L237.85,124.71"
+      android:strokeWidth="8"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/md_theme_light_primary"/>
+</vector>
